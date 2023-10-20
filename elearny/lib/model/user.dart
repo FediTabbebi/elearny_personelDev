@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class User {
   String firstName;
   String lastName;
@@ -8,12 +10,12 @@ class User {
   String bio;
   String company;
   String role;
-  DateTime birthDate;
+  Timestamp birthDate;
   String password;
   List<String>? trainigList;
   String userId;
-  DateTime createdAt;
-  DateTime updatedAt;
+  Timestamp createdAt;
+  Timestamp updatedAt;
   bool isDeleted;
 
   User({
@@ -47,11 +49,11 @@ class User {
       bio: json['bio'],
       company: json['company'],
       role: json['role'],
-      birthDate: DateTime.parse(json['birthDate']),
+      birthDate: Timestamp.fromDate(json['birthDate']),
       password: json['password'],
       trainigList: json['trainigList'].cast<String>(),
-      createdAt: DateTime.parse(json['createdAt']),
-      updatedAt: DateTime.parse(json['updatedAt']),
+      createdAt: Timestamp.fromDate(json['createdAt']),
+      updatedAt: Timestamp.fromDate(json['updatedAt']),
       isDeleted: json['isDeleted'],
     );
   }

@@ -23,7 +23,7 @@ class Themes {
   static final ThemeData light = ThemeData(
     textTheme: const TextTheme(
       bodyLarge: TextStyle(
-        color: green,
+        color: black,
         fontSize: 17,
         fontFamily: 'Poppins',
       ),
@@ -119,7 +119,7 @@ class Themes {
         elevation: 0,
         iconTheme: IconThemeData(color: green),
         titleTextStyle:
-            TextStyle(color: green, fontSize: 22, fontWeight: FontWeight.bold)),
+            TextStyle(color: black, fontSize: 22, fontWeight: FontWeight.bold)),
 
     //scaffoldBackgroundColor
     scaffoldBackgroundColor: whiteGrey,
@@ -256,7 +256,7 @@ class Themes {
   static final ThemeData dark = ThemeData(
     textTheme: const TextTheme(
       bodyLarge: TextStyle(
-        color: green,
+        color: white,
         fontSize: 17,
         fontFamily: 'Poppins',
       ),
@@ -339,7 +339,7 @@ class Themes {
         elevation: 0,
         iconTheme: IconThemeData(color: green),
         titleTextStyle:
-            TextStyle(color: green, fontSize: 22, fontWeight: FontWeight.bold)),
+            TextStyle(color: white, fontSize: 22, fontWeight: FontWeight.bold)),
 
     //scaffoldBackgroundColor
     scaffoldBackgroundColor: black,
