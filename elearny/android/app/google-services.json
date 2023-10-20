@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "942412802051",
+    "project_id": "elearning-testdb",
+    "storage_bucket": "elearning-testdb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:942412802051:android:6b077e0b38458d1baf8636",
+        "android_client_info": {
+          "package_name": "com.example.elearny"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_KA1YRw7ipPB30DSwwybKrYGTX9Mtvtk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
