@@ -1,11 +1,13 @@
 import 'package:elearny/firebase_options.dart';
 import 'package:elearny/provider/providers.dart';
+import 'package:elearny/provider/themeProvider/theme_provider.dart';
 import 'package:elearny/utils/responsive_helper.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'package:flutter/material.dart';
 import 'package:elearny/routes/app_pages.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 void main() async {
@@ -26,14 +28,11 @@ class MyApp extends StatelessWidget {
           designSize: const Size(1920, 1080),
           minTextAdapt: true,
           splitScreenMode: true,
-          // Use builder only if you need to use library outside ScreenUtilInit context
           builder: (_, child) {
             return MaterialApp(
-                theme: ThemeData(
-                  colorScheme:
-                      ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-                  useMaterial3: true,
-                ),
+                theme: Provider.of<ThemeProvider>(
+                  context,
+                ).getThemeData(),
                 initialRoute: '/',
                 onGenerateRoute: RouteGenerator.generateRoute);
           });

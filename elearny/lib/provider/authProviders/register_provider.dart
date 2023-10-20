@@ -10,7 +10,6 @@ class RegisterProvider with ChangeNotifier {
   final RegisterService registerService = RegisterService();
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  final GlobalKey<State> _keyLoader = GlobalKey<State>();
 
   String? validateFirstName(String value) {
     if (value.isEmpty) {

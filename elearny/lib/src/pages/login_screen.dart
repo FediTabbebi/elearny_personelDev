@@ -1,4 +1,5 @@
 import 'package:elearny/data/globales.dart';
+import 'package:elearny/provider/themeProvider/theme_provider.dart';
 import 'package:elearny/routes/app_routes.dart';
 import 'package:elearny/services/firebase/fireStore/auth/login_services.dart';
 import 'package:elearny/src/widgets/one_button_dialog.dart';
@@ -76,6 +77,13 @@ class LoginScreen extends StatelessWidget {
             ],
           ),
         ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+          },
+          tooltip: 'switch mode',
+          child: Icon(Icons.add),
+        ), // This trailing comma ma
       );
     });
   }
