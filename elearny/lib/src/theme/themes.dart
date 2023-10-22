@@ -1,4 +1,6 @@
+import 'package:elearny/data/globales.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Themes {
   static const defaultElevation = 2.5;
@@ -12,7 +14,7 @@ class Themes {
   static const black = Color(0xff000000);
   static const darkMode = Color(0xff1F222A);
   static const darkMode2 = Color(0xff1D1D1D);
-  static const darkMode3 = Color(0xff1D2027);
+  static const darkMode3 = Color(0xff1D1627);
   static const splashColorgreen = Color.fromARGB(75, 7, 149, 97);
   static const fillColorLight = Color(0xffF3F3F3);
   static const fillColorDark = Color(0xff1F222A);
@@ -21,70 +23,124 @@ class Themes {
 
   //LightMode
   static final ThemeData light = ThemeData(
-    textTheme: const TextTheme(
+    textTheme: TextTheme(
       bodyLarge: TextStyle(
         color: black,
-        fontSize: 17,
+        fontSize: deviceType != 1
+            ? deviceType == 2
+                ? 30
+                : 26
+            : 34,
+        fontWeight: FontWeight.bold,
         fontFamily: 'Poppins',
       ),
+      //main textstyle
       bodyMedium: TextStyle(
         color: black,
-        fontSize: 17,
+        fontSize: deviceType != 1
+            ? deviceType == 2
+                ? 20
+                : 16
+            : 24,
         fontFamily: 'Poppins',
       ),
       bodySmall: TextStyle(
         color: whiteGrey,
-        fontSize: 17,
+        fontSize: deviceType != 1
+            ? deviceType == 2
+                ? 16
+                : 12
+            : 20,
         fontFamily: 'Poppins',
       ),
       displayLarge: TextStyle(
         color: black,
-        fontSize: 17,
+        fontSize: deviceType != 1
+            ? deviceType == 2
+                ? 20
+                : 16
+            : 24,
         fontFamily: 'Poppins',
       ),
       displayMedium: TextStyle(
         color: grey,
-        fontSize: 17,
+        fontSize: deviceType != 1
+            ? deviceType == 2
+                ? 20
+                : 16
+            : 24,
         fontFamily: 'Poppins',
       ),
       displaySmall: TextStyle(
         color: black,
-        fontSize: 17,
+        fontSize: deviceType != 1
+            ? deviceType == 2
+                ? 20
+                : 16
+            : 24,
         fontFamily: 'Poppins',
       ),
       titleSmall: TextStyle(
         color: whiteGrey,
-        fontSize: 17,
+        fontSize: deviceType != 1
+            ? deviceType == 2
+                ? 20
+                : 16
+            : 24,
         fontFamily: 'Poppins',
       ),
       titleMedium: TextStyle(
         color: black,
-        fontSize: 17,
+        fontSize: deviceType != 1
+            ? deviceType == 2
+                ? 20
+                : 16
+            : 24,
         fontFamily: 'Poppins',
       ),
       titleLarge: TextStyle(
         color: green,
-        fontSize: 17,
+        fontSize: deviceType != 1
+            ? deviceType == 2
+                ? 20
+                : 16
+            : 24,
         fontFamily: 'Poppins',
       ),
       labelLarge: TextStyle(
-        color: Color(0xff32324D),
-        fontSize: 17,
+        color: const Color(0xff32324D),
+        fontSize: deviceType != 1
+            ? deviceType == 2
+                ? 20
+                : 16
+            : 24,
         fontFamily: 'Poppins',
       ),
       labelMedium: TextStyle(
         color: whiteGrey,
-        fontSize: 17,
+        fontSize: deviceType != 1
+            ? deviceType == 2
+                ? 20
+                : 16
+            : 24,
         fontFamily: 'Poppins',
       ),
       labelSmall: TextStyle(
         color: white,
-        fontSize: 17,
+        fontSize: deviceType != 1
+            ? deviceType == 2
+                ? 20
+                : 16
+            : 24,
         fontFamily: 'Poppins',
       ),
       headlineLarge: TextStyle(
         color: inActivegreenColor,
-        fontSize: 17,
+        fontSize: deviceType != 1
+            ? deviceType == 2
+                ? 20
+                : 16
+            : 24,
         fontFamily: 'Poppins',
       ),
     ),
@@ -118,8 +174,7 @@ class Themes {
         backgroundColor: Colors.transparent,
         elevation: 0,
         iconTheme: IconThemeData(color: green),
-        titleTextStyle:
-            TextStyle(color: black, fontSize: 22, fontWeight: FontWeight.bold)),
+        titleTextStyle: TextStyle(color: black, fontWeight: FontWeight.bold)),
 
     //scaffoldBackgroundColor
     scaffoldBackgroundColor: whiteGrey,
@@ -163,7 +218,7 @@ class Themes {
             foregroundColor: green,
             backgroundColor: white,
             side: const BorderSide(width: 1.4, color: green),
-            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 50),
+            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 50),
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(30))))),
 
@@ -197,7 +252,8 @@ class Themes {
     //textButtonTheme
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
-          textStyle: const TextStyle(fontSize: 20), foregroundColor: green),
+          //  textStyle: const TextStyle(fontSize: 16),
+          foregroundColor: green),
     ),
 
     //bottmSheetTheme
@@ -209,7 +265,7 @@ class Themes {
       elevation: defaultElevation,
       backgroundColor: green,
       contentTextStyle: TextStyle(
-        fontSize: 16,
+        //  fontSize: 20,
         color: white,
       ),
       behavior: SnackBarBehavior.floating,
@@ -254,59 +310,120 @@ class Themes {
 //DarkMode
 
   static final ThemeData dark = ThemeData(
-    textTheme: const TextTheme(
+    textTheme: TextTheme(
       bodyLarge: TextStyle(
         color: white,
-        fontSize: 17,
+        fontSize: deviceType != 1
+            ? deviceType == 2
+                ? 30
+                : 26
+            : 34,
+        fontWeight: FontWeight.bold,
         fontFamily: 'Poppins',
       ),
       bodyMedium: TextStyle(
         color: white,
-        fontSize: 17,
+        fontSize: deviceType != 1
+            ? deviceType == 2
+                ? 20
+                : 16
+            : 24,
         fontFamily: 'Poppins',
       ),
       bodySmall: TextStyle(
         color: black,
-        fontSize: 17,
+        fontSize: deviceType != 1
+            ? deviceType == 2
+                ? 20
+                : 16
+            : 24,
         fontFamily: 'Poppins',
       ),
       displayLarge: TextStyle(
         color: white,
-        fontSize: 17,
+        fontSize: deviceType != 1
+            ? deviceType == 2
+                ? 20
+                : 16
+            : 24,
         fontFamily: 'Poppins',
       ),
       displayMedium: TextStyle(
         color: grey,
-        fontSize: 17,
+        fontSize: deviceType != 1
+            ? deviceType == 2
+                ? 20
+                : 16
+            : 24,
         fontFamily: 'Poppins',
       ),
       displaySmall: TextStyle(
         color: white,
-        fontSize: 17,
+        fontSize: deviceType != 1
+            ? deviceType == 2
+                ? 20
+                : 16
+            : 24,
         fontFamily: 'Poppins',
       ),
       titleSmall: TextStyle(
         color: darkMode,
-        fontSize: 17,
+        fontSize: deviceType != 1
+            ? deviceType == 2
+                ? 20
+                : 16
+            : 24,
         fontFamily: 'Poppins',
       ),
       titleMedium: TextStyle(
         color: white,
-        fontSize: 17,
+        fontSize: deviceType != 1
+            ? deviceType == 2
+                ? 20
+                : 16
+            : 24,
         fontFamily: 'Poppins',
       ),
       titleLarge: TextStyle(
         color: green,
-        fontSize: 17,
+        fontSize: deviceType != 1
+            ? deviceType == 2
+                ? 20
+                : 16
+            : 24,
         fontFamily: 'Poppins',
       ),
-      labelLarge: TextStyle(color: white, fontFamily: 'Poppins', fontSize: 17),
-      labelMedium: TextStyle(color: black, fontFamily: 'Poppins', fontSize: 17),
-      labelSmall:
-          TextStyle(color: darkMode, fontFamily: 'Poppins', fontSize: 17),
+      labelLarge: TextStyle(
+          color: white,
+          fontFamily: 'Poppins',
+          fontSize: deviceType != 1
+              ? deviceType == 2
+                  ? 20
+                  : 16
+              : 24),
+      labelMedium: TextStyle(
+          color: black,
+          fontFamily: 'Poppins',
+          fontSize: deviceType != 1
+              ? deviceType == 2
+                  ? 20
+                  : 16
+              : 24),
+      labelSmall: TextStyle(
+          color: darkMode,
+          fontFamily: 'Poppins',
+          fontSize: deviceType != 1
+              ? deviceType == 2
+                  ? 20
+                  : 16
+              : 24),
       headlineLarge: TextStyle(
         color: inActiveYellowColor,
-        fontSize: 17,
+        fontSize: deviceType != 1
+            ? deviceType == 2
+                ? 20
+                : 16
+            : 24,
         fontFamily: 'Poppins',
       ),
     ),
@@ -338,8 +455,11 @@ class Themes {
         backgroundColor: Colors.transparent,
         elevation: 0,
         iconTheme: IconThemeData(color: green),
-        titleTextStyle:
-            TextStyle(color: white, fontSize: 22, fontWeight: FontWeight.bold)),
+        titleTextStyle: TextStyle(
+            color: white,
+            // fontSize: 22,
+
+            fontWeight: FontWeight.bold)),
 
     //scaffoldBackgroundColor
     scaffoldBackgroundColor: black,
@@ -385,7 +505,7 @@ class Themes {
             foregroundColor: green,
             backgroundColor: black,
             side: const BorderSide(width: 1.4, color: green),
-            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 50),
+            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 50),
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(30))))),
 
@@ -420,7 +540,8 @@ class Themes {
     //textButtonTheme
     textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
-            textStyle: const TextStyle(fontSize: 20), foregroundColor: green)),
+            //   textStyle: const TextStyle(fontSize: 16),
+            foregroundColor: green)),
 
     //bottmSheetTheme
     bottomSheetTheme:
@@ -431,7 +552,7 @@ class Themes {
       elevation: defaultElevation,
       backgroundColor: green,
       contentTextStyle: TextStyle(
-        fontSize: 16,
+        //  fontSize: 20,
         color: black,
       ),
       behavior: SnackBarBehavior.floating,

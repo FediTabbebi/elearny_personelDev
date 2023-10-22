@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elearny/model/user.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -74,11 +73,11 @@ class RegisterScreen extends StatelessWidget {
                       bio: '',
                       company: '',
                       role: '',
-                      birthDate: Timestamp.now(),
-                      trainigList: [],
+                      birthDate: DateTime.now(),
+                      trainingList: [],
                       userId: '',
-                      createdAt: Timestamp.now(),
-                      updatedAt: Timestamp.now(),
+                      createdAt: DateTime.now(),
+                      updatedAt: DateTime.now(),
                       isDeleted: false,
                     ),
                     context);

@@ -10,12 +10,12 @@ class User {
   String bio;
   String company;
   String role;
-  Timestamp birthDate;
+  DateTime birthDate;
   String password;
-  List<String>? trainigList;
+  List<String>? trainingList;
   String userId;
-  Timestamp createdAt;
-  Timestamp updatedAt;
+  DateTime createdAt;
+  DateTime updatedAt;
   bool isDeleted;
 
   User({
@@ -30,7 +30,7 @@ class User {
     required this.role,
     required this.birthDate,
     required this.password,
-    required this.trainigList,
+    required this.trainingList,
     required this.userId,
     required this.createdAt,
     required this.updatedAt,
@@ -39,28 +39,28 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      userId: json['userId'],
-      firstName: json['firstName'],
-      lastName: json['lastName'],
-      email: json['email'],
-      address: json['address'],
-      phoneNumber: json['phoneNumber'],
-      profilePicture: json['profilePicture'],
-      bio: json['bio'],
-      company: json['company'],
-      role: json['role'],
-      birthDate: Timestamp.fromDate(json['birthDate']),
-      password: json['password'],
-      trainigList: json['trainigList'].cast<String>(),
-      createdAt: Timestamp.fromDate(json['createdAt']),
-      updatedAt: Timestamp.fromDate(json['updatedAt']),
-      isDeleted: json['isDeleted'],
+      firstName: json['firstName'] ?? '',
+      lastName: json['lastName'] ?? '',
+      email: json['email'] ?? '',
+      address: json['address'] ?? '',
+      phoneNumber: json['phoneNumber'] ?? '',
+      profilePicture: json['profilePicture'] ?? '',
+      bio: json['bio'] ?? '',
+      company: json['company'] ?? '',
+      role: json['role'] ?? '',
+      birthDate: (json['birthDate'] as Timestamp).toDate(),
+      password: json['password'] ?? '',
+      trainingList: (json['trainingList'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+      userId: json['userId'] ?? '',
+      createdAt: (json['createdAt'] as Timestamp).toDate(),
+      updatedAt: (json['updatedAt'] as Timestamp).toDate(),
+      isDeleted: json['isDeleted'] ?? false,
     );
   }
-
   Map<String, dynamic> toJson() {
     return {
-      'userId': userId,
       'firstName': firstName,
       'lastName': lastName,
       'email': email,
@@ -72,7 +72,8 @@ class User {
       'role': role,
       'birthDate': birthDate,
       'password': password,
-      'trainigList': trainigList,
+      'trainingList': trainingList,
+      'userId': userId,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
       'isDeleted': isDeleted,

@@ -42,6 +42,7 @@ class LoginProvider with ChangeNotifier {
         Navigator.of(context).pop();
         showSnackBar('$error', context);
       });
+
       if (userId.isNotEmpty) {
         isLoading = true;
         await loginService.getUserById(userId).then((value) async {
@@ -49,8 +50,6 @@ class LoginProvider with ChangeNotifier {
           showSnackBar('success', context);
           Navigator.of(context).pop();
           Navigator.pushReplacementNamed(context, Routes.home);
-          print(userId);
-          print(currentUser!.email);
         }).onError((error, stackTrace) {
           isLoading = false;
           Navigator.of(context).pop();

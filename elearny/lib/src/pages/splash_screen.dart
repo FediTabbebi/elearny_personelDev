@@ -1,4 +1,4 @@
-import 'package:elearny/provider/splash_provider.dart';
+import 'package:elearny/provider/SplashScreenProvider/splash_provider.dart';
 
 import 'package:flutter/material.dart';
 

@@ -1,9 +1,9 @@
 import 'package:elearny/provider/authProviders/login_provider.dart';
 import 'package:elearny/provider/authProviders/register_provider.dart';
 import 'package:elearny/provider/deviceTypeProvider/device_type_provider.dart';
-import 'package:elearny/provider/splash_provider.dart';
+import 'package:elearny/provider/onBoardingProvider/onbording_provider.dart';
+import 'package:elearny/provider/SplashScreenProvider/splash_provider.dart';
 import 'package:elearny/provider/themeProvider/theme_provider.dart';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -16,9 +16,10 @@ class Providers extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => DeviceTypeProvider()),
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => SplashProvider()),
+        ChangeNotifierProvider(create: (_) => OnBoardingProvider()),
         ChangeNotifierProvider(create: (_) => RegisterProvider()),
         ChangeNotifierProvider(create: (_) => LoginProvider()),
       ],

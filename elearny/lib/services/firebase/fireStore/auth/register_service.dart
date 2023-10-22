@@ -19,7 +19,6 @@ class RegisterService {
           .collection('users')
           .doc(currentUser.uid)
           .set({
-        'userId': currentUser.uid,
         'firstName': user.firstName,
         'lastName': user.lastName,
         'email': user.email,
@@ -29,10 +28,11 @@ class RegisterService {
         'bio': user.bio,
         'company': user.company,
         'role': user.role,
-        'birthDate': user.birthDate,
-        'trainigList': user.trainigList,
-        'createdAt': DateTime.now(),
-        'updatedAt': DateTime.now(),
+        'birthDate': Timestamp.now(),
+        'trainigList': user.trainingList,
+        'userId': currentUser.uid,
+        'createdAt': Timestamp.now(),
+        'updatedAt': Timestamp.now(),
         'isDeleted': false,
       });
     } catch (e) {

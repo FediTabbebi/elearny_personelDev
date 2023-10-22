@@ -32,11 +32,9 @@ class LoginService {
 
         return user_model.User.fromJson(userData);
       } else {
-        print('User not found');
         return null;
       }
     } catch (e) {
-      print('Error retrieving user: $e');
       return null;
     }
   }

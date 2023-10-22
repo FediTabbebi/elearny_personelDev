@@ -1,5 +1,6 @@
 import 'package:elearny/src/pages/home_screen.dart';
 import 'package:elearny/src/pages/login_screen.dart';
+import 'package:elearny/src/pages/onbording_screen.dart';
 import 'package:elearny/src/pages/register_screen.dart';
 import 'package:elearny/src/pages/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,8 @@ class RouteGenerator {
     switch (settings.name) {
       case Routes.splash:
         return MaterialPageRoute(builder: (_) => const SplashScreen());
+      case Routes.onboarding:
+        return MaterialPageRoute(builder: (_) => const OnBoardingScreen());
       case Routes.login:
         return MaterialPageRoute(builder: (_) => LoginScreen());
       case Routes.register:

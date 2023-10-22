@@ -9,36 +9,29 @@ class WebAppBar extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          "Elearny",
-          style: TextStyle(fontSize: 60.sp, fontWeight: FontWeight.bold),
-        ),
+        Text("Elearny", style: Theme.of(context).textTheme.bodyLarge),
         Row(
           children: [
-            Text(
+            const Text(
               "Home",
-              style: TextStyle(fontSize: 30.sp),
             ),
             SizedBox(
               width: 150.w,
             ),
-            Text(
+            const Text(
               "Courses",
-              style: TextStyle(fontSize: 30.sp),
             ),
             SizedBox(
               width: 150.w,
             ),
-            Text(
+            const Text(
               "contact us",
-              style: TextStyle(fontSize: 30.sp),
             ),
             SizedBox(
               width: 150.w,
             ),
-            Text(
+            const Text(
               "About us ",
-              style: TextStyle(fontSize: 30.sp),
             ),
           ],
         ),
@@ -46,18 +39,18 @@ class WebAppBar extends StatelessWidget {
           children: [
             ElevatedButton(
                 onPressed: () {},
-                child: Text(
+                child: const Text(
                   "Login",
-                  style: TextStyle(fontSize: 22.sp),
+                  style: TextStyle(),
                 )),
             const SizedBox(
               width: 20,
             ),
             ElevatedButton(
                 onPressed: () {},
-                child: Text(
+                child: const Text(
                   "Sign up",
-                  style: TextStyle(fontSize: 22.sp),
+                  style: TextStyle(),
                 ))
           ],
         )
