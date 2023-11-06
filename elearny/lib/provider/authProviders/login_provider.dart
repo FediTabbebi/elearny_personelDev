@@ -1,62 +1,61 @@
 import 'package:elearny/data/globales.dart';
-import 'package:elearny/routes/app_routes.dart';
-import 'package:elearny/services/firebase/fireStore/auth/login_services.dart';
+import 'package:elearny/services/firebase/fireStore/auth/authservice.dart';
+
+import 'package:elearny/utils/helper.dart';
+
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginProvider with ChangeNotifier {
   // final AuthService _authService;
   bool isLoading = false;
   String userId = "";
-  final LoginService loginService = LoginService();
+  final AuthenticationServices authService = AuthenticationServices();
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
-  String? validateEmail(String value) {
-    if (value.isEmpty) {
-      return 'Please enter your email';
-    }
-    // Add more complex email validation if necessary
-    return null;
-  }
-
-  String? validatePassword(String value) {
-    if (value.isEmpty) {
-      return 'Please enter your password';
-    }
-    if (value.length < 6) {
-      return 'Password must be at least 6 characters long.';
-    }
-    // Add more complex password validation if needed
-    return null;
-  }
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final ValidateFields validate = ValidateFields();
 
   Future<void> loginUser(
       String email, String password, BuildContext context) async {
     if (formKey.currentState!.validate()) {
       isLoading = true;
-      showProgressIndicator(context);
-      await loginService.loginUser(email, password).then((value) async {
-        userId = value!.uid;
+      notifyListeners();
+      await authService
+          .signInWithEmailAndPassword(email, password)
+          .then((value) {
+        showSnackBar('success', context);
+
+        globalUser = value;
+        isLoading = false;
+        notifyListeners();
+        context.goNamed("profile");
       }).onError((error, stackTrace) {
         isLoading = false;
-        Navigator.of(context).pop();
+        notifyListeners();
+        // Navigator.of(context).pop();
         showSnackBar('$error', context);
       });
-
-      if (userId.isNotEmpty) {
-        isLoading = true;
-        await loginService.getUserById(userId).then((value) async {
-          currentUser = value;
-          showSnackBar('success', context);
-          Navigator.of(context).pop();
-          Navigator.pushReplacementNamed(context, Routes.home);
-        }).onError((error, stackTrace) {
-          isLoading = false;
-          Navigator.of(context).pop();
-          showSnackBar('$error', context);
-        });
-      }
     }
+  }
+
+  Future<void> signOutUser(BuildContext context) async {
+    // isLoading = false;
+    // showProgressIndicator(context);
+    await authService.signOut(context).then((value) {
+      //  Navigator.of(context).pop();
+      // Navigator.pushNamedAndRemoveUntil(
+      //   context,
+      //   Routes.home,
+      //   (Route<dynamic> route) => false,
+      // );
+      context.pushReplacementNamed("login");
+    }).onError((error, stackTrace) {
+      // isLoading = false;
+      // Navigator.of(context).pop();
+      showSnackBar('$error', context);
+    });
   }
 
   void showSnackBar(String message, BuildContext context) {

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class User {
+class UserModel {
   String firstName;
   String lastName;
   String email;
@@ -18,7 +18,7 @@ class User {
   DateTime updatedAt;
   bool isDeleted;
 
-  User({
+  UserModel({
     required this.firstName,
     required this.lastName,
     required this.email,
@@ -37,26 +37,26 @@ class User {
     required this.isDeleted,
   });
 
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
-      firstName: json['firstName'] ?? '',
-      lastName: json['lastName'] ?? '',
-      email: json['email'] ?? '',
-      address: json['address'] ?? '',
-      phoneNumber: json['phoneNumber'] ?? '',
-      profilePicture: json['profilePicture'] ?? '',
-      bio: json['bio'] ?? '',
-      company: json['company'] ?? '',
-      role: json['role'] ?? '',
-      birthDate: (json['birthDate'] as Timestamp).toDate(),
-      password: json['password'] ?? '',
-      trainingList: (json['trainingList'] as List<dynamic>?)
+  factory UserModel.fromMap(Map<String, dynamic> map) {
+    return UserModel(
+      firstName: map['firstName'] ?? '',
+      lastName: map['lastName'] ?? '',
+      email: map['email'] ?? '',
+      address: map['address'] ?? '',
+      phoneNumber: map['phoneNumber'] ?? '',
+      profilePicture: map['profilePicture'] ?? '',
+      bio: map['bio'] ?? '',
+      company: map['company'] ?? '',
+      role: map['role'] ?? '',
+      birthDate: (map['birthDate'] as Timestamp).toDate(),
+      password: map['password'] ?? '',
+      trainingList: (map['trainingList'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
-      userId: json['userId'] ?? '',
-      createdAt: (json['createdAt'] as Timestamp).toDate(),
-      updatedAt: (json['updatedAt'] as Timestamp).toDate(),
-      isDeleted: json['isDeleted'] ?? false,
+      userId: map['userId'] ?? '',
+      createdAt: (map['createdAt'] as Timestamp).toDate(),
+      updatedAt: (map['updatedAt'] as Timestamp).toDate(),
+      isDeleted: map['isDeleted'] ?? false,
     );
   }
   Map<String, dynamic> toJson() {

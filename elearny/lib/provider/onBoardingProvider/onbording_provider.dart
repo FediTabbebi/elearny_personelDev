@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 
 class OnBoardingProvider extends ChangeNotifier {
   int selectedPageIndex = 0;
@@ -7,18 +6,23 @@ class OnBoardingProvider extends ChangeNotifier {
   PageController pageController = PageController();
 
   forwardAction() {
-    pageController.nextPage(
-        duration: 300.milliseconds, curve: Curves.easeInSine);
     selectedPageIndex++;
+    animateToPage(selectedPageIndex, 300);
 
     notifyListeners();
   }
 
   skipAction() {
-    pageController.animateToPage(2,
-        duration: const Duration(milliseconds: 500), curve: Curves.ease);
+    animateToPage(2, 500);
 
     selectedPageIndex = contents.length - 1;
+    notifyListeners();
+  }
+
+  animateToPage(int index, int duration) {
+    pageController.animateToPage(index,
+        duration: Duration(milliseconds: duration), curve: Curves.ease);
+    selectedPageIndex = index;
     notifyListeners();
   }
 }

@@ -1,6 +1,5 @@
 import 'package:elearny/data/globales.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Themes {
   static const defaultElevation = 2.5;
@@ -12,9 +11,12 @@ class Themes {
   static const whiteGrey = Color(0xffFCFCFC);
   static const greyWhite = Color(0xffF7F7F7);
   static const black = Color(0xff000000);
+  static const black2 = Color(0xff0F0F0F);
   static const darkMode = Color(0xff1F222A);
+
   static const darkMode2 = Color(0xff1D1D1D);
   static const darkMode3 = Color(0xff1D1627);
+  static const darkMode4 = Color(0xff32324D);
   static const splashColorgreen = Color.fromARGB(75, 7, 149, 97);
   static const fillColorLight = Color(0xffF3F3F3);
   static const fillColorDark = Color(0xff1F222A);
@@ -28,9 +30,9 @@ class Themes {
         color: black,
         fontSize: deviceType != 1
             ? deviceType == 2
-                ? 30
-                : 26
-            : 34,
+                ? 28
+                : 24
+            : 30,
         fontWeight: FontWeight.bold,
         fontFamily: 'Poppins',
       ),
@@ -39,13 +41,13 @@ class Themes {
         color: black,
         fontSize: deviceType != 1
             ? deviceType == 2
-                ? 20
+                ? 16
                 : 16
-            : 24,
+            : 18,
         fontFamily: 'Poppins',
       ),
       bodySmall: TextStyle(
-        color: whiteGrey,
+        color: grey,
         fontSize: deviceType != 1
             ? deviceType == 2
                 ? 16
@@ -57,90 +59,90 @@ class Themes {
         color: black,
         fontSize: deviceType != 1
             ? deviceType == 2
-                ? 20
+                ? 16
                 : 16
-            : 24,
+            : 18,
         fontFamily: 'Poppins',
       ),
       displayMedium: TextStyle(
         color: grey,
         fontSize: deviceType != 1
             ? deviceType == 2
-                ? 20
+                ? 16
                 : 16
-            : 24,
+            : 18,
         fontFamily: 'Poppins',
       ),
       displaySmall: TextStyle(
         color: black,
         fontSize: deviceType != 1
             ? deviceType == 2
-                ? 20
+                ? 16
                 : 16
-            : 24,
+            : 18,
         fontFamily: 'Poppins',
       ),
       titleSmall: TextStyle(
         color: whiteGrey,
         fontSize: deviceType != 1
             ? deviceType == 2
-                ? 20
+                ? 16
                 : 16
-            : 24,
+            : 18,
         fontFamily: 'Poppins',
       ),
       titleMedium: TextStyle(
         color: black,
         fontSize: deviceType != 1
             ? deviceType == 2
-                ? 20
+                ? 16
                 : 16
-            : 24,
+            : 18,
         fontFamily: 'Poppins',
       ),
       titleLarge: TextStyle(
         color: green,
         fontSize: deviceType != 1
             ? deviceType == 2
-                ? 20
+                ? 16
                 : 16
-            : 24,
+            : 18,
         fontFamily: 'Poppins',
       ),
       labelLarge: TextStyle(
         color: const Color(0xff32324D),
         fontSize: deviceType != 1
             ? deviceType == 2
-                ? 20
+                ? 16
                 : 16
-            : 24,
+            : 18,
         fontFamily: 'Poppins',
       ),
       labelMedium: TextStyle(
         color: whiteGrey,
         fontSize: deviceType != 1
             ? deviceType == 2
-                ? 20
+                ? 16
                 : 16
-            : 24,
+            : 18,
         fontFamily: 'Poppins',
       ),
       labelSmall: TextStyle(
         color: white,
         fontSize: deviceType != 1
             ? deviceType == 2
-                ? 20
+                ? 16
                 : 16
-            : 24,
+            : 18,
         fontFamily: 'Poppins',
       ),
       headlineLarge: TextStyle(
         color: inActivegreenColor,
         fontSize: deviceType != 1
             ? deviceType == 2
-                ? 20
+                ? 16
                 : 16
-            : 24,
+            : 18,
         fontFamily: 'Poppins',
       ),
     ),
@@ -153,7 +155,12 @@ class Themes {
     bottomAppBarTheme: const BottomAppBarTheme(
       color: whiteGrey,
     ),
-
+    navigationRailTheme: const NavigationRailThemeData(
+        backgroundColor: black2,
+        unselectedIconTheme: IconThemeData(color: white),
+        selectedIconTheme: IconThemeData(color: green),
+        selectedLabelTextStyle: TextStyle(color: green),
+        unselectedLabelTextStyle: TextStyle(color: white)),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         type: BottomNavigationBarType.fixed,
         backgroundColor: white,
@@ -208,6 +215,12 @@ class Themes {
         backgroundColor: white,
         side: BorderSide(width: 0.5, color: grey)),
 
+    //date pciker
+    datePickerTheme: const DatePickerThemeData(
+      todayForegroundColor: MaterialStatePropertyAll(green),
+      headerBackgroundColor: green,
+    ),
+
     //radioTheme
     radioTheme: RadioThemeData(
         fillColor: MaterialStateColor.resolveWith((states) => green)),
@@ -255,7 +268,11 @@ class Themes {
           //  textStyle: const TextStyle(fontSize: 16),
           foregroundColor: green),
     ),
-
+    iconButtonTheme: IconButtonThemeData(
+      style: IconButton.styleFrom(
+          //  textStyle: const TextStyle(fontSize: 16),
+          backgroundColor: green),
+    ),
     //bottmSheetTheme
     bottomSheetTheme:
         BottomSheetThemeData(backgroundColor: white.withOpacity(0)),
@@ -300,7 +317,7 @@ class Themes {
           borderRadius: BorderRadius.circular(15.0)),
       suffixIconColor: green,
       labelStyle: const TextStyle(
-        color: green,
+        color: grey,
       ),
       filled: true,
       fillColor: white,
@@ -325,105 +342,108 @@ class Themes {
         color: white,
         fontSize: deviceType != 1
             ? deviceType == 2
-                ? 20
+                ? 16
                 : 16
-            : 24,
+            : 18,
         fontFamily: 'Poppins',
       ),
       bodySmall: TextStyle(
         color: black,
         fontSize: deviceType != 1
             ? deviceType == 2
-                ? 20
-                : 16
-            : 24,
+                ? 16
+                : 12
+            : 20,
         fontFamily: 'Poppins',
       ),
       displayLarge: TextStyle(
         color: white,
         fontSize: deviceType != 1
             ? deviceType == 2
-                ? 20
+                ? 16
                 : 16
-            : 24,
+            : 18,
         fontFamily: 'Poppins',
       ),
       displayMedium: TextStyle(
         color: grey,
         fontSize: deviceType != 1
             ? deviceType == 2
-                ? 20
+                ? 16
                 : 16
-            : 24,
+            : 18,
         fontFamily: 'Poppins',
       ),
       displaySmall: TextStyle(
         color: white,
         fontSize: deviceType != 1
             ? deviceType == 2
-                ? 20
+                ? 16
                 : 16
-            : 24,
+            : 18,
         fontFamily: 'Poppins',
       ),
       titleSmall: TextStyle(
         color: darkMode,
         fontSize: deviceType != 1
             ? deviceType == 2
-                ? 20
+                ? 16
                 : 16
-            : 24,
+            : 18,
         fontFamily: 'Poppins',
       ),
       titleMedium: TextStyle(
         color: white,
         fontSize: deviceType != 1
             ? deviceType == 2
-                ? 20
+                ? 16
                 : 16
-            : 24,
+            : 18,
         fontFamily: 'Poppins',
       ),
       titleLarge: TextStyle(
         color: green,
         fontSize: deviceType != 1
             ? deviceType == 2
-                ? 20
+                ? 16
                 : 16
-            : 24,
+            : 18,
         fontFamily: 'Poppins',
       ),
       labelLarge: TextStyle(
-          color: white,
-          fontFamily: 'Poppins',
-          fontSize: deviceType != 1
-              ? deviceType == 2
-                  ? 20
-                  : 16
-              : 24),
+        color: white,
+        fontFamily: 'Poppins',
+        fontSize: deviceType != 1
+            ? deviceType == 2
+                ? 16
+                : 16
+            : 18,
+      ),
       labelMedium: TextStyle(
-          color: black,
-          fontFamily: 'Poppins',
-          fontSize: deviceType != 1
-              ? deviceType == 2
-                  ? 20
-                  : 16
-              : 24),
+        color: black,
+        fontFamily: 'Poppins',
+        fontSize: deviceType != 1
+            ? deviceType == 2
+                ? 16
+                : 16
+            : 18,
+      ),
       labelSmall: TextStyle(
-          color: darkMode,
-          fontFamily: 'Poppins',
-          fontSize: deviceType != 1
-              ? deviceType == 2
-                  ? 20
-                  : 16
-              : 24),
+        color: darkMode,
+        fontFamily: 'Poppins',
+        fontSize: deviceType != 1
+            ? deviceType == 2
+                ? 16
+                : 16
+            : 18,
+      ),
       headlineLarge: TextStyle(
         color: inActiveYellowColor,
         fontSize: deviceType != 1
             ? deviceType == 2
-                ? 20
+                ? 16
                 : 16
-            : 24,
+            : 18,
         fontFamily: 'Poppins',
       ),
     ),
@@ -435,7 +455,12 @@ class Themes {
     bottomAppBarTheme: const BottomAppBarTheme(
       color: darkMode,
     ),
-
+    navigationRailTheme: const NavigationRailThemeData(
+        backgroundColor: black2,
+        unselectedIconTheme: IconThemeData(color: white),
+        selectedIconTheme: IconThemeData(color: green),
+        selectedLabelTextStyle: TextStyle(color: green),
+        unselectedLabelTextStyle: TextStyle(color: white)),
     //bottomNavigationBarTheme
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         type: BottomNavigationBarType.fixed,
@@ -494,6 +519,12 @@ class Themes {
         backgroundColor: black,
         deleteIconColor: green,
         side: BorderSide(width: 0.5, color: grey)),
+
+    //date pciker
+    datePickerTheme: const DatePickerThemeData(
+      todayForegroundColor: MaterialStatePropertyAll(green),
+      headerBackgroundColor: green,
+    ),
 
     //radioTheme
     radioTheme: RadioThemeData(
@@ -587,7 +618,7 @@ class Themes {
           borderRadius: BorderRadius.circular(15.0)),
       suffixIconColor: green,
       labelStyle: const TextStyle(
-        color: green,
+        color: grey,
       ),
       filled: true,
       fillColor: darkMode,

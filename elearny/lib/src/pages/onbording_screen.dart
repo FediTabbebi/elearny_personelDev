@@ -3,7 +3,7 @@ import 'package:elearny/provider/onBoardingProvider/onbording_provider.dart';
 import 'package:elearny/routes/app_routes.dart';
 import 'package:elearny/src/theme/themes.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class OnBoardingScreen extends StatelessWidget {
@@ -18,9 +18,9 @@ class OnBoardingScreen extends StatelessWidget {
           return Column(
             children: [
               Expanded(
-                flex: deviceType == 2 ? 5 : 5,
+                flex: 5,
                 child: PageView.builder(
-                  physics: const PageScrollPhysics(),
+                  physics: const BouncingScrollPhysics(),
                   controller: onboardingProvider.pageController,
                   onPageChanged: (index) {
                     onboardingProvider.selectedPageIndex = index;
@@ -42,88 +42,98 @@ class OnBoardingScreen extends StatelessWidget {
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
                         const SizedBox(height: 15),
-                        Text(
-                          contents[i].desc,
-                          style: Theme.of(context).textTheme.bodySmall,
-                          textAlign: TextAlign.center,
+                        Padding(
+                          padding: const EdgeInsets.only(left: 15, right: 15),
+                          child: Text(
+                            contents[i].desc,
+                            style: Theme.of(context).textTheme.bodySmall,
+                            textAlign: TextAlign.center,
+                          ),
                         )
                       ],
                     );
                   },
                 ),
               ),
-              Expanded(
-                //flex: 1,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    onboardingProvider.isLastPage
-                        ? Padding(
-                            padding: const EdgeInsets.all(30),
-                            child: SizedBox(
-                              height: 45,
-                              width: MediaQuery.of(context).size.width,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  Navigator.pushReplacementNamed(
-                                      context, Routes.login);
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(50),
-                                  ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  onboardingProvider.isLastPage
+                      ? Padding(
+                          padding: const EdgeInsets.all(30),
+                          child: SizedBox(
+                            height: 45,
+                            width: MediaQuery.of(context).size.width,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                context.pushNamed(Routes.login);
+                              },
+                              style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(50),
                                 ),
-                                child: const Text("START"),
                               ),
+                              child: const Text("START"),
                             ),
-                          )
-                        : Padding(
-                            padding: const EdgeInsets.all(30),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                TextButton(
-                                  onPressed: () {
-                                    onboardingProvider.skipAction();
-                                  },
-                                  style: TextButton.styleFrom(
-                                    elevation: 0,
-                                    textStyle: const TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  child: const Text(
-                                    "SKIP",
+                          ),
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.all(30),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              TextButton(
+                                onPressed: () {
+                                  onboardingProvider.skipAction();
+                                },
+                                style: TextButton.styleFrom(
+                                  elevation: 0,
+                                  textStyle: const TextStyle(
+                                    fontWeight: FontWeight.w600,
                                   ),
                                 ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: List.generate(
-                                    contents.length,
-                                    (int index) => _buildDots(
+                                child: const Text(
+                                  "SKIP",
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: List.generate(
+                                  contents.length,
+                                  (int index) => GestureDetector(
+                                    onTap: () {
+                                      if (index == contents.length - 1) {
+                                        onboardingProvider.animateToPage(
+                                            index, 650);
+                                      } else {
+                                        onboardingProvider.animateToPage(
+                                            index, 300);
+                                      }
+                                    },
+                                    child: _buildDots(
                                         index: index,
                                         onBoardingProvider: onboardingProvider),
                                   ),
                                 ),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    onboardingProvider.forwardAction();
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(50),
-                                      ),
-                                      elevation: 0,
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 30, vertical: 20),
-                                      textStyle: const TextStyle()),
-                                  child: const Text("NEXT"),
-                                ),
-                              ],
-                            ),
-                          )
-                  ],
-                ),
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  onboardingProvider.forwardAction();
+                                },
+                                style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(50),
+                                    ),
+                                    elevation: 0,
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 30, vertical: 20),
+                                    textStyle: const TextStyle()),
+                                child: const Text("NEXT"),
+                              ),
+                            ],
+                          ),
+                        )
+                ],
               ),
             ],
           );
