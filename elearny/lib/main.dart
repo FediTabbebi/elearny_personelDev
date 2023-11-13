@@ -15,7 +15,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  runApp(const Providers(child: MyApp()));
+  runApp(Providers(child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -32,18 +32,22 @@ class MyApp extends StatelessWidget {
           splitScreenMode: true,
           builder: (_, child) {
             return MaterialApp.router(
-              debugShowCheckedModeBanner: false,
-              theme: Provider.of<ThemeProvider>(
-                context,
-              ).getThemeData(),
-              // routeInformationProvider:
-              //     AppRouter.router.routeInformationProvider,
-              // routeInformationParser: AppRouter.router.routeInformationParser,
-              // routerDelegate: AppRouter.router.routerDelegate,
-              // initialRoute: Routes.splash,
-              // onGenerateRoute: RouteGenerator.generateRoute
-              routerConfig: AppNavigation.router,
-            );
+                debugShowCheckedModeBanner: false,
+                theme: Provider.of<ThemeProvider>(
+                  context,
+                ).getThemeData(),
+                // routeInformationProvider:
+                //     AppRouter.router.routeInformationProvider,
+                // routeInformationParser: AppRouter.router.routeInformationParser,
+                // routerDelegate: AppRouter.router.routerDelegate,
+                // initialRoute: Routes.splash,
+                // onGenerateRoute: RouteGenerator.generateRoute
+                // routerConfig: AppNavigation.router,
+                routerDelegate: AppNavigation.router.routerDelegate,
+                routeInformationProvider:
+                    AppNavigation.router.routeInformationProvider,
+                routeInformationParser:
+                    AppNavigation.router.routeInformationParser);
           });
     });
   }

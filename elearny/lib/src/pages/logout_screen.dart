@@ -1,5 +1,5 @@
 import 'package:elearny/provider/authProviders/login_provider.dart';
-import 'package:elearny/provider/navigationProvider/navigation_provider.dart';
+import 'package:elearny/provider/navigationProvider/main_navigation_provider.dart';
 import 'package:elearny/provider/themeProvider/theme_provider.dart';
 import 'package:elearny/src/widgets/app_bar_widget.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +14,7 @@ class LogoutScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        toolbarHeight: 100,
         title: deviceType != 1
             ? deviceType == 2
                 ? appBarWidget(context)

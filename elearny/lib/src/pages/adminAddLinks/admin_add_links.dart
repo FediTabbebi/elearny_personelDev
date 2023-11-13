@@ -3,35 +3,40 @@ import 'package:elearny/data/globales.dart';
 import 'package:elearny/model/admin_links.dart';
 import 'package:elearny/provider/adminProviders/add_links_provider.dart';
 import 'package:elearny/provider/themeProvider/theme_provider.dart';
+import 'package:elearny/services/firebase/fireStore/adminAddLinks/add_links.dart';
 
 import 'package:elearny/src/theme/themes.dart';
 import 'package:elearny/src/widgets/admin_addlinks_shimmer.dart';
-import 'package:elearny/src/widgets/loading_indicator_widget.dart';
+import 'package:elearny/utils/app_bar.dart';
 import 'package:elearny/utils/helper.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
-import '../../widgets/app_bar_widget.dart';
-
 class AdminAddLinks extends StatelessWidget {
-  const AdminAddLinks({super.key});
-
+  AdminAddLinks({super.key});
+  final AdminServices adminSocialMediaServices = AdminServices();
   @override
   Widget build(BuildContext context) {
-    return context.read<AdminAddLinkProvider>().isInitialized
-        ? mainScreen(context)
-        : FutureBuilder<void>(
-            future: context.read<AdminAddLinkProvider>().getLinks(context),
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const AdminAddLinksShimmerWidget();
-              } else {
-                context.read<AdminAddLinkProvider>().initi();
-                return mainScreen(context);
-              }
-            },
-          );
+    return FutureProvider<AdminLinksModel?>(
+      create: (context) => adminSocialMediaServices.getData(),
+      initialData: null, // Set an initial value while the future is resolving
+      child: Consumer<AdminLinksModel?>(
+        builder: (context, adminLinks, _) {
+          if (adminLinks == null) {
+            return AdminAddLinksShimmerWidget(); // Display a progress indicator
+          } else {
+            // Data is available, call settingControllers
+            context.read<AdminAddLinkProvider>().settingControllers(adminLinks);
+
+            return mainScreen(
+              context,
+            );
+          }
+        },
+      ),
+    );
   }
 }
 
@@ -39,16 +44,15 @@ Widget mainScreen(BuildContext context) {
   return SafeArea(
     child: Scaffold(
       appBar: AppBar(
-        title: deviceType != 1
-            ? deviceType == 2
-                ? appBarWidget(context)
-                : appBarWidget(context)
-            : Center(
-                child: Text(
-                'Social Media Links',
-                style: Theme.of(context).textTheme.bodyLarge,
-              )),
-      ),
+          toolbarHeight: 100,
+          title: kIsWeb
+              ? Center(
+                  child: Text(
+                  'Social Media Links',
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ))
+              : AppBarUtils.appBarWidget(context, "Social Media Links",
+                  "Here you can modify social media links")),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -57,69 +61,99 @@ Widget mainScreen(BuildContext context) {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  "Main Page Pictures",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
+                const Padding(
+                  padding: EdgeInsets.only(left: 25),
+                  child: Text(
+                    "Main Page Pictures",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
                 const SizedBox(
-                  height: 16,
+                  height: 32,
                 ),
                 Center(
                   child: Wrap(
+                    spacing: 20,
                     children: [
                       mainPagePictureWidget("The Team logo image", 1, context),
                       mainPagePictureWidget("Landing page image", 2, context),
                     ],
                   ),
                 ),
-                const Text(
-                  "Social Media Links",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
+                const SizedBox(
+                  height: 32,
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(left: 25),
+                  child: Text(
+                    "Social Media Links",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
+                ),
+                const SizedBox(
+                  height: 32,
+                ),
+                textField(
+                  context,
+                  null,
+                  "assets/icons/facebook.png",
+                  context.read<AdminAddLinkProvider>().facebookTextField,
+                  "facebook",
                 ),
                 textField(
                     context,
-                    FontAwesomeIcons.facebookF,
-                    context.read<AdminAddLinkProvider>().facebookTextField,
-                    "facebook"),
-                textField(
-                    context,
-                    FontAwesomeIcons.linkedin,
+                    null,
+                    "assets/icons/linkedIn2.png",
                     context.read<AdminAddLinkProvider>().linkedInTextfield,
                     "LinkedIn"),
                 textField(
                     context,
-                    FontAwesomeIcons.whatsapp,
+                    null,
+                    "assets/icons/whatsApp.png",
                     context.read<AdminAddLinkProvider>().whatsAppTextfield,
                     "Whats App"),
                 textField(
                     context,
-                    FontAwesomeIcons.instagram,
+                    null,
+                    "assets/icons/instagram.png",
                     context.read<AdminAddLinkProvider>().instagramTexfield,
                     "Instagram"),
                 textField(
                     context,
-                    FontAwesomeIcons.youtube,
+                    null,
+                    "assets/icons/youtube.png",
                     context.read<AdminAddLinkProvider>().youtubeTexfield,
                     "Youtube"),
                 textField(
                     context,
-                    FontAwesomeIcons.envelope,
+                    FontAwesomeIcons.solidEnvelope,
+                    "",
                     context.read<AdminAddLinkProvider>().emailTextfield,
                     "Email Address"),
                 textField(
                     context,
-                    FontAwesomeIcons.phone,
+                    FontAwesomeIcons.phoneVolume,
+                    "",
                     context.read<AdminAddLinkProvider>().phoneNumbertextfield,
                     "Phone Number"),
-                const Text(
-                  "App Download URLs ",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
+                const SizedBox(
+                  height: 32,
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(left: 25),
+                  child: Text(
+                    "App Download URLs ",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
+                ),
+                const SizedBox(
+                  height: 32,
                 ),
                 downloadApp(
                     "Get it on",
@@ -138,7 +172,9 @@ Widget mainScreen(BuildContext context) {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: kIsWeb
+                        ? MainAxisAlignment.end
+                        : MainAxisAlignment.center,
                     children: [
                       Consumer<AdminAddLinkProvider>(
                           builder: (context, provider, _) {
@@ -149,7 +185,9 @@ Widget mainScreen(BuildContext context) {
                                 child: CircularProgressIndicator())
                             : SizedBox(
                                 height: 60,
-                                width: 100,
+                                width: kIsWeb
+                                    ? 100
+                                    : MediaQuery.of(context).size.width / 1.07,
                                 child: ElevatedButton(
                                   onPressed: () async {
                                     await context
@@ -258,18 +296,14 @@ Widget mainPagePictureWidget(
                 ),
               );
             }),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: ElevatedButton(
-                  child: const Text(
-                    "Edit",
-                  ),
-                  onPressed: () {
-                    context
-                        .read<AdminAddLinkProvider>()
-                        .pickImage(widget == 1 ? 1 : 2);
-                  }),
-            ),
+            Positioned(
+                top: 15,
+                right: 10,
+                child: iconButton(context, Icons.edit, () {
+                  context
+                      .read<AdminAddLinkProvider>()
+                      .pickImage(widget == 1 ? 1 : 2);
+                }))
           ],
         ),
       )
@@ -277,7 +311,7 @@ Widget mainPagePictureWidget(
   );
 }
 
-Widget textField(BuildContext context, IconData icon,
+Widget textField(BuildContext context, IconData? icon, String imageIconPath,
     TextEditingController textEditingController, String? labelText) {
   return Padding(
     padding: const EdgeInsets.all(8.0),
@@ -285,16 +319,14 @@ Widget textField(BuildContext context, IconData icon,
       children: [
         Padding(
           padding: const EdgeInsets.only(right: 20.0, left: 10),
-          child: Container(
+          child: SizedBox(
             height: 60,
             width: 60,
-            decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey), shape: BoxShape.circle),
-            child: Icon(
-              icon,
-              size: 35,
-              color: Theme.of(context).textTheme.bodyLarge!.color,
-            ),
+            // decoration: BoxDecoration(
+            //     border: Border.all(color: Colors.grey), shape: BoxShape.circle),
+            child: icon == null
+                ? Image.asset(imageIconPath)
+                : Icon(icon, size: 45, color: Themes.green),
           ),
         ),
         Expanded(
@@ -386,14 +418,46 @@ Widget textFieldWidget(TextEditingController textEditingController,
   );
 }
 
-Widget appBarWidget(BuildContext context) {
-  return AppBarWidget(
-    leftIcon: Icons.arrow_back,
-    onPressedLeftIcon: () {
-      Navigator.pop(context);
+Widget iconButton(
+  BuildContext context,
+  IconData iconData,
+  Function() onTap,
+) {
+  return InkWell(
+    onTap: () {
+      onTap();
     },
-    rightIcon: null,
-    title: "Social Media Link",
-    subtitle: "Here you can modify social media links",
+    child: Container(
+      decoration: BoxDecoration(
+          border: Border.all(
+            width: 3,
+            color: context.read<ThemeProvider>().isDarkMode
+                ? Themes.darkMode
+                : Colors.white,
+          ),
+          borderRadius: const BorderRadius.all(
+            Radius.circular(
+              50,
+            ),
+          ),
+          color: context.read<ThemeProvider>().isDarkMode
+              ? Themes.darkMode2
+              : Colors.white,
+          boxShadow: [
+            BoxShadow(
+              offset: const Offset(2, 4),
+              color: Colors.black.withOpacity(
+                0.3,
+              ),
+              blurRadius: 3,
+            ),
+          ]),
+      child: Padding(
+        padding: const EdgeInsets.all(2.0),
+        child: Icon(
+          iconData,
+        ),
+      ),
+    ),
   );
 }

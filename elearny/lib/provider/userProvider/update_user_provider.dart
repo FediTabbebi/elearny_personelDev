@@ -1,16 +1,11 @@
-import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elearny/data/globales.dart';
 import 'package:elearny/model/user.dart';
 import 'package:elearny/services/firebase/fireStore/auth/authservice.dart';
+import 'package:elearny/src/theme/themes.dart';
 import 'package:elearny/src/widgets/one_button_dialog.dart';
-
-import 'package:elearny/utils/helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:image_picker_web/image_picker_web.dart';
-
 import '../../services/firebase/storage/upload_files.dart';
 
 class UpdateUserProvider extends ChangeNotifier {
@@ -35,7 +30,7 @@ class UpdateUserProvider extends ChangeNotifier {
 
   bool isLoading = false;
   String imageURL = '';
-  Uint8List? imageData = null;
+  Uint8List? imageData;
   Storage storage = Storage();
   AuthenticationServices authService = AuthenticationServices();
 
@@ -146,6 +141,7 @@ class UpdateUserProvider extends ChangeNotifier {
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
     );
+
     if (picked != null && picked != selectedDate) {
       selectedDate = picked;
       birthdayController.text = "${selectedDate.toLocal()}".split(' ')[0];

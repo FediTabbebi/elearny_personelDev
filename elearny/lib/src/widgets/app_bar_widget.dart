@@ -55,7 +55,10 @@ class AppBarWidget extends StatelessWidget {
         Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(
             title!,
-            style: TextStyle(fontSize: 18),
+            style: const TextStyle(fontSize: 18),
+          ),
+          const SizedBox(
+            height: 3,
           ),
           Text(
             subtitle!,

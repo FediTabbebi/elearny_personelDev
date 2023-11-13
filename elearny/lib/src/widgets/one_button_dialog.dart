@@ -123,7 +123,7 @@ Widget confirmationBtn(String text, VoidCallback onPressed, context) {
         ? deviceType == 2
             ? 120
             : 120
-        : 200,
+        : 140,
     child: TextButton(
         onPressed: onPressed,
         child: Text(

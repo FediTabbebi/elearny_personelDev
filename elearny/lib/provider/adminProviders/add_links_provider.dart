@@ -23,7 +23,7 @@ class AdminAddLinkProvider with ChangeNotifier {
   bool gettingData = false;
   Uint8List? landingImg;
   Uint8List? logoImg;
-  AdminLinksModel? admminLinks;
+  AdminLinksModel? adminLinks;
   bool isInitialized = false;
 
   AdminServices adminServices = AdminServices();
@@ -57,15 +57,15 @@ class AdminAddLinkProvider with ChangeNotifier {
     }
   }
 
-  Future<bool> getLinks(
+  Future<AdminLinksModel?> getLinks(
     BuildContext context,
   ) async {
     gettingData = true;
 
     notifyListeners();
     await adminServices.getData().then((value) async {
-      admminLinks = value;
-      settingControllers();
+      adminLinks = value;
+      settingControllers(adminLinks);
       gettingData = false;
 
       notifyListeners();
@@ -78,7 +78,7 @@ class AdminAddLinkProvider with ChangeNotifier {
 
       notifyListeners();
     });
-    return gettingData;
+    return adminLinks;
   }
 
   Future<void> uploadOneImageThenSubmit(BuildContext context, Uint8List image,
@@ -102,9 +102,9 @@ class AdminAddLinkProvider with ChangeNotifier {
               playStoreLink: playStoreTextfield.text,
               apkLink: apkTextfield.text,
               landingImgLink:
-                  whichImage == 1 ? imageURL : admminLinks!.landingImgLink,
+                  whichImage == 1 ? imageURL : adminLinks!.landingImgLink,
               theTeamLogoLink:
-                  whichImage == 2 ? imageURL : admminLinks!.theTeamLogoLink,
+                  whichImage == 2 ? imageURL : adminLinks!.theTeamLogoLink,
               updatedAt: DateTime.now()))
           .then((value) async {
         clearControllers();
@@ -191,8 +191,8 @@ class AdminAddLinkProvider with ChangeNotifier {
             phoneNumberLink: phoneNumbertextfield.text,
             playStoreLink: playStoreTextfield.text,
             apkLink: apkTextfield.text,
-            landingImgLink: admminLinks!.landingImgLink,
-            theTeamLogoLink: admminLinks!.theTeamLogoLink,
+            landingImgLink: adminLinks!.landingImgLink,
+            theTeamLogoLink: adminLinks!.theTeamLogoLink,
             updatedAt: DateTime.now()))
         .then((value) async {
       clearControllers();
@@ -230,18 +230,19 @@ class AdminAddLinkProvider with ChangeNotifier {
   }
 
   bool verifyChangedFields() {
-    return facebookTextField.text == admminLinks?.facebookLink &&
-        linkedInTextfield.text == admminLinks?.linkedInLink &&
-        whatsAppTextfield.text == admminLinks?.whatsAppLink &&
-        instagramTexfield.text == admminLinks?.instagramLink &&
-        emailTextfield.text == admminLinks?.emailLink &&
-        phoneNumbertextfield.text == admminLinks?.phoneNumberLink &&
-        youtubeTexfield.text == admminLinks?.youtubeLink &&
-        playStoreTextfield.text == admminLinks?.playStoreLink &&
-        apkTextfield.text == admminLinks?.apkLink;
+    return facebookTextField.text == adminLinks?.facebookLink &&
+        linkedInTextfield.text == adminLinks?.linkedInLink &&
+        whatsAppTextfield.text == adminLinks?.whatsAppLink &&
+        instagramTexfield.text == adminLinks?.instagramLink &&
+        emailTextfield.text == adminLinks?.emailLink &&
+        phoneNumbertextfield.text == adminLinks?.phoneNumberLink &&
+        youtubeTexfield.text == adminLinks?.youtubeLink &&
+        playStoreTextfield.text == adminLinks?.playStoreLink &&
+        apkTextfield.text == adminLinks?.apkLink;
   }
 
-  void settingControllers() {
+  void settingControllers(AdminLinksModel? admminLinks) {
+    adminLinks = admminLinks;
     facebookTextField.text = admminLinks?.facebookLink ?? "";
     linkedInTextfield.text = admminLinks?.linkedInLink ?? "";
     whatsAppTextfield.text = admminLinks?.whatsAppLink ?? "";
@@ -285,7 +286,7 @@ class AdminAddLinkProvider with ChangeNotifier {
               onConfirm: () {
                 Navigator.pop(context);
               },
-              onWillPopScopeValue: false);
+              onWillPopScopeValue: true);
         });
   }
 
@@ -305,6 +306,6 @@ class AdminAddLinkProvider with ChangeNotifier {
 
     landingImg = null;
     logoImg = null;
-    admminLinks = null;
+    adminLinks = null;
   }
 }

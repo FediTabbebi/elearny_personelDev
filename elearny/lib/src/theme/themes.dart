@@ -13,7 +13,7 @@ class Themes {
   static const black = Color(0xff000000);
   static const black2 = Color(0xff0F0F0F);
   static const darkMode = Color(0xff1F222A);
-
+  static const shimmerColorWhite = Color(0xffE9E8E3);
   static const darkMode2 = Color(0xff1D1D1D);
   static const darkMode3 = Color(0xff1D1627);
   static const darkMode4 = Color(0xff32324D);
@@ -110,7 +110,7 @@ class Themes {
         fontFamily: 'Poppins',
       ),
       labelLarge: TextStyle(
-        color: const Color(0xff32324D),
+        color: white,
         fontSize: deviceType != 1
             ? deviceType == 2
                 ? 16
@@ -138,6 +138,15 @@ class Themes {
       ),
       headlineLarge: TextStyle(
         color: inActivegreenColor,
+        fontSize: deviceType != 1
+            ? deviceType == 2
+                ? 16
+                : 16
+            : 18,
+        fontFamily: 'Poppins',
+      ),
+      headlineMedium: TextStyle(
+        color: shimmerColorWhite,
         fontSize: deviceType != 1
             ? deviceType == 2
                 ? 16
@@ -187,7 +196,7 @@ class Themes {
     scaffoldBackgroundColor: whiteGrey,
 
     //listTileTheme
-    listTileTheme: const ListTileThemeData(textColor: black),
+    listTileTheme: const ListTileThemeData(textColor: black, tileColor: white),
 
     //iconTheme
     iconTheme: const IconThemeData(color: green),
@@ -207,6 +216,9 @@ class Themes {
         ),
       ),
     ),
+
+    //drawerTheme
+    drawerTheme: const DrawerThemeData(backgroundColor: white),
 
     //chipTheme
     chipTheme: const ChipThemeData(
@@ -332,9 +344,9 @@ class Themes {
         color: white,
         fontSize: deviceType != 1
             ? deviceType == 2
-                ? 30
-                : 26
-            : 34,
+                ? 28
+                : 24
+            : 30,
         fontWeight: FontWeight.bold,
         fontFamily: 'Poppins',
       ),
@@ -411,7 +423,7 @@ class Themes {
         fontFamily: 'Poppins',
       ),
       labelLarge: TextStyle(
-        color: white,
+        color: const Color(0xff0F0F0F),
         fontFamily: 'Poppins',
         fontSize: deviceType != 1
             ? deviceType == 2
@@ -439,6 +451,15 @@ class Themes {
       ),
       headlineLarge: TextStyle(
         color: inActiveYellowColor,
+        fontSize: deviceType != 1
+            ? deviceType == 2
+                ? 16
+                : 16
+            : 18,
+        fontFamily: 'Poppins',
+      ),
+      headlineMedium: TextStyle(
+        color: darkMode,
         fontSize: deviceType != 1
             ? deviceType == 2
                 ? 16
@@ -493,7 +514,8 @@ class Themes {
     iconTheme: const IconThemeData(color: green),
 
     //listTileTheme
-    listTileTheme: const ListTileThemeData(textColor: white),
+    listTileTheme:
+        const ListTileThemeData(textColor: white, tileColor: darkMode),
 
     //hintColor
     hintColor: grey,
@@ -513,6 +535,8 @@ class Themes {
       ),
     ),
 
+    //drawerTheme
+    drawerTheme: const DrawerThemeData(backgroundColor: black2),
     //chipTheme
     chipTheme: const ChipThemeData(
         labelStyle: TextStyle(color: white),

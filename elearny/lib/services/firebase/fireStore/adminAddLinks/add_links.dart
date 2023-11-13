@@ -44,15 +44,20 @@ class AdminServices {
   }
 
   Future<AdminLinksModel?> getData() async {
-    DocumentSnapshot<Map<String, dynamic>> docSnapshot = await FirebaseFirestore
-        .instance
-        .collection('SocialLinks')
-        .doc("SocialLinks")
-        .get();
+    try {
+      DocumentSnapshot<Map<String, dynamic>> docSnapshot =
+          await FirebaseFirestore.instance
+              .collection('SocialLinks')
+              .doc("SocialLinks")
+              .get();
 
-    if (docSnapshot.exists) {
-      return AdminLinksModel.fromMap(docSnapshot.data()!);
-    } else {
+      if (docSnapshot.exists) {
+        return AdminLinksModel.fromMap(docSnapshot.data()!);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print("Error fetching data: $e");
       return null;
     }
   }

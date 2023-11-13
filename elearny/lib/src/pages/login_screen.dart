@@ -94,7 +94,8 @@ class LoginScreen extends StatelessWidget {
                   children: [
                     TextButton(
                       onPressed: () {
-                        context.pushNamed("register");
+                        context.go("/register");
+                        print("aaa");
                       },
                       child: const Text('sing up'),
                     ),

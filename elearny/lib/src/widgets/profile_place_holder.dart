@@ -1,9 +1,7 @@
 import 'package:elearny/data/globales.dart';
-import 'package:elearny/provider/userProvider/update_user_provider.dart';
 import 'package:elearny/src/theme/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
 
 class ProfilePlaceHolder extends StatelessWidget {
   ProfilePlaceHolder({
@@ -12,7 +10,7 @@ class ProfilePlaceHolder extends StatelessWidget {
 
   final PageController pageController = PageController();
 
-  List<String> myList = [
+  final List<String> myList = [
     "assets/images/manPlaceHolder.png",
     "assets/images/womanPlaceHolder.png",
   ];
