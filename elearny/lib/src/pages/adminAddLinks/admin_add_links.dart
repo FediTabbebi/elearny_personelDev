@@ -25,7 +25,7 @@ class AdminAddLinks extends StatelessWidget {
       child: Consumer<AdminLinksModel?>(
         builder: (context, adminLinks, _) {
           if (adminLinks == null) {
-            return AdminAddLinksShimmerWidget(); // Display a progress indicator
+            return const AdminAddLinksShimmerWidget(); // Display a progress indicator
           } else {
             // Data is available, call settingControllers
             context.read<AdminAddLinkProvider>().settingControllers(adminLinks);
@@ -44,6 +44,7 @@ Widget mainScreen(BuildContext context) {
   return SafeArea(
     child: Scaffold(
       appBar: AppBar(
+          automaticallyImplyLeading: false,
           toolbarHeight: 100,
           title: kIsWeb
               ? Center(
@@ -187,7 +188,7 @@ Widget mainScreen(BuildContext context) {
                                 height: 60,
                                 width: kIsWeb
                                     ? 100
-                                    : MediaQuery.of(context).size.width / 1.07,
+                                    : MediaQuery.of(context).size.width / 1.1,
                                 child: ElevatedButton(
                                   onPressed: () async {
                                     await context
@@ -252,47 +253,95 @@ Widget mainPagePictureWidget(
                     : 400,
                 child: Card(
                   elevation: 0.5,
-                  child: widget == 1
-                      ? update.landingImg == null
-                          ? Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: CachedNetworkImage(
-                                  imageUrl: update.landingImgURL.isNotEmpty
-                                      ? update.landingImgURL
-                                      : "assets/images/PlaceholderImg.png",
-                                  // progressIndicatorBuilder: (context,
-                                  //         url,
-                                  //         downloadProgress) =>
-                                  //     CircularProgressIndicator(
-                                  //         value:
-                                  //             downloadProgress
-                                  //                 .progress),
-                                  errorWidget: (context, url, error) {
-                                    print(error);
-                                    return const Icon(Icons.error);
-                                  }),
-                            )
-                          : Image.memory(update.landingImg!)
-                      : update.logoImg == null
-                          ? Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: CachedNetworkImage(
-                                  imageUrl: update.logoImgURL.isNotEmpty
-                                      ? update.logoImgURL
-                                      : "assets/images/PlaceholderImg.png",
-                                  // progressIndicatorBuilder: (context,
-                                  //         url,
-                                  //         downloadProgress) =>
-                                  //     CircularProgressIndicator(
-                                  //         value:
-                                  //             downloadProgress
-                                  //                 .progress),
-                                  errorWidget: (context, url, error) {
-                                    print(error);
-                                    return const Icon(Icons.error);
-                                  }),
-                            )
-                          : Image.memory(update.logoImg!),
+                  child: kIsWeb
+                      ? widget == 1
+                          ? update.landingImg == null
+                              ? Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: update.landingImgURL.isNotEmpty
+                                      ? CachedNetworkImage(
+                                          imageUrl: update.landingImgURL,
+                                          // progressIndicatorBuilder: (context,
+                                          //         url,
+                                          //         downloadProgress) =>
+                                          //     CircularProgressIndicator(
+                                          //         value:
+                                          //             downloadProgress
+                                          //                 .progress),
+                                          errorWidget: (context, url, error) {
+                                            print(error);
+                                            return const Icon(Icons.error);
+                                          })
+                                      : Image.asset(
+                                          "assets/images/PlaceholderImg.png"),
+                                )
+                              : Image.memory(update.landingImg!)
+                          : update.logoImg == null
+                              ? Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: update.logoImgURL.isNotEmpty
+                                      ? CachedNetworkImage(
+                                          imageUrl: update.logoImgURL,
+                                          // progressIndicatorBuilder: (context,
+                                          //         url,
+                                          //         downloadProgress) =>
+                                          //     CircularProgressIndicator(
+                                          //         value:
+                                          //             downloadProgress
+                                          //                 .progress),
+                                          errorWidget: (context, url, error) {
+                                            print(error);
+                                            return const Icon(Icons.error);
+                                          })
+                                      : Image.asset(
+                                          "assets/images/PlaceholderImg.png"),
+                                )
+                              : Image.memory(update.logoImg!)
+                      : widget == 1
+                          ? update.landingImgMobile == null
+                              ? Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: update.landingImgURL.isNotEmpty
+                                      ? CachedNetworkImage(
+                                          imageUrl: update.landingImgURL,
+
+                                          // progressIndicatorBuilder: (context,
+                                          //         url,
+                                          //         downloadProgress) =>
+                                          //     CircularProgressIndicator(
+                                          //         value:
+                                          //             downloadProgress
+                                          //                 .progress),
+                                          errorWidget: (context, url, error) {
+                                            print(error);
+                                            return const Icon(Icons.error);
+                                          })
+                                      : Image.asset(
+                                          "assets/images/PlaceholderImg.png",
+                                        ),
+                                )
+                              : Image.file(update.landingImgMobile!)
+                          : update.logoImgMobile == null
+                              ? Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: update.logoImgURL.isNotEmpty
+                                      ? CachedNetworkImage(
+                                          imageUrl: update.logoImgURL,
+                                          // progressIndicatorBuilder: (context,
+                                          //         url,
+                                          //         downloadProgress) =>
+                                          //     CircularProgressIndicator(
+                                          //         value:
+                                          //             downloadProgress
+                                          //                 .progress),
+                                          errorWidget: (context, url, error) {
+                                            print(error);
+                                            return const Icon(Icons.error);
+                                          })
+                                      : Image.asset(
+                                          "assets/images/PlaceholderImg.png"),
+                                )
+                              : Image.file(update.logoImgMobile!),
                 ),
               );
             }),

@@ -1,7 +1,10 @@
+import 'package:elearny/provider/authProviders/login_provider.dart';
 import 'package:elearny/provider/navigationProvider/main_navigation_provider.dart';
 import 'package:elearny/provider/themeProvider/theme_provider.dart';
+import 'package:elearny/routes/app_pages.dart';
 import 'package:elearny/src/widgets/theme_mode_switcher_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -126,25 +129,28 @@ class DrawerWidget extends StatelessWidget {
                       padding: EdgeInsets.zero,
                       children: [
                         inkwellWidget(
-                            "Home", Icons.home_outlined, () {}, 0, context),
-                        inkwellWidget("Profile", Icons.person_3_outlined, () {},
-                            1, context),
-                        inkwellWidget(
-                            "Html Editor", Icons.html, () {}, 2, context),
-                        inkwellWidget("Settings", Icons.settings_outlined,
-                            () {}, 3, context),
-                        inkwellWidget(
-                            "Add links", Icons.link, () {}, 4, context),
+                            "Home", FontAwesomeIcons.house, () {}, 0, context),
+                        inkwellWidget("Html Editor", FontAwesomeIcons.code,
+                            () {}, 1, context),
+                        inkwellWidget("Settings", FontAwesomeIcons.gear, () {},
+                            2, context),
+                        inkwellWidget("Add links", FontAwesomeIcons.link, () {},
+                            3, context),
+                        inkwellWidget("All users", FontAwesomeIcons.peopleGroup,
+                            () {}, 4, context),
                       ],
                     ),
                   ),
                 ),
-                Align(
+                const Align(
                     alignment: Alignment.bottomCenter,
                     child: ThemeModeSwitcherWidget()),
                 const SizedBox(height: 20),
-                inkwellWidget(
-                    "Logout", Icons.logout_outlined, () {}, 4, context),
+                inkwellWidget("Logout", FontAwesomeIcons.arrowRightFromBracket,
+                    () async {
+                  await context.read<LoginProvider>().signOutUser(context);
+                  AppNavigation.router.refresh();
+                }, 7, context),
                 const SizedBox(height: 20),
               ],
             ),
@@ -157,9 +163,11 @@ class DrawerWidget extends StatelessWidget {
     return InkWell(
       onTap: () {
         context.pop();
-        context
-            .read<NavigationProvider>()
-            .goToBranch(indexRouting, navigationShell);
+        indexRouting < 5
+            ? context
+                .read<NavigationProvider>()
+                .goToBranch(indexRouting, navigationShell)
+            : null;
         onPressed();
       },
       child: Padding(
@@ -170,7 +178,7 @@ class DrawerWidget extends StatelessWidget {
             children: [
               Icon(
                 icon,
-                size: 25,
+                size: 20,
                 color: Theme.of(context).textTheme.bodyLarge!.color,
               ),
               const SizedBox(

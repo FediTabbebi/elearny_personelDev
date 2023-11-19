@@ -1,6 +1,7 @@
-import 'package:elearny/data/globales.dart';
+import 'package:elearny/provider/userProvider/user_provider.dart';
 import 'package:elearny/services/firebase/fireStore/auth/authservice.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomeProvider extends ChangeNotifier {
   final AuthenticationServices authService = AuthenticationServices();
@@ -9,7 +10,10 @@ class HomeProvider extends ChangeNotifier {
   Future<void> gettingUser(BuildContext context) async {
     isLoading = true;
     notifyListeners();
-    globalUser = await authService.getAuthUser();
+    await authService
+        .getAuthUser()
+        .then((value) => context.read<UserProvider>().updateUser(value));
+
     isLoading = false;
     notifyListeners();
     // .then((value) {

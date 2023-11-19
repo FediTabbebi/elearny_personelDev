@@ -1,6 +1,5 @@
 import 'package:elearny/data/globales.dart';
 import 'package:elearny/provider/onBoardingProvider/onbording_provider.dart';
-import 'package:elearny/routes/app_routes.dart';
 import 'package:elearny/src/theme/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -28,6 +27,7 @@ class OnBoardingScreen extends StatelessWidget {
                   itemCount: contents.length,
                   itemBuilder: (context, i) {
                     return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Image.asset(
                           contents[i].image,
@@ -62,11 +62,11 @@ class OnBoardingScreen extends StatelessWidget {
                       ? Padding(
                           padding: const EdgeInsets.all(30),
                           child: SizedBox(
-                            height: 45,
+                            height: 60,
                             width: MediaQuery.of(context).size.width,
                             child: ElevatedButton(
                               onPressed: () {
-                                context.pushNamed(Routes.login);
+                                context.pushReplacement('/login');
                               },
                               style: ElevatedButton.styleFrom(
                                 shape: RoundedRectangleBorder(

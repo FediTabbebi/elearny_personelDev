@@ -26,31 +26,36 @@ class AppBarWidget extends StatelessWidget {
           : MainAxisAlignment.spaceBetween,
       children: <Widget>[
         leftIcon != null
-            ? ElevatedButton(
-                onPressed: () {
-                  onPressedLeftIcon!();
-                  // Scaffold.of(context).openDrawer(); // Open the drawer
-                },
-                style: ElevatedButton.styleFrom(
-                  elevation: 1,
-                  shape: const CircleBorder(),
-                  padding: const EdgeInsets.all(10),
-                  backgroundColor:
-                      Theme.of(context).textTheme.titleSmall!.color,
-                ),
-                child: Icon(
-                  leftIcon!,
-                  // Icons.menu,
-                  color: Theme.of(context).textTheme.titleLarge!.color,
-                  size: deviceType != 1
-                      ? deviceType == 2
-                          ? 30
-                          : 30
-                      : 40,
-                ),
+            ? Container(
+                height: 30,
+                width: 70,
+                color: Theme.of(context).scaffoldBackgroundColor,
               )
+            // ? ElevatedButton(
+            //     onPressed: () {
+            //       onPressedLeftIcon!();
+            //       // Scaffold.of(context).openDrawer(); // Open the drawer
+            //     },
+            //     style: ElevatedButton.styleFrom(
+            //       elevation: 1,
+            //       shape: const CircleBorder(),
+            //       padding: const EdgeInsets.all(10),
+            //       backgroundColor:
+            //           Theme.of(context).textTheme.titleSmall!.color,
+            //     ),
+            //     child: Icon(
+            //       leftIcon!,
+            //       // Icons.menu,
+            //       color: Themes.grey,
+            //       size: deviceType != 1
+            //           ? deviceType == 2
+            //               ? 30
+            //               : 30
+            //           : 40,
+            //     ),
+            //   )
             : const SizedBox(
-                width: 1,
+                width: 60,
               ),
         Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(
@@ -60,14 +65,17 @@ class AppBarWidget extends StatelessWidget {
           const SizedBox(
             height: 3,
           ),
-          Text(
-            subtitle!,
-            overflow: TextOverflow.visible,
-            softWrap: true,
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-              color: Color(0xff8E8EA9),
+          SizedBox(
+            width: MediaQuery.of(context).size.width / 1.4,
+            child: Text(
+              subtitle!,
+              overflow: TextOverflow.visible,
+              softWrap: true,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: Color(0xff8E8EA9),
+              ),
             ),
           )
         ]),

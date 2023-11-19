@@ -3,12 +3,13 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:elearny/provider/themeProvider/theme_provider.dart';
 
 import 'package:elearny/src/theme/themes.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ThemeModeSwitcherWidget extends StatelessWidget {
   final double? currentWidth;
-  ThemeModeSwitcherWidget({super.key, this.currentWidth});
+  const ThemeModeSwitcherWidget({super.key, this.currentWidth});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,11 @@ class ThemeModeSwitcherWidget extends StatelessWidget {
         values: const [false, true],
         iconOpacity: 0.2,
         indicatorSize: Size.fromWidth(
-          currentWidth! > 190 ? 90 : 75,
+          kIsWeb
+              ? currentWidth! > 190
+                  ? 90
+                  : 75
+              : 90,
         ),
         customIconBuilder: (context, local, global) {
           return Wrap(
@@ -28,20 +33,26 @@ class ThemeModeSwitcherWidget extends StatelessWidget {
               Icon(
                 local.value ? Icons.dark_mode : Icons.sunny,
                 color: Theme.of(context).textTheme.bodyLarge!.color,
-                size: currentWidth! > 190 ? 25 : 17,
+                size: kIsWeb
+                    ? currentWidth! > 190
+                        ? 25
+                        : 17
+                    : 25,
               ),
               const SizedBox(width: 5),
               SizedBox(
-                width: currentWidth! > 190
-                    ? 50
-                    : currentWidth! < 100
-                        ? 0
-                        : 30,
+                width: kIsWeb
+                    ? currentWidth! > 190
+                        ? 50
+                        : currentWidth! < 100
+                            ? 0
+                            : 30
+                    : 50,
                 child: AutoSizeText(
                   local.value ? "Dark " : "Light ",
                   minFontSize: 6,
                   maxFontSize: 16,
-                  maxLines: 1, // Set the maximum number of lines
+                  maxLines: 1,
                   overflow: TextOverflow.fade,
                   style: const TextStyle(fontWeight: FontWeight.w300),
                 ),

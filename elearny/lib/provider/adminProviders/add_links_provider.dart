@@ -1,10 +1,14 @@
+import 'dart:io';
+
 import 'package:elearny/model/admin_links.dart';
 import 'package:elearny/services/firebase/fireStore/adminAddLinks/add_links.dart';
 import 'package:elearny/services/firebase/storage/upload_files.dart';
 import 'package:elearny/src/widgets/one_button_dialog.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker_web/image_picker_web.dart';
+import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
+//import 'package:image_picker_web/image_picker_web.dart';
 
 class AdminAddLinkProvider with ChangeNotifier {
   final TextEditingController facebookTextField = TextEditingController();
@@ -23,6 +27,8 @@ class AdminAddLinkProvider with ChangeNotifier {
   bool gettingData = false;
   Uint8List? landingImg;
   Uint8List? logoImg;
+  File? landingImgMobile;
+  File? logoImgMobile;
   AdminLinksModel? adminLinks;
   bool isInitialized = false;
 
@@ -32,25 +38,61 @@ class AdminAddLinkProvider with ChangeNotifier {
   Future<void> createOrUpdateAdminLinks(
     BuildContext context,
   ) async {
-    if (formKey.currentState!.validate()) {
-      if ((logoImgURL.isEmpty && (logoImg == null) ||
-          landingImgURL.isEmpty && (landingImg == null))) {
-        showingDialog(context, "Error", "Your must pick images");
-      } else {
-        if (verifyChangedFields() && logoImg == null && landingImg == null) {
-          showingDialog(context, "No Changes Detected",
-              "Please make sure to modify at least one field before attempting to update.");
+    if (kIsWeb) {
+      if (formKey.currentState!.validate()) {
+        if ((logoImgURL.isEmpty && (logoImg == null) ||
+            landingImgURL.isEmpty && (landingImg == null))) {
+          showingDialog(context, "Error", "Your must pick images");
         } else {
-          if (landingImg != null && logoImg == null) {
-            await uploadOneImageThenSubmit(
-                context, landingImg!, 'landing image', landingImgURL, 1);
-          } else if (logoImg != null && landingImg == null) {
-            await uploadOneImageThenSubmit(
-                context, logoImg!, 'the team logo', logoImgURL, 2);
-          } else if (logoImg == null && landingImg == null) {
-            submitWithoutUpload(context);
+          if (verifyChangedFields() && logoImg == null && landingImg == null) {
+            showingDialog(context, "No Changes Detected",
+                "Please make sure to modify at least one field before attempting to update.");
           } else {
-            uploadTwoImageThenSubmit(context);
+            if (landingImg != null && logoImg == null) {
+              await uploadOneImageThenSubmit(
+                  context, landingImg!, 'landing image', landingImgURL, 1);
+            } else if (logoImg != null && landingImg == null) {
+              await uploadOneImageThenSubmit(
+                  context, logoImg!, 'the team logo', logoImgURL, 2);
+            } else if (logoImg == null && landingImg == null) {
+              submitWithoutUpload(context);
+            } else {
+              uploadTwoImageThenSubmit(context);
+            }
+          }
+        }
+      }
+    } else {
+      if (formKey.currentState!.validate()) {
+        if ((logoImgURL.isEmpty && (logoImgMobile == null) ||
+            landingImgURL.isEmpty && (landingImgMobile == null))) {
+          showingDialog(context, "Error", "Your must pick images");
+        } else {
+          if (verifyChangedFields() &&
+              logoImgMobile == null &&
+              landingImgMobile == null) {
+            showingDialog(context, "No Changes Detected",
+                "Please make sure to modify at least one field before attempting to update.");
+          } else {
+            if (landingImgMobile != null && logoImgMobile == null) {
+              await uploadOneImageThenSubmit(
+                  context,
+                  landingImgMobile!.readAsBytesSync(),
+                  'landing image',
+                  landingImgURL,
+                  1);
+            } else if (logoImgMobile != null && landingImgMobile == null) {
+              await uploadOneImageThenSubmit(
+                  context,
+                  logoImgMobile!.readAsBytesSync(),
+                  'the team logo',
+                  logoImgURL,
+                  2);
+            } else if (logoImg == null && landingImg == null) {
+              submitWithoutUpload(context);
+            } else {
+              uploadTwoImageThenSubmit(context);
+            }
           }
         }
       }
@@ -210,24 +252,56 @@ class AdminAddLinkProvider with ChangeNotifier {
 
   Future<void> pickImage(int whichImg) async {
     try {
-      Uint8List? bytesFromPicker = await ImagePickerWeb.getImageAsBytes();
+      ImagePicker imagePicker = ImagePicker();
+      final file = await imagePicker.pickImage(source: ImageSource.gallery);
+      // Pick an image file using file_picker package
+      /*    FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.image,
+      );*/
 
-      if (bytesFromPicker != null) {
+      // If user cancels the picker, do nothing
+      if (file == null) {
+        print('No image selected.');
+      }
+
+      if (!kIsWeb) {
+        final imageFile = file;
+        print(' image selected.');
         whichImg == 1
-            ? landingImg = bytesFromPicker
-            : logoImg = bytesFromPicker;
+            ? landingImgMobile = File(imageFile!.path)
+            : logoImgMobile = File(imageFile!.path);
+        print(imageFile.path);
         notifyListeners();
       } else {
-        if (kDebugMode) {
-          print('No image selected.');
-        }
+        Uint8List? imageFileWeb = await file?.readAsBytes();
+        whichImg == 1 ? landingImg = imageFileWeb : logoImg = imageFileWeb;
+        notifyListeners();
       }
     } catch (e) {
-      if (kDebugMode) {
-        print('Error occurred while picking an image: $e');
-      }
+      // If there is an error, show a snackBar with the error message
     }
   }
+  // Future<void> pickImage(int whichImg) async {
+  //   try {
+  //     Uint8List? bytesFromPicker;
+  //     //= await ImagePickerWeb.getImageAsBytes();
+
+  //     if (bytesFromPicker != null) {
+  //       whichImg == 1
+  //           ? landingImg = bytesFromPicker
+  //           : logoImg = bytesFromPicker;
+  //       notifyListeners();
+  //     } else {
+  //       if (kDebugMode) {
+  //         print('No image selected.');
+  //       }
+  //     }
+  //   } catch (e) {
+  //     if (kDebugMode) {
+  //       print('Error occurred while picking an image: $e');
+  //     }
+  //   }
+  // }
 
   bool verifyChangedFields() {
     return facebookTextField.text == adminLinks?.facebookLink &&
@@ -284,7 +358,7 @@ class AdminAddLinkProvider with ChangeNotifier {
               contents: contents,
               confirmbuttonText: 'Back',
               onConfirm: () {
-                Navigator.pop(context);
+                context.pop();
               },
               onWillPopScopeValue: true);
         });
@@ -306,6 +380,8 @@ class AdminAddLinkProvider with ChangeNotifier {
 
     landingImg = null;
     logoImg = null;
+    landingImgMobile = null;
+    logoImgMobile = null;
     adminLinks = null;
   }
 }

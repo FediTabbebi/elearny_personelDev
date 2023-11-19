@@ -1,7 +1,6 @@
 import 'package:elearny/model/user.dart';
 import 'package:elearny/services/firebase/fireStore/adminEditUsers/admin_edit_users.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class AdminEditUsersProvider with ChangeNotifier {
   AdminEditUserService adminEditUserService = AdminEditUserService();

@@ -1,11 +1,8 @@
-import 'package:elearny/data/globales.dart';
 import 'package:elearny/src/widgets/app_bar_widget.dart';
 import 'package:elearny/utils/app_bar.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
-import 'package:flutter_quill/flutter_quill.dart';
 
 import 'package:html_editor_enhanced/html_editor.dart';
 
@@ -34,6 +31,7 @@ class _LessonEditorState extends State<LessonEditor> {
       },
       child: Scaffold(
         appBar: AppBar(
+            automaticallyImplyLeading: false,
             toolbarHeight: 100,
             title: kIsWeb
                 ? Center(
@@ -50,12 +48,12 @@ class _LessonEditorState extends State<LessonEditor> {
                     ],
                   ))
                 : AppBarUtils.appBarWidget(
-                    context, "Lesson editor'", "Edit Your lesson")),
+                    context, "Lesson editor", "Edit Your lesson")),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             controller.toggleCodeView();
           },
-          child: Text(r'<\>',
+          child: const Text(r'<\>',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
         ),
         body: SingleChildScrollView(
@@ -64,14 +62,14 @@ class _LessonEditorState extends State<LessonEditor> {
             children: <Widget>[
               HtmlEditor(
                 controller: controller,
-                htmlEditorOptions: HtmlEditorOptions(
+                htmlEditorOptions: const HtmlEditorOptions(
                   hint: 'Your text here...',
                   shouldEnsureVisible: true,
                   //initialText: "<p>text content initial, if any</p>",
                 ),
                 htmlToolbarOptions: HtmlToolbarOptions(
                   toolbarPosition: ToolbarPosition.aboveEditor, //by default
-                  toolbarType: ToolbarType.nativeScrollable, //by default
+                  toolbarType: ToolbarType.nativeGrid, //by default
                   onButtonPressed:
                       (ButtonType type, bool? status, Function? updateStatus) {
                     print(
@@ -97,7 +95,7 @@ class _LessonEditorState extends State<LessonEditor> {
                     return true;
                   },
                 ),
-                otherOptions: OtherOptions(height: 550),
+                otherOptions: const OtherOptions(height: 550),
                 callbacks: Callbacks(onBeforeCommand: (String? currentHtml) {
                   print('html before change is $currentHtml');
                 }, onChangeContent: (String? changed) {
@@ -182,10 +180,10 @@ class _LessonEditorState extends State<LessonEditor> {
                       onPressed: () {
                         controller.undo();
                       },
-                      child:
-                          Text('Undo', style: TextStyle(color: Colors.white)),
+                      child: const Text('Undo',
+                          style: TextStyle(color: Colors.white)),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 16,
                     ),
                     TextButton(
@@ -194,10 +192,10 @@ class _LessonEditorState extends State<LessonEditor> {
                       onPressed: () {
                         controller.clear();
                       },
-                      child:
-                          Text('Reset', style: TextStyle(color: Colors.white)),
+                      child: const Text('Reset',
+                          style: TextStyle(color: Colors.white)),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 16,
                     ),
                     TextButton(
@@ -214,12 +212,12 @@ class _LessonEditorState extends State<LessonEditor> {
                           result = txt;
                         });
                       },
-                      child: Text(
+                      child: const Text(
                         'Submit',
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 16,
                     ),
                     TextButton(
@@ -229,7 +227,7 @@ class _LessonEditorState extends State<LessonEditor> {
                       onPressed: () {
                         controller.redo();
                       },
-                      child: Text(
+                      child: const Text(
                         'Redo',
                         style: TextStyle(color: Colors.white),
                       ),
@@ -252,10 +250,10 @@ class _LessonEditorState extends State<LessonEditor> {
                       onPressed: () {
                         controller.disable();
                       },
-                      child: Text('Disable',
+                      child: const Text('Disable',
                           style: TextStyle(color: Colors.white)),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 16,
                     ),
                     TextButton(
@@ -265,7 +263,7 @@ class _LessonEditorState extends State<LessonEditor> {
                       onPressed: () async {
                         controller.enable();
                       },
-                      child: Text(
+                      child: const Text(
                         'Enable',
                         style: TextStyle(color: Colors.white),
                       ),
@@ -273,7 +271,7 @@ class _LessonEditorState extends State<LessonEditor> {
                   ],
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
@@ -286,10 +284,10 @@ class _LessonEditorState extends State<LessonEditor> {
                       onPressed: () {
                         controller.insertText('Google');
                       },
-                      child: Text('Insert Text',
+                      child: const Text('Insert Text',
                           style: TextStyle(color: Colors.white)),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 16,
                     ),
                     TextButton(
@@ -300,7 +298,7 @@ class _LessonEditorState extends State<LessonEditor> {
                         controller.insertHtml(
                             '''<p style="color: blue">Google in blue</p>''');
                       },
-                      child: Text('Insert HTML',
+                      child: const Text('Insert HTML',
                           style: TextStyle(color: Colors.white)),
                     ),
                   ],
@@ -319,12 +317,12 @@ class _LessonEditorState extends State<LessonEditor> {
                         controller.insertLink(
                             'Google linked', 'https://google.com', true);
                       },
-                      child: Text(
+                      child: const Text(
                         'Insert Link',
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 16,
                     ),
                     TextButton(
@@ -336,7 +334,7 @@ class _LessonEditorState extends State<LessonEditor> {
                             'https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png',
                             filename: 'Google network image');
                       },
-                      child: Text(
+                      child: const Text(
                         'Insert network image',
                         style: TextStyle(color: Colors.white),
                       ),
@@ -344,7 +342,7 @@ class _LessonEditorState extends State<LessonEditor> {
                   ],
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
@@ -357,10 +355,10 @@ class _LessonEditorState extends State<LessonEditor> {
                         controller.addNotification(
                             'Info notification', NotificationType.info);
                       },
-                      child:
-                          Text('Info', style: TextStyle(color: Colors.white)),
+                      child: const Text('Info',
+                          style: TextStyle(color: Colors.white)),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 16,
                     ),
                     TextButton(
@@ -370,10 +368,10 @@ class _LessonEditorState extends State<LessonEditor> {
                         controller.addNotification(
                             'Warning notification', NotificationType.warning);
                       },
-                      child: Text('Warning',
+                      child: const Text('Warning',
                           style: TextStyle(color: Colors.white)),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 16,
                     ),
                     TextButton(
@@ -384,12 +382,12 @@ class _LessonEditorState extends State<LessonEditor> {
                         controller.addNotification(
                             'Success notification', NotificationType.success);
                       },
-                      child: Text(
+                      child: const Text(
                         'Success',
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 16,
                     ),
                     TextButton(
@@ -400,7 +398,7 @@ class _LessonEditorState extends State<LessonEditor> {
                         controller.addNotification(
                             'Danger notification', NotificationType.danger);
                       },
-                      child: Text(
+                      child: const Text(
                         'Danger',
                         style: TextStyle(color: Colors.white),
                       ),
@@ -408,7 +406,7 @@ class _LessonEditorState extends State<LessonEditor> {
                   ],
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
@@ -421,10 +419,10 @@ class _LessonEditorState extends State<LessonEditor> {
                         controller.addNotification('Plaintext notification',
                             NotificationType.plaintext);
                       },
-                      child: Text('Plaintext',
+                      child: const Text('Plaintext',
                           style: TextStyle(color: Colors.white)),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 16,
                     ),
                     TextButton(
@@ -434,7 +432,7 @@ class _LessonEditorState extends State<LessonEditor> {
                       onPressed: () async {
                         controller.removeNotification();
                       },
-                      child: Text(
+                      child: const Text(
                         'Remove',
                         style: TextStyle(color: Colors.white),
                       ),

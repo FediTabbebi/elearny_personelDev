@@ -1,74 +1,72 @@
-import 'dart:io' as io;
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 import 'package:flutter/foundation.dart';
-import 'package:image_picker/image_picker.dart';
 
 class Storage {
   final firebase_storage.FirebaseStorage storage =
       firebase_storage.FirebaseStorage.instance;
 
-  Future<String> uploadFile2(String upload, String firebaseStoragePath,
-      String filePath, String fileName) async {
-    String globalURLDownload = "";
-    try {
-      final file = io.File(filePath);
-      final ref = firebase_storage.FirebaseStorage.instance
-          .ref()
-          .child("$firebaseStoragePath/$fileName");
-      final uploadTask = ref.putFile(file);
-      final snapshot = await uploadTask;
-      globalURLDownload = await snapshot.ref.getDownloadURL();
-    } catch (e) {
-      // Handle specific exceptions and provide appropriate error messages
+  // Future<String> uploadFile2(String upload, String firebaseStoragePath,
+  //     String filePath, String fileName) async {
+  //   String globalURLDownload = "";
+  //   try {
+  //     final file = io.File(filePath);
+  //     final ref = firebase_storage.FirebaseStorage.instance
+  //         .ref()
+  //         .child("$firebaseStoragePath/$fileName");
+  //     final uploadTask = ref.putFile(file);
+  //     final snapshot = await uploadTask;
+  //     globalURLDownload = await snapshot.ref.getDownloadURL();
+  //   } catch (e) {
+  //     // Handle specific exceptions and provide appropriate error messages
 
-      if (kDebugMode) {
-        print(e);
-      }
-    }
-    if (kDebugMode) {
-      print(globalURLDownload);
-    }
-    return globalURLDownload;
-  }
+  //     if (kDebugMode) {
+  //       print(e);
+  //     }
+  //   }
+  //   if (kDebugMode) {
+  //     print(globalURLDownload);
+  //   }
+  //   return globalURLDownload;
+  // }
 
-  Future<String?> uploadFile(XFile? file, String firebaseStoragePath,
-      String filePath, String fileName, String imageType) async {
-    String downloadURL = "";
-    if (file == null) {
-      if (kDebugMode) {
-        print("no file is selected");
-      }
+  // Future<String?> uploadFile(XFile? file, String firebaseStoragePath,
+  //     String filePath, String fileName, String imageType) async {
+  //   String downloadURL = "";
+  //   if (file == null) {
+  //     if (kDebugMode) {
+  //       print("no file is selected");
+  //     }
 
-      return null;
-    }
+  //     return null;
+  //   }
 
-    firebase_storage.UploadTask uploadTask;
+  //   firebase_storage.UploadTask uploadTask;
 
-    // Create a Reference to the file
-    firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
-        .ref()
-        .child("$firebaseStoragePath/$fileName.$imageType");
+  //   // Create a Reference to the file
+  //   firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
+  //       .ref()
+  //       .child("$firebaseStoragePath/$fileName.$imageType");
 
-    final metadata = firebase_storage.SettableMetadata(
-      contentType: imageType,
-      customMetadata: {'picked-file-path': file.path},
-    );
+  //   final metadata = firebase_storage.SettableMetadata(
+  //     contentType: imageType,
+  //     customMetadata: {'picked-file-path': file.path},
+  //   );
 
-    if (kIsWeb) {
-      uploadTask = ref.putData(await file.readAsBytes(), metadata);
-      final firebase_storage.TaskSnapshot taskSnapshot =
-          await uploadTask.whenComplete(() {});
-      downloadURL = await taskSnapshot.ref.getDownloadURL();
-    } else {
-      uploadTask = ref.putFile(io.File(file.path), metadata);
-      final firebase_storage.TaskSnapshot taskSnapshot =
-          await uploadTask.whenComplete(() {});
-      downloadURL = await taskSnapshot.ref.getDownloadURL();
-    }
+  //   if (kIsWeb) {
+  //     uploadTask = ref.putData(await file.readAsBytes(), metadata);
+  //     final firebase_storage.TaskSnapshot taskSnapshot =
+  //         await uploadTask.whenComplete(() {});
+  //     downloadURL = await taskSnapshot.ref.getDownloadURL();
+  //   } else {
+  //     uploadTask = ref.putFile(io.File(file.path), metadata);
+  //     final firebase_storage.TaskSnapshot taskSnapshot =
+  //         await uploadTask.whenComplete(() {});
+  //     downloadURL = await taskSnapshot.ref.getDownloadURL();
+  //   }
 
-    return downloadURL;
-  }
+  //   return downloadURL;
+  // }
 
   Future<String> uploadImage(
       Uint8List imageData, String imageName, String imagePath) async {

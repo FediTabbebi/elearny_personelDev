@@ -1,5 +1,6 @@
 import 'package:elearny/src/widgets/app_bar_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class AppBarUtils {
   static Widget appBarWidget(
@@ -7,7 +8,11 @@ class AppBarUtils {
     return AppBarWidget(
       leftIcon: Icons.arrow_back,
       onPressedLeftIcon: () {
-        Navigator.pop(context);
+        if (context.canPop()) {
+          context.pop();
+        } else {
+          context.go("/");
+        }
       },
       rightIcon: null,
       title: title,

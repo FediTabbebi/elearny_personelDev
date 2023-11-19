@@ -1,5 +1,5 @@
-import 'package:elearny/data/globales.dart';
-import 'package:elearny/provider/adminProviders/admin_edit_users_provider.dart';
+import 'package:elearny/provider/userProvider/auth_notifier.dart';
+import 'package:elearny/provider/userProvider/user_provider.dart';
 import 'package:elearny/services/firebase/fireStore/auth/authservice.dart';
 import 'package:elearny/src/pages/adminAddLinks/admin_add_links.dart';
 import 'package:elearny/src/pages/adminAddLinks/admin_edit_users.dart';
@@ -17,85 +17,19 @@ import 'package:elearny/src/pages/sideBarPages/payment_methods.dart';
 import 'package:elearny/src/pages/sideBarPages/privacy.dart';
 import 'package:elearny/src/pages/sideBarPages/subscriptions.dart';
 import 'package:elearny/src/pages/splash_screen.dart';
-import 'package:elearny/src/widgets/two_buttons_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-
-// class RouteGenerator {
-//   static Route<dynamic> generateRoute(RouteSettings settings) {
-//     switch (settings.name) {
-//       case Routes.splash:
-//         return PageRouteBuilder(
-//           pageBuilder: (_, __, ___) => const SplashScreen(),
-//           transitionsBuilder: (_, anim, __, child) =>
-//               FadeTransition(opacity: anim, child: child),
-//         );
-//       case Routes.onboarding:
-//         return PageRouteBuilder(
-//           pageBuilder: (_, __, ___) => const OnBoardingScreen(),
-//           transitionsBuilder: (_, anim, __, child) =>
-//               FadeTransition(opacity: anim, child: child),
-//         );
-//       case Routes.login:
-//         return PageRouteBuilder(
-//           pageBuilder: (_, __, ___) => LoginScreen(),
-//           transitionsBuilder: (_, anim, __, child) =>
-//               FadeTransition(opacity: anim, child: child),
-//         );
-//       case Routes.register:
-//         return PageRouteBuilder(
-//           pageBuilder: (_, __, ___) => RegisterScreen(),
-//           transitionsBuilder: (_, anim, __, child) =>
-//               FadeTransition(opacity: anim, child: child),
-//         );
-//       case Routes.home:
-//         return PageRouteBuilder(
-//           pageBuilder: (_, __, ___) => HomeScreen(),
-//           transitionsBuilder: (_, anim, __, child) =>
-//               FadeTransition(opacity: anim, child: child),
-//         );
-//       case Routes.profile:
-//         return PageRouteBuilder(
-//           pageBuilder: (_, __, ___) => ProfileScreen(),
-//           transitionsBuilder: (_, anim, __, child) =>
-//               FadeTransition(opacity: anim, child: child),
-//         );
-//       case Routes.lessonEditor:
-//         return PageRouteBuilder(
-//           pageBuilder: (_, __, ___) => LessonEditor(),
-//           transitionsBuilder: (_, anim, __, child) =>
-//               FadeTransition(opacity: anim, child: child),
-//         );
-//       case Routes.adminLinks:
-//         return PageRouteBuilder(
-//           pageBuilder: (_, __, ___) => AdminAddLinks(),
-//           transitionsBuilder: (_, anim, __, child) =>
-//               FadeTransition(opacity: anim, child: child),
-//         );
-//       default:
-//         return MaterialPageRoute(
-//           builder: (_) => Scaffold(
-//             body: Center(
-//               child: Text('No route defined for ${settings.name}'),
-//             ),
-//           ),
-//         );
-//     }
-//   }
-// }
 
 class AppNavigation {
   AppNavigation._();
 
   static String initRoute = '/';
 
-  // Create keys for `root` & `section` navigator avoiding unnecessary rebuilds
   static final _rootNavigatorKey = GlobalKey<NavigatorState>();
-
+  static final AuthenticationServices getUser = AuthenticationServices();
   static final _sectionNavigatorKeyHome =
       GlobalKey<NavigatorState>(debugLabel: 'shellHome');
   static final a = GlobalKey<NavigatorState>(debugLabel: 'a');
@@ -109,12 +43,14 @@ class AppNavigation {
   static final i = GlobalKey<NavigatorState>(debugLabel: 'i');
   static final j = GlobalKey<NavigatorState>(debugLabel: 'j');
   static final k = GlobalKey<NavigatorState>(debugLabel: 'k');
+  static final AuthNotifier authStateNotifier = AuthNotifier();
 
   // Go router Configuration
   static final GoRouter router = GoRouter(
     debugLogDiagnostics: true,
     navigatorKey: _rootNavigatorKey,
     initialLocation: initRoute,
+    refreshListenable: authStateNotifier,
     routes: <RouteBase>[
       GoRoute(
         name: 'login',
@@ -136,45 +72,39 @@ class AppNavigation {
           key: state.pageKey,
         ),
       ),
+      // GoRoute(
+      //   name: 'onBoarding',
+      //   path: '/onBoarding',
+      //   builder: (BuildContext context, GoRouterState state) =>
+      //       OnBoardingScreen(
+      //     key: state.pageKey,
+      //   ),
+      // ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
-          return WillPopScope(
-              onWillPop: () async {
-                return false;
-              },
-              child: HomeScreen(navigationShell: navigationShell));
+          return HomeScreen(navigationShell: navigationShell);
         },
         branches: [
           StatefulShellBranch(
             navigatorKey: _sectionNavigatorKeyHome,
             routes: <RouteBase>[
               GoRoute(
-                  name: 'home',
-                  path: '/',
-                  pageBuilder: (context, state) => CustomTransitionPage(
-                        key: state.pageKey,
-                        child: HomeMain(),
-                        transitionsBuilder:
-                            (context, animation, secondaryAnimation, child) =>
-                                ScaleTransition(scale: animation, child: child),
-                      )),
+                name: 'home',
+                path: '/',
+                builder: (context, state) => const HomeMain(),
+                // redirect: (context, state) {
+                //   print(state.matchedLocation);
+                //   if (state.matchedLocation == '/') {
+                //     print("eeeeeeeeeeeeeeeee");
+                //   }
+                //   return null;
+                // },
+                // onExit: (BuildContext context) async {
+                //   return false;
+                // }
+              ),
             ],
           ),
-          // StatefulShellBranch(
-          //   navigatorKey: a,
-          //   routes: <RouteBase>[
-          //     GoRoute(
-          //       name: 'profile',
-          //       path: '/profile',
-          //       builder: (BuildContext context, GoRouterState state) =>
-          //           ProfileScreen(
-          //         key: state.pageKey,
-          //       ),
-
-          //       // sub View
-          //     ),
-          //   ],
-          // ),
 
           // The route branch for 2º Tab
           StatefulShellBranch(
@@ -191,15 +121,16 @@ class AppNavigation {
             ],
           ),
           // The route branch for 3º Tab
+
           StatefulShellBranch(
-              initialLocation: '/Settings/Profile',
+              initialLocation: kIsWeb ? '/Settings/Profile' : '/Settings',
               navigatorKey: c,
               routes: [
                 GoRoute(
-                  name: 'setting',
-                  path: '/setting',
+                  name: 'Settings',
+                  path: '/Settings',
                   builder: (BuildContext context, GoRouterState state) {
-                    return LogoutScreen(
+                    return SettingScreen(
                       key: state.pageKey,
                     );
                   },
@@ -221,16 +152,9 @@ class AppNavigation {
                                     ProfileScreen(
                               key: state.pageKey,
                             ),
-                            // onExit: (BuildContext context) async {
-                            //   await showingDialog(context);
-                            //   return true;
-                            // }
-                            // sub View
                           ),
                         ],
                       ),
-
-                      // The route branch for 2º Tab
                       StatefulShellBranch(
                         navigatorKey: e,
                         routes: <RouteBase>[
@@ -330,8 +254,7 @@ class AppNavigation {
                     );
                   },
                   onExit: (BuildContext context) async {
-                    //  context.read<AdminEditUsersProvider>().initi();
-                    print("on exit === true ");
+                    print("Exiting edit-users'");
                     return true;
                   }),
             ],
@@ -342,31 +265,22 @@ class AppNavigation {
     redirect: (context, state) async {
       final User? user = await FirebaseAuth.instance.authStateChanges().first;
 
-      AuthenticationServices getUser = AuthenticationServices();
-      // if (kDebugMode) {
-      //   print("user");
-      // }
-      // if (kDebugMode) {
-      //   print(user?.email);
-      // }
+      // Check the authentication state using Firebase and redirect accordingly
 
-      // Check if the user is authenticated
       if (user != null) {
-        // if (kDebugMode) {
-        //   print("ok");
-        // }
+        print("redirecting user != null");
         await getUser
             .getCurrentUser(user.uid)
-            .then((value) => globalUser = value);
-        // globalUser.
+            .then((value) => context.read<UserProvider>().updateUser(value));
+        if (state.matchedLocation == '/login') {
+          print("redirecting login");
+          return '/';
+        }
         return null;
       } else if (state.matchedLocation == '/register') {
         return '/register';
       }
-      // If the user is not authenticated or has no role, redirect to the login page
-      // if (kDebugMode) {
-      //   print("not ok");
-      // }
+
       return '/login';
     },
   );

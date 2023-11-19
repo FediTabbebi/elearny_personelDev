@@ -2,7 +2,7 @@ import 'package:elearny/data/globales.dart';
 import 'package:elearny/src/theme/themes.dart';
 import 'package:flutter/material.dart';
 
-class OneButtonDialogWidget extends StatelessWidget {
+class OneButtonDialogWidget extends StatefulWidget {
   final String title;
   final String contents;
   final String confirmbuttonText;
@@ -19,10 +19,15 @@ class OneButtonDialogWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<OneButtonDialogWidget> createState() => _OneButtonDialogWidgetState();
+}
+
+class _OneButtonDialogWidgetState extends State<OneButtonDialogWidget> {
+  @override
   Widget build(BuildContext context) {
     return WillPopScope(
         onWillPop: () async {
-          return onWillPopScopeValue;
+          return widget.onWillPopScopeValue;
         },
         child: Dialog(
           child: SizedBox(
@@ -46,7 +51,7 @@ class OneButtonDialogWidget extends StatelessWidget {
                             height: 30,
                           ),
                     Text(
-                      title,
+                      widget.title,
                       style: TextStyle(
                         fontSize: deviceType != 1
                             ? deviceType == 2
@@ -73,7 +78,7 @@ class OneButtonDialogWidget extends StatelessWidget {
                           padding:
                               const EdgeInsets.only(left: 15.0, right: 15.0),
                           child: Text(
-                            contents,
+                            widget.contents,
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -91,15 +96,13 @@ class OneButtonDialogWidget extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        confirmationBtn(confirmbuttonText, onConfirm, context),
+                        confirmationBtn(widget.confirmbuttonText,
+                            widget.onConfirm, context),
+                        const SizedBox(width: 15)
                       ],
                     ),
                     deviceType != 1
-                        ? deviceType == 2
-                            ? const SizedBox(
-                                height: 20,
-                              )
-                            : const SizedBox(height: 15)
+                        ? const SizedBox(height: 15)
                         : const SizedBox(
                             height: 30,
                           ),
@@ -121,9 +124,9 @@ Widget confirmationBtn(String text, VoidCallback onPressed, context) {
         : 60,
     width: deviceType != 1
         ? deviceType == 2
-            ? 120
-            : 120
-        : 140,
+            ? 100
+            : 80
+        : 120,
     child: TextButton(
         onPressed: onPressed,
         child: Text(

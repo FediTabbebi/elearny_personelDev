@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:elearny/data/globales.dart';
 import 'package:elearny/provider/navigationProvider/main_navigation_provider.dart';
+import 'package:elearny/provider/userProvider/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -9,6 +10,7 @@ class HomeMain extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //  print("rebuilding");
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
       floatingActionButton: Padding(
@@ -47,14 +49,22 @@ class HomeMain extends StatelessWidget {
                     //       60.0), // Adjust the border radius as needed
                     // ),
                     leading: CircleAvatar(
-                        radius: 25,
-                        backgroundColor:
-                            Theme.of(context).textTheme.headlineMedium!.color,
-                        backgroundImage: CachedNetworkImageProvider(
-                          globalUser!.profilePicture == ""
-                              ? "assets/images/manPlaceHolder.png"
-                              : globalUser!.profilePicture,
-                        )), // Replace with your image URL
+                      radius: 25,
+                      backgroundColor:
+                          Theme.of(context).textTheme.headlineMedium!.color,
+                      backgroundImage: context
+                              .read<UserProvider>()
+                              .currentUser!
+                              .profilePicture
+                              .isEmpty
+                          ? const AssetImage("assets/images/manPlaceHolder.png")
+                          : CachedNetworkImageProvider(
+                              context
+                                  .read<UserProvider>()
+                                  .currentUser!
+                                  .profilePicture,
+                            ) as ImageProvider<Object>?,
+                    ), // Replace with your image URL
 
                     trailing: Builder(
                       builder: (BuildContext context) {
@@ -85,7 +95,7 @@ class HomeMain extends StatelessWidget {
                     ),
                     title: deviceType == 1
                         ? Text(
-                            "Hi ${globalUser!.firstName}${globalUser!.lastName}",
+                            "Hi ${context.read<UserProvider>().currentUser!.firstName}${context.read<UserProvider>().currentUser!.lastName}",
                             softWrap: true,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(

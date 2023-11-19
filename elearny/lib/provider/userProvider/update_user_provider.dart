@@ -1,51 +1,60 @@
-import 'package:elearny/data/globales.dart';
+import 'dart:io';
 import 'package:elearny/model/user.dart';
+import 'package:elearny/provider/userProvider/user_provider.dart';
 import 'package:elearny/services/firebase/fireStore/auth/authservice.dart';
-import 'package:elearny/src/theme/themes.dart';
 import 'package:elearny/src/widgets/one_button_dialog.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker_web/image_picker_web.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import '../../services/firebase/storage/upload_files.dart';
 
 class UpdateUserProvider extends ChangeNotifier {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   DateTime selectedDate = DateTime.now();
-  final TextEditingController firstNameController =
-      TextEditingController(text: globalUser!.firstName);
-  final TextEditingController lastNameController =
-      TextEditingController(text: globalUser!.lastName);
-  final TextEditingController emailController =
-      TextEditingController(text: globalUser!.email);
-  final TextEditingController phoneNumberController =
-      TextEditingController(text: globalUser!.phoneNumber);
-  final TextEditingController bioController =
-      TextEditingController(text: globalUser!.bio);
-  final TextEditingController addressController =
-      TextEditingController(text: globalUser!.address);
-  final TextEditingController birthdayController = TextEditingController(
-      text: "${globalUser!.birthDate.toLocal()}".split(' ')[0]);
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController phoneNumberController = TextEditingController();
+  final TextEditingController bioController = TextEditingController();
+  final TextEditingController addressController = TextEditingController();
+  final TextEditingController birthdayController = TextEditingController();
   DateTime? birthday;
 
   bool isLoading = false;
   String imageURL = '';
   Uint8List? imageData;
+  File? imageDataMobile;
   Storage storage = Storage();
   AuthenticationServices authService = AuthenticationServices();
 
   updateProfile(BuildContext context) async {
-    if (formKey.currentState!.validate()) {
-      if (verifyFields() && imageData == null) {
-        showingDialog(context, "No Changes Detected",
-            "Please make sure to modify at least one field before attempting to update.");
-      } else {
-        if (imageData != null) {
-          await updateUserandUploadImage(
-            context,
-          );
+    if (kIsWeb) {
+      if (formKey.currentState!.validate()) {
+        if (verifyFields(context) && imageData == null) {
+          showingDialog(context, "No Changes Detected",
+              "Please make sure to modify at least one field before attempting to update.");
         } else {
-          updateUserwithoutUploadingImg(context);
+          if (imageData != null) {
+            await updateUserAndUploadImage(context, imageData!);
+          } else {
+            updateUserwithoutUploadingImg(context);
+          }
+        }
+      }
+    } else {
+      if (formKey.currentState!.validate()) {
+        if (verifyFields(context) && imageDataMobile == null) {
+          showingDialog(context, "No Changes Detected",
+              "Please make sure to modify at least one field before attempting to update.");
+        } else {
+          if (imageDataMobile != null) {
+            await updateUserAndUploadImage(
+                context, imageDataMobile!.readAsBytesSync());
+          } else {
+            updateUserwithoutUploadingImg(context);
+          }
         }
       }
     }
@@ -62,22 +71,24 @@ class UpdateUserProvider extends ChangeNotifier {
             email: emailController.text,
             address: addressController.text,
             phoneNumber: phoneNumberController.text,
-            profilePicture: globalUser!.profilePicture,
+            profilePicture:
+                context.read<UserProvider>().currentUser!.profilePicture,
             bio: bioController.text,
-            company: globalUser!.company,
-            role: globalUser!.role,
+            company: context.read<UserProvider>().currentUser!.company,
+            role: context.read<UserProvider>().currentUser!.role,
             birthDate: DateTime.parse(birthdayController.text),
-            password: globalUser!.password,
-            trainingList: globalUser!.trainingList,
-            userId: globalUser!.userId,
-            createdAt: globalUser!.createdAt,
+            password: context.read<UserProvider>().currentUser!.password,
+            trainingList:
+                context.read<UserProvider>().currentUser!.trainingList,
+            userId: context.read<UserProvider>().currentUser!.userId,
+            createdAt: context.read<UserProvider>().currentUser!.createdAt,
             updatedAt: DateTime.now(),
-            isDeleted: globalUser!.isDeleted))
+            isDeleted: context.read<UserProvider>().currentUser!.isDeleted))
         .then((value) async {
       await authService.getAuthUser().then((value) async {
         clearControllers();
-        globalUser = value;
-        settingControllers();
+        context.read<UserProvider>().updateUser(value);
+        settingControllers(context);
         isLoading = false;
         notifyListeners();
         showingDialog(context, 'Success', 'Your profile has been updated');
@@ -89,13 +100,14 @@ class UpdateUserProvider extends ChangeNotifier {
     });
   }
 
-  Future<void> updateUserandUploadImage(BuildContext context) async {
+  Future<void> updateUserAndUploadImage(
+      BuildContext context, Uint8List imageData) async {
     isLoading = true;
     notifyListeners();
     await storage
         .uploadImage(
-            imageData!,
-            '${globalUser!.phoneNumber}-${globalUser!.userId}',
+            imageData,
+            '${context.read<UserProvider>().currentUser!.phoneNumber}-${context.read<UserProvider>().currentUser!.userId}',
             'Profile Images')
         .then((value) async {
       imageURL = value;
@@ -108,20 +120,21 @@ class UpdateUserProvider extends ChangeNotifier {
               phoneNumber: phoneNumberController.text,
               profilePicture: imageURL,
               bio: bioController.text,
-              company: globalUser!.company,
-              role: globalUser!.role,
+              company: context.read<UserProvider>().currentUser!.company,
+              role: context.read<UserProvider>().currentUser!.role,
               birthDate: DateTime.parse(birthdayController.text),
-              password: globalUser!.password,
-              trainingList: globalUser!.trainingList,
-              userId: globalUser!.userId,
-              createdAt: globalUser!.createdAt,
+              password: context.read<UserProvider>().currentUser!.password,
+              trainingList:
+                  context.read<UserProvider>().currentUser!.trainingList,
+              userId: context.read<UserProvider>().currentUser!.userId,
+              createdAt: context.read<UserProvider>().currentUser!.createdAt,
               updatedAt: DateTime.now(),
-              isDeleted: globalUser!.isDeleted))
+              isDeleted: context.read<UserProvider>().currentUser!.isDeleted))
           .then((value) async {
         await authService.getAuthUser().then((value) {
           clearControllers();
-          globalUser = value;
-          settingControllers();
+          context.read<UserProvider>().updateUser(value);
+          settingControllers(context);
           isLoading = false;
           notifyListeners();
           showingDialog(context, 'Success', 'Your profile has been updated');
@@ -155,52 +168,96 @@ class UpdateUserProvider extends ChangeNotifier {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
+  // Future<void> pickImage() async {
+  //   try {
+  //     Uint8List? bytesFromPicker;
+  //     // = await ImagePickerWeb.getImageAsBytes();
+
+  //     if (bytesFromPicker != null) {
+  //       imageData = bytesFromPicker;
+  //       notifyListeners();
+  //     } else {
+  //       if (kDebugMode) {
+  //         print('No image selected.');
+  //       }
+  //     }
+  //   } catch (e) {
+  //     if (kDebugMode) {
+  //       print('Error occurred while picking an image: $e');
+  //     }
+  //   }
+  // }
   Future<void> pickImage() async {
     try {
-      Uint8List? bytesFromPicker = await ImagePickerWeb.getImageAsBytes();
+      ImagePicker imagePicker = ImagePicker();
+      final file = await imagePicker.pickImage(source: ImageSource.gallery);
+      // Pick an image file using file_picker package
+      /*    FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.image,
+      );*/
 
-      if (bytesFromPicker != null) {
-        imageData = bytesFromPicker;
+      // If user cancels the picker, do nothing
+      if (file == null) {
+        print('No image selected.');
+      }
+
+      if (!kIsWeb) {
+        final imageFile = file;
+        print(' image selected.');
+        imageDataMobile = File(imageFile!.path);
+
+        print(imageFile.path);
         notifyListeners();
       } else {
-        if (kDebugMode) {
-          print('No image selected.');
-        }
+        imageData = await file?.readAsBytes();
+
+        notifyListeners();
       }
     } catch (e) {
-      if (kDebugMode) {
-        print('Error occurred while picking an image: $e');
-      }
+      // If there is an error, show a snackBar with the error message
     }
   }
 
   void removeImg() {
     imageData = null;
+    imageDataMobile = null;
     notifyListeners();
   }
 
-  bool verifyFields() {
-    return firstNameController.text == globalUser!.firstName &&
-        lastNameController.text == globalUser!.lastName &&
-        emailController.text == globalUser!.email &&
-        phoneNumberController.text == globalUser!.phoneNumber &&
-        bioController.text == globalUser!.bio &&
-        addressController.text == globalUser!.address &&
+  bool verifyFields(BuildContext context) {
+    return firstNameController.text ==
+            context.read<UserProvider>().currentUser!.firstName &&
+        lastNameController.text ==
+            context.read<UserProvider>().currentUser!.lastName &&
+        emailController.text ==
+            context.read<UserProvider>().currentUser!.email &&
+        phoneNumberController.text ==
+            context.read<UserProvider>().currentUser!.phoneNumber &&
+        bioController.text == context.read<UserProvider>().currentUser!.bio &&
+        addressController.text ==
+            context.read<UserProvider>().currentUser!.address &&
         birthdayController.text ==
-            "${globalUser!.birthDate.toLocal()}".split(' ')[0];
+            "${context.read<UserProvider>().currentUser!.birthDate.toLocal()}"
+                .split(' ')[0];
   }
 
-  void settingControllers() {
-    firstNameController.text = globalUser?.firstName ?? "";
-    lastNameController.text = globalUser?.lastName ?? "";
-    emailController.text = globalUser?.email ?? "";
-    phoneNumberController.text = globalUser?.phoneNumber ?? "";
-    bioController.text = globalUser?.bio ?? "";
-    addressController.text = globalUser?.address ?? "";
-    birthday = globalUser?.birthDate;
+  void settingControllers(BuildContext context) {
+    firstNameController.text =
+        context.read<UserProvider>().currentUser?.firstName ?? "";
+    lastNameController.text =
+        context.read<UserProvider>().currentUser?.lastName ?? "";
+    emailController.text =
+        context.read<UserProvider>().currentUser?.email ?? "";
+    phoneNumberController.text =
+        context.read<UserProvider>().currentUser?.phoneNumber ?? "";
+    bioController.text = context.read<UserProvider>().currentUser?.bio ?? "";
+    addressController.text =
+        context.read<UserProvider>().currentUser?.address ?? "";
+    birthday = context.read<UserProvider>().currentUser?.birthDate;
     birthdayController.text =
-        "${globalUser!.birthDate.toLocal()}".split(' ')[0];
-    imageURL = globalUser?.profilePicture ?? "";
+        "${context.read<UserProvider>().currentUser!.birthDate.toLocal()}"
+            .split(' ')[0];
+    imageURL = context.read<UserProvider>().currentUser?.profilePicture ?? "";
   }
 
   void clearControllers() {
@@ -215,6 +272,7 @@ class UpdateUserProvider extends ChangeNotifier {
     birthdayController.clear();
     imageURL = "";
     imageData = null;
+    imageDataMobile = null;
   }
 
   Future<void> showingDialog(
@@ -232,7 +290,7 @@ class UpdateUserProvider extends ChangeNotifier {
               onConfirm: () {
                 Navigator.pop(context);
               },
-              onWillPopScopeValue: false);
+              onWillPopScopeValue: true);
         });
   }
 }

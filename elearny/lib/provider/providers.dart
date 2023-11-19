@@ -9,6 +9,7 @@ import 'package:elearny/provider/navigationProvider/sub_naviagtion_provider.dart
 import 'package:elearny/provider/onBoardingProvider/onbording_provider.dart';
 import 'package:elearny/provider/SplashScreenProvider/splash_provider.dart';
 import 'package:elearny/provider/themeProvider/theme_provider.dart';
+import 'package:elearny/provider/userProvider/user_provider.dart';
 import 'package:elearny/provider/userProvider/update_user_provider.dart';
 import 'package:elearny/provider/widgetProviders/theme_mode_switcher_provider.dart';
 import 'package:elearny/services/firebase/fireStore/auth/authservice.dart';
@@ -29,6 +30,7 @@ class Providers extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => DeviceTypeProvider()),
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => SplashProvider()),
+        ChangeNotifierProvider(create: (_) => UserProvider()),
         Provider<AuthenticationServices>(
           create: (_) => AuthenticationServices(),
         ),
@@ -42,10 +44,6 @@ class Providers extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => NavigationProvider()),
         ChangeNotifierProvider(create: (_) => SubNavigationProvider()),
         ChangeNotifierProvider(create: (_) => AdminAddLinkProvider()),
-        // FutureProvider<AdminLinksModel?>(
-        //   create: (context) => adminSocialMediaServices.getData(),
-        //   initialData:   [], // Provide initial data if needed
-        // ),
         ChangeNotifierProvider(create: (_) => UpdateUserProvider()),
       ],
       child: child,

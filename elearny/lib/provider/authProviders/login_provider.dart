@@ -1,15 +1,15 @@
-import 'package:elearny/data/globales.dart';
+import 'package:elearny/provider/userProvider/user_provider.dart';
 import 'package:elearny/services/firebase/fireStore/auth/authservice.dart';
+import 'package:elearny/src/widgets/one_button_dialog.dart';
 
 import 'package:elearny/utils/helper.dart';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class LoginProvider with ChangeNotifier {
-  // final AuthService _authService;
   bool isLoading = false;
-  String userId = "";
   final AuthenticationServices authService = AuthenticationServices();
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -25,17 +25,14 @@ class LoginProvider with ChangeNotifier {
       await authService
           .signInWithEmailAndPassword(email, password)
           .then((value) {
-        showSnackBar('success', context);
-
-        globalUser = value;
+        context.read<UserProvider>().updateUser(value);
+        context.go("/");
         isLoading = false;
         notifyListeners();
-        context.goNamed("profile");
       }).onError((error, stackTrace) {
         isLoading = false;
         notifyListeners();
-        // Navigator.of(context).pop();
-        showSnackBar('$error', context);
+        showDialogMessage(context, '$error');
       });
     }
   }
@@ -43,19 +40,9 @@ class LoginProvider with ChangeNotifier {
   Future<void> signOutUser(BuildContext context) async {
     // isLoading = false;
     // showProgressIndicator(context);
-    await authService.signOut(context).then((value) {
-      //  Navigator.of(context).pop();
-      // Navigator.pushNamedAndRemoveUntil(
-      //   context,
-      //   Routes.home,
-      //   (Route<dynamic> route) => false,
-      // );
-      context.pushReplacementNamed("login");
-    }).onError((error, stackTrace) {
-      // isLoading = false;
-      // Navigator.of(context).pop();
-      showSnackBar('$error', context);
-    });
+    await authService
+        .signOut()
+        .onError((error, stackTrace) => showSnackBar("$error", context));
   }
 
   void showSnackBar(String message, BuildContext context) {
@@ -73,6 +60,23 @@ class LoginProvider with ChangeNotifier {
             child: SizedBox(
                 height: 50, width: 50, child: CircularProgressIndicator()),
           );
+        });
+  }
+
+  Future<void> showDialogMessage(BuildContext context, String message) async {
+    await showDialog<void>(
+        // barrierColor: Colors.transparent,
+        // barrierDismissible: !isLoading,
+        context: context,
+        builder: (BuildContext context) {
+          return OneButtonDialogWidget(
+              title: "An Error Occured",
+              contents: message,
+              confirmbuttonText: "Back",
+              onConfirm: () {
+                context.pop();
+              },
+              onWillPopScopeValue: true);
         });
   }
 }

@@ -1,7 +1,9 @@
 import 'package:elearny/firebase_options.dart';
 import 'package:elearny/provider/providers.dart';
 import 'package:elearny/provider/themeProvider/theme_provider.dart';
+
 import 'package:elearny/utils/responsive_helper.dart';
+
 import 'package:firebase_core/firebase_core.dart';
 
 import 'package:flutter/material.dart';
@@ -14,8 +16,7 @@ import 'package:responsive_builder/responsive_builder.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
-  runApp(Providers(child: const MyApp()));
+  runApp(const Providers(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -42,7 +43,8 @@ class MyApp extends StatelessWidget {
                 // routerDelegate: AppRouter.router.routerDelegate,
                 // initialRoute: Routes.splash,
                 // onGenerateRoute: RouteGenerator.generateRoute
-                // routerConfig: AppNavigation.router,
+                //routerConfig: AppNavigation.router,.
+
                 routerDelegate: AppNavigation.router.routerDelegate,
                 routeInformationProvider:
                     AppNavigation.router.routeInformationProvider,

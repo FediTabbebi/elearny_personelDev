@@ -536,7 +536,9 @@ class Themes {
     ),
 
     //drawerTheme
-    drawerTheme: const DrawerThemeData(backgroundColor: black2),
+    drawerTheme: const DrawerThemeData(
+      backgroundColor: black2,
+    ),
     //chipTheme
     chipTheme: const ChipThemeData(
         labelStyle: TextStyle(color: white),

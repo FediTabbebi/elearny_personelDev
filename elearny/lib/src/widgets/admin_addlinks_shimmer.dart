@@ -8,6 +8,7 @@ class AdminAddLinksShimmerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         toolbarHeight: 100,
         centerTitle: true,
         title: titleShimmerContainer(context, 30, 300),

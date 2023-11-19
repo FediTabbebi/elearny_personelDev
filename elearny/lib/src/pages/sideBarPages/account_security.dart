@@ -9,6 +9,7 @@ class AccountSecurityScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+          automaticallyImplyLeading: false,
           toolbarHeight: 100,
           title: kIsWeb
               ? Center(
