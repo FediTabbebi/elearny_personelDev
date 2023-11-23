@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_side_menu/flutter_side_menu.dart';
 import 'package:go_router/go_router.dart';
@@ -11,11 +9,8 @@ class NavigationProvider with ChangeNotifier {
   SideMenuController sideMenucontroller = SideMenuController();
 
   bool isClosedSideMenu = false;
-  final StreamController<bool> streamController = StreamController();
-  void isOpenedMenu() {
-    //  sideMenucontroller.close();
-    isClosedSideMenu = false;
-    notifyListeners();
+  initIndex(StatefulNavigationShell navigationShell) {
+    _selectedIndex = navigationShell.currentIndex;
   }
 
   void isClosedSMenu() {
@@ -24,8 +19,8 @@ class NavigationProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void updateSideMenuState() {
-    isClosedSideMenu = !isClosedSideMenu;
+  void updateSideMenuState(bool isOpened) {
+    isClosedSideMenu = isOpened;
     notifyListeners();
   }
   // void checkSideBarState() {

@@ -1,8 +1,10 @@
 // splash_provider.dart
 import 'dart:async';
 import 'package:elearny/data/globales.dart';
+import 'package:elearny/provider/deviceTypeProvider/device_type_provider.dart';
 import 'package:elearny/routes/app_routes.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SplashProvider with ChangeNotifier {
   late Timer timer;

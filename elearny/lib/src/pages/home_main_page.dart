@@ -1,7 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:elearny/data/globales.dart';
+import 'package:elearny/provider/deviceTypeProvider/device_type_provider.dart';
 import 'package:elearny/provider/navigationProvider/main_navigation_provider.dart';
+import 'package:elearny/provider/themeProvider/theme_provider.dart';
 import 'package:elearny/provider/userProvider/user_provider.dart';
+import 'package:elearny/src/theme/themes.dart';
+import 'package:elearny/src/widgets/loading_indicator_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -48,23 +52,39 @@ class HomeMain extends StatelessWidget {
                     //   borderRadius: BorderRadius.circular(
                     //       60.0), // Adjust the border radius as needed
                     // ),
-                    leading: CircleAvatar(
-                      radius: 25,
-                      backgroundColor:
-                          Theme.of(context).textTheme.headlineMedium!.color,
-                      backgroundImage: context
+                    leading: CachedNetworkImage(
+                      imageUrl: context
                               .read<UserProvider>()
                               .currentUser!
                               .profilePicture
                               .isEmpty
-                          ? const AssetImage("assets/images/manPlaceHolder.png")
-                          : CachedNetworkImageProvider(
-                              context
-                                  .read<UserProvider>()
-                                  .currentUser!
-                                  .profilePicture,
-                            ) as ImageProvider<Object>?,
-                    ), // Replace with your image URL
+                          ? "assets/images/manPlaceHolder.png"
+                          : context
+                              .read<UserProvider>()
+                              .currentUser!
+                              .profilePicture,
+                      imageBuilder: (context, imageProvider) => Container(
+                        height: 40,
+                        width: 40,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                              image: imageProvider, fit: BoxFit.cover),
+                        ),
+                      ),
+                      placeholder: (context, url) => const UnconstrainedBox(
+                        child: SizedBox(
+                          width: 50,
+                          child: Center(
+                            child: LoadingIndicatorWidget(
+                                color: Themes.green, size: 12.5),
+                          ),
+                        ),
+                      ),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
+                    ),
+                    // Replace with your image URL
 
                     trailing: Builder(
                       builder: (BuildContext context) {
@@ -108,13 +128,11 @@ class HomeMain extends StatelessWidget {
         const Text("HomeScreen"),
         ElevatedButton(
             onPressed: () {
-              // context.watch<NavigationProvider>().isClosedSideMenu
-              //     ? context.read<NavigationProvider>().openSideMenu()
-              //     : context.read<NavigationProvider>().closeSideMenu();
+              context.read<ThemeProvider>().toggleTheme();
             },
-            child: Text(context.watch<NavigationProvider>().isClosedSideMenu
-                ? "Open Side Menu"
-                : "Close Side Menu"))
+            child: Text(context.watch<ThemeProvider>().isDarkMode
+                ? "DarkMode"
+                : "LightMode"))
       ])),
     );
   }

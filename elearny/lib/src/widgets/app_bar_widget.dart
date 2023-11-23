@@ -1,5 +1,7 @@
 import 'package:elearny/data/globales.dart';
+import 'package:elearny/provider/deviceTypeProvider/device_type_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AppBarWidget extends StatelessWidget {
   final IconData? leftIcon;

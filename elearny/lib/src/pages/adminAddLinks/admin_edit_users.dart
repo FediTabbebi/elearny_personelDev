@@ -1,7 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:elearny/data/globales.dart';
 import 'package:elearny/model/user.dart';
 import 'package:elearny/services/firebase/fireStore/adminEditUsers/admin_edit_users.dart';
 import 'package:elearny/src/theme/themes.dart';
+import 'package:elearny/src/widgets/loading_indicator_widget.dart';
 import 'package:elearny/utils/app_bar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -14,10 +16,11 @@ class AdminEditUserScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int i = 0;
     return StreamProvider<List<UserModel>>(
         create: (context) => adminService.getUsersStream(),
-        initialData: const [], // Provide initial data if needed
+        initialData: const [],
+        //  updateShouldNotify: (previous, next) => false,
+        // Provide initial data if needed
         // Provide initial data if needed
         child: Scaffold(
           appBar: AppBar(
@@ -41,77 +44,83 @@ class AdminEditUserScreen extends StatelessWidget {
                   : AppBarUtils.appBarWidget(context, "Edit users",
                       "Here you can manage and edit all users")),
           body: // Display the table
-              Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ListView(
-              //crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const TextField(
-                  decoration: InputDecoration(label: Text("Search")),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Selector<List<UserModel>, List<TableRow>>(
-                    selector: (context, users) {
-                  // Convert the list of users to a list of TableRow
-                  i++;
-                  print(i);
-                  return users.map((user) {
-                    return TableRow(children: getTableCells(user));
-                  }).toList();
-                }, builder: (context, userRows, _) {
-                  return Center(
-                    child: Table(
-                        // border: TableBorder.all(color: Colors.black),
-                        // border:
-                        //     TableBorder.symmetric(inside: BorderSide(width: 0.5)),
-                        border: const TableBorder(
-                          horizontalInside:
-                              BorderSide(width: 0.5, color: Themes.grey),
-                        ),
-                        columnWidths: deviceType == 1
-                            ? {
-                                0: FixedColumnWidth(
-                                    MediaQuery.of(context).size.width / 8),
-                                1: FixedColumnWidth(
-                                    MediaQuery.of(context).size.width / 8),
-                                2: FixedColumnWidth(
-                                    MediaQuery.of(context).size.width / 8),
-                                3: FixedColumnWidth(
-                                    MediaQuery.of(context).size.width / 11),
-                                4: FixedColumnWidth(
-                                    MediaQuery.of(context).size.width / 11),
-                                5: FixedColumnWidth(
-                                    MediaQuery.of(context).size.width / 7),
-                              }
-                            : kIsWeb
-                                ? {
-                                    0: FixedColumnWidth(
-                                        MediaQuery.of(context).size.width /
-                                            2.3),
-                                    1: FixedColumnWidth(
-                                        MediaQuery.of(context).size.width / 6),
-                                    2: FixedColumnWidth(
-                                        MediaQuery.of(context).size.width / 6),
-                                  }
-                                : {
-                                    0: FixedColumnWidth(
-                                        MediaQuery.of(context).size.width / 2),
-                                    1: FixedColumnWidth(
-                                        MediaQuery.of(context).size.width / 4),
-                                    2: FixedColumnWidth(
-                                        MediaQuery.of(context).size.width / 6),
-                                  },
-                        children: getTableRows(userRows)
-                        // Use the userRows directly
+              LayoutBuilder(builder: (context, constraint) {
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ListView(
+                //crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const TextField(
+                    decoration: InputDecoration(label: Text("Search")),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Selector<List<UserModel>, List<TableRow>>(
+                      selector: (context, users) {
+                    // Convert the list of users to a list of TableRow
 
-                        ),
-                  );
-                }),
-              ],
-            ),
-          ),
+                    return users.map((user) {
+                      return TableRow(children: getTableCells(user, context));
+                    }).toList();
+                  }, builder: (context, userRows, _) {
+                    return Center(
+                      child: Table(
+                          // border: TableBorder.all(color: Colors.black),
+                          // border:
+                          //     TableBorder.symmetric(inside: BorderSide(width: 0.5)),
+                          border: const TableBorder(
+                            horizontalInside:
+                                BorderSide(width: 0.5, color: Themes.grey),
+                          ),
+                          columnWidths: deviceType == 1
+                              ? {
+                                  0: FixedColumnWidth(
+                                      MediaQuery.of(context).size.width / 8),
+                                  1: FixedColumnWidth(
+                                      MediaQuery.of(context).size.width / 6.5),
+                                  2: FixedColumnWidth(
+                                      MediaQuery.of(context).size.width / 6.5),
+                                  3: FixedColumnWidth(
+                                      MediaQuery.of(context).size.width / 12),
+                                  4: FixedColumnWidth(
+                                      MediaQuery.of(context).size.width / 13.5),
+                                  5: FixedColumnWidth(
+                                      MediaQuery.of(context).size.width / 7.5),
+                                }
+                              : kIsWeb
+                                  ? {
+                                      0: FixedColumnWidth(
+                                          MediaQuery.of(context).size.width /
+                                              2.3),
+                                      1: FixedColumnWidth(
+                                          MediaQuery.of(context).size.width /
+                                              6),
+                                      2: FixedColumnWidth(
+                                          MediaQuery.of(context).size.width /
+                                              6),
+                                    }
+                                  : {
+                                      0: FixedColumnWidth(
+                                          MediaQuery.of(context).size.width /
+                                              2),
+                                      1: FixedColumnWidth(
+                                          MediaQuery.of(context).size.width /
+                                              4),
+                                      2: FixedColumnWidth(
+                                          MediaQuery.of(context).size.width /
+                                              6),
+                                    },
+                          children: getTableRows(userRows)
+                          // Use the userRows directly
+
+                          ),
+                    );
+                  }),
+                ],
+              ),
+            );
+          }),
         ));
   }
 
@@ -157,42 +166,67 @@ class AdminEditUserScreen extends StatelessWidget {
     }
   }
 
-  List<TableCell> getTableCells(UserModel user) {
+  List<TableCell> getTableCells(UserModel user, BuildContext context) {
     if (deviceType == 1) {
       return [
         TableCell(
+          verticalAlignment: TableCellVerticalAlignment.middle,
           child: Wrap(
             alignment: WrapAlignment.center,
             children: [
               Container(
-                  height: 30,
-                  width: 30,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: Themes.shimmerColorWhite),
-                  child: Image.asset("assets/images/manPlaceHolder.png")
-                  //  CachedNetworkImage(
-                  //     imageUrl:),
-                  ),
+                height: 30,
+                width: 30,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: Themes.shimmerColorWhite),
+                child: user.profilePicture.isEmpty
+                    ? Image.asset("assets/images/manPlaceHolder.png")
+                    : CachedNetworkImage(
+                        imageUrl: user.profilePicture,
+                        placeholder: (context, url) =>
+                            const LoadingIndicatorWidget(
+                                color: Themes.green, size: 15),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
+                      ),
+                //  CachedNetworkImage(
+                //     imageUrl:),
+              ),
               const SizedBox(
                 width: 20,
               ),
-              Text(
-                "${user.firstName}" " ${user.lastName}",
-                softWrap: true,
-                overflow: TextOverflow.ellipsis,
+              SizedBox(
+                width: 120,
+                child: Tooltip(
+                  showDuration: const Duration(milliseconds: 0),
+                  message: "${user.firstName}" " ${user.lastName}",
+                  child: Center(
+                    child: Text(
+                      "${user.firstName}" " ${user.lastName}",
+                      softWrap: true,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
         ),
         TableCell(
-          child: Text(
-            user.email,
-            softWrap: true,
-            overflow: TextOverflow.ellipsis,
+          verticalAlignment: TableCellVerticalAlignment.middle,
+          child: Tooltip(
+            showDuration: const Duration(milliseconds: 0),
+            message: user.email,
+            child: Text(
+              user.email,
+              softWrap: true,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
         ),
         TableCell(
+          verticalAlignment: TableCellVerticalAlignment.middle,
           child: Text(
             user.phoneNumber.isNotEmpty ? user.phoneNumber : "UNKNOWN",
             softWrap: true,
@@ -200,37 +234,43 @@ class AdminEditUserScreen extends StatelessWidget {
           ),
         ),
         TableCell(
+          verticalAlignment: TableCellVerticalAlignment.middle,
           child: PopupMenuButton<String>(
-            itemBuilder: (BuildContext context) {
-              return [
-                const PopupMenuItem<String>(
-                  value: 'Option 1',
-                  child: Text('Option 1'),
-                ),
-                const PopupMenuItem<String>(
-                  value: 'Option 2',
-                  child: Text('Option 2'),
-                ),
-              ];
-            },
+            tooltip: "Edit user role",
             onSelected: (value) {
-              // Handle item selection
-              // You can use value to determine which option was selected
+              // Handle the selected value.
+              //   print('Selected value: $value');
             },
-            child: const Row(
+            itemBuilder: (context) => [
+              const PopupMenuItem<String>(
+                value: 'admin',
+                child: Text('Admin'),
+              ),
+              const PopupMenuItem<String>(
+                value: 'contentCreator',
+                child: Text('Content Creator'),
+              ),
+              const PopupMenuItem<String>(
+                value: 'client',
+                child: Text('Client'),
+              ),
+            ],
+            child: Row(
               children: [
                 Expanded(
-                    child: Text(
-                  'Selected role',
-                  softWrap: true,
-                  overflow: TextOverflow.ellipsis,
-                )),
-                Icon(Icons.arrow_drop_down), // Add dropdown icon
+                  child: Text(
+                    user.role,
+                    softWrap: true,
+                    overflow: TextOverflow.ellipsis,
+                  ), // Display the selected value
+                ),
+                const Icon(Icons.arrow_drop_down), // Add dropdown icon
               ],
             ),
           ),
         ),
         TableCell(
+          verticalAlignment: TableCellVerticalAlignment.middle,
           child: Text(
             user.isDeleted ? " Deleted" : "Active",
             softWrap: true,
@@ -240,11 +280,13 @@ class AdminEditUserScreen extends StatelessWidget {
           ),
         ),
         TableCell(
+          verticalAlignment: TableCellVerticalAlignment.middle,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Tooltip(
                 message: "Preview",
+                showDuration: const Duration(milliseconds: 0),
                 child: IconButton(
                   splashRadius: 15,
                   icon: const Icon(FontAwesomeIcons.solidEye,
@@ -256,6 +298,7 @@ class AdminEditUserScreen extends StatelessWidget {
                 ),
               ),
               Tooltip(
+                showDuration: const Duration(milliseconds: 0),
                 message: "Edit",
                 child: IconButton(
                   splashRadius: 15,
@@ -270,6 +313,7 @@ class AdminEditUserScreen extends StatelessWidget {
                 ),
               ),
               Tooltip(
+                showDuration: const Duration(milliseconds: 0),
                 message: user.isDeleted ? "Restore" : "Delete",
                 child: IconButton(
                   splashRadius: 15,
@@ -297,12 +341,21 @@ class AdminEditUserScreen extends StatelessWidget {
           child: Row(
             children: [
               Container(
-                height: 40,
-                width: 40,
+                height: 30,
+                width: 30,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
                     color: Themes.shimmerColorWhite),
-                child: Image.asset("assets/images/manPlaceHolder.png"),
+                child: user.profilePicture.isEmpty
+                    ? Image.asset("assets/images/manPlaceHolder.png")
+                    : CachedNetworkImage(
+                        imageUrl: user.profilePicture,
+                        placeholder: (context, url) =>
+                            const LoadingIndicatorWidget(
+                                color: Themes.green, size: 15),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
+                      ),
               ),
               const SizedBox(
                 width: 20,
@@ -315,16 +368,41 @@ class AdminEditUserScreen extends StatelessWidget {
                     softWrap: true,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  Text(
-                    user.email,
-                    softWrap: true,
-                    overflow: TextOverflow.ellipsis,
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width / 3.3,
+                    child: Text(
+                      user.email,
+                      softWrap: true,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                  Text(
-                    user.phoneNumber,
-                    softWrap: true,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+                  user.phoneNumber.isEmpty
+                      ? const Row(
+                          children: [
+                            Icon(
+                              FontAwesomeIcons.circleXmark,
+                              color: Colors.grey,
+                              size: 15,
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Text(
+                              "No Phone Number",
+                              softWrap: true,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ],
+                        )
+                      : Text(
+                          user.phoneNumber,
+                          softWrap: true,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                   const SizedBox(height: 10),
                   Text(
                     user.isDeleted ? " Deleted" : "Active",
@@ -342,41 +420,42 @@ class AdminEditUserScreen extends StatelessWidget {
         TableCell(
           verticalAlignment: TableCellVerticalAlignment.middle,
           child: PopupMenuButton<String>(
+            tooltip: "Edit user role",
             onSelected: (value) {
               // Handle the selected value.
               //   print('Selected value: $value');
             },
             itemBuilder: (context) => [
               const PopupMenuItem<String>(
-                value: 'Option 1',
-                child: Text('Option 1'),
+                value: 'admin',
+                child: Text('Admin'),
               ),
               const PopupMenuItem<String>(
-                value: 'Option 2',
-                child: Text('Option 2'),
+                value: 'contentCreator',
+                child: Text('Content Creator'),
               ),
               const PopupMenuItem<String>(
-                value: 'Option 3',
-                child: Text('Option 3'),
+                value: 'client',
+                child: Text('Client'),
               ),
             ],
-            child: const Row(
+            child: Row(
               children: [
                 Expanded(
                   child: Text(
-                    'Selected role',
+                    user.role,
                     softWrap: true,
                     overflow: TextOverflow.ellipsis,
                   ), // Display the selected value
                 ),
-                Icon(Icons.arrow_drop_down), // Add dropdown icon
+                const Icon(Icons.arrow_drop_down), // Add dropdown icon
               ],
             ),
           ),
         ),
         TableCell(
           child: Column(
-            // crossAxisAlignment: CrossAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Tooltip(
                 message: "Preview",

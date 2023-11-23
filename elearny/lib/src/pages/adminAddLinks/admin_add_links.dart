@@ -2,11 +2,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:elearny/data/globales.dart';
 import 'package:elearny/model/admin_links.dart';
 import 'package:elearny/provider/adminProviders/add_links_provider.dart';
+
 import 'package:elearny/provider/themeProvider/theme_provider.dart';
 import 'package:elearny/services/firebase/fireStore/adminAddLinks/add_links.dart';
 
 import 'package:elearny/src/theme/themes.dart';
 import 'package:elearny/src/widgets/admin_addlinks_shimmer.dart';
+import 'package:elearny/src/widgets/loading_indicator_widget.dart';
 import 'package:elearny/utils/app_bar.dart';
 import 'package:elearny/utils/helper.dart';
 import 'package:flutter/foundation.dart';
@@ -22,17 +24,20 @@ class AdminAddLinks extends StatelessWidget {
     return FutureProvider<AdminLinksModel?>(
       create: (context) => adminSocialMediaServices.getData(),
       initialData: null, // Set an initial value while the future is resolving
-      child: Consumer<AdminLinksModel?>(
-        builder: (context, adminLinks, _) {
-          if (adminLinks == null) {
+      child: Selector<AdminLinksModel?, AdminLinksModel?>(
+        selector: (context, adminLinks) {
+          return adminLinks;
+        },
+        builder: (context, yourData, _) {
+          print("AdminLinksModel");
+
+          if (yourData == null) {
             return const AdminAddLinksShimmerWidget(); // Display a progress indicator
           } else {
             // Data is available, call settingControllers
-            context.read<AdminAddLinkProvider>().settingControllers(adminLinks);
+            context.read<AdminAddLinkProvider>().settingControllers(yourData);
 
-            return mainScreen(
-              context,
-            );
+            return mainScreen(context);
           }
         },
       ),
@@ -40,7 +45,9 @@ class AdminAddLinks extends StatelessWidget {
   }
 }
 
-Widget mainScreen(BuildContext context) {
+Widget mainScreen(
+  BuildContext context,
+) {
   return SafeArea(
     child: Scaffold(
       appBar: AppBar(
@@ -54,164 +61,170 @@ Widget mainScreen(BuildContext context) {
                 ))
               : AppBarUtils.appBarWidget(context, "Social Media Links",
                   "Here you can modify social media links")),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Form(
-            key: context.read<AdminAddLinkProvider>().formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.only(left: 25),
-                  child: Text(
-                    "Main Page Pictures",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
+      body: LayoutBuilder(builder: (context, constraints) {
+        return SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Form(
+              key: context.read<AdminAddLinkProvider>().formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(left: 25),
+                    child: Text(
+                      "Main Page Pictures",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 32,
-                ),
-                Center(
-                  child: Wrap(
-                    spacing: 20,
-                    children: [
-                      mainPagePictureWidget("The Team logo image", 1, context),
-                      mainPagePictureWidget("Landing page image", 2, context),
-                    ],
+                  const SizedBox(
+                    height: 32,
                   ),
-                ),
-                const SizedBox(
-                  height: 32,
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(left: 25),
-                  child: Text(
-                    "Social Media Links",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
+                  Center(
+                    child: Wrap(
+                      spacing: 20,
+                      children: [
+                        mainPagePictureWidget(
+                            "The Team logo image", 1, context),
+                        mainPagePictureWidget("Landing page image", 2, context),
+                      ],
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 32,
-                ),
-                textField(
-                  context,
-                  null,
-                  "assets/icons/facebook.png",
-                  context.read<AdminAddLinkProvider>().facebookTextField,
-                  "facebook",
-                ),
-                textField(
-                    context,
-                    null,
-                    "assets/icons/linkedIn2.png",
-                    context.read<AdminAddLinkProvider>().linkedInTextfield,
-                    "LinkedIn"),
-                textField(
-                    context,
-                    null,
-                    "assets/icons/whatsApp.png",
-                    context.read<AdminAddLinkProvider>().whatsAppTextfield,
-                    "Whats App"),
-                textField(
-                    context,
-                    null,
-                    "assets/icons/instagram.png",
-                    context.read<AdminAddLinkProvider>().instagramTexfield,
-                    "Instagram"),
-                textField(
-                    context,
-                    null,
-                    "assets/icons/youtube.png",
-                    context.read<AdminAddLinkProvider>().youtubeTexfield,
-                    "Youtube"),
-                textField(
-                    context,
-                    FontAwesomeIcons.solidEnvelope,
-                    "",
-                    context.read<AdminAddLinkProvider>().emailTextfield,
-                    "Email Address"),
-                textField(
-                    context,
-                    FontAwesomeIcons.phoneVolume,
-                    "",
-                    context.read<AdminAddLinkProvider>().phoneNumbertextfield,
-                    "Phone Number"),
-                const SizedBox(
-                  height: 32,
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(left: 25),
-                  child: Text(
-                    "App Download URLs ",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
+                  const SizedBox(
+                    height: 32,
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 25),
+                    child: Text(
+                      "Social Media Links",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 32,
-                ),
-                downloadApp(
-                    "Get it on",
-                    "Google Play",
-                    "assets/images/GooglePlayIcon.png",
-                    context,
-                    context.read<AdminAddLinkProvider>().playStoreTextfield,
-                    "Google Play Link"),
-                downloadApp(
-                    "Donwload",
-                    "Android APK",
-                    "assets/images/ApkIcon.png",
-                    context,
-                    context.read<AdminAddLinkProvider>().apkTextfield,
-                    "Android APk Link"),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: kIsWeb
-                        ? MainAxisAlignment.end
-                        : MainAxisAlignment.center,
-                    children: [
-                      Consumer<AdminAddLinkProvider>(
-                          builder: (context, provider, _) {
-                        return provider.isLoading
-                            ? const SizedBox(
-                                height: 60,
-                                width: 60,
-                                child: CircularProgressIndicator())
-                            : SizedBox(
-                                height: 60,
-                                width: kIsWeb
-                                    ? 100
-                                    : MediaQuery.of(context).size.width / 1.1,
-                                child: ElevatedButton(
-                                  onPressed: () async {
-                                    await context
-                                        .read<AdminAddLinkProvider>()
-                                        .createOrUpdateAdminLinks(context);
-                                  },
-                                  child: const Text('Save'),
-                                ));
-                      }),
-                    ],
+                  const SizedBox(
+                    height: 32,
                   ),
-                ),
-              ],
+                  textField(
+                    context,
+                    null,
+                    "assets/icons/facebook.png",
+                    context.read<AdminAddLinkProvider>().facebookTextField,
+                    "facebook",
+                  ),
+                  textField(
+                      context,
+                      null,
+                      "assets/icons/linkedIn2.png",
+                      context.read<AdminAddLinkProvider>().linkedInTextfield,
+                      "LinkedIn"),
+                  textField(
+                      context,
+                      null,
+                      "assets/icons/whatsApp.png",
+                      context.read<AdminAddLinkProvider>().whatsAppTextfield,
+                      "Whats App"),
+                  textField(
+                      context,
+                      null,
+                      "assets/icons/instagram.png",
+                      context.read<AdminAddLinkProvider>().instagramTexfield,
+                      "Instagram"),
+                  textField(
+                      context,
+                      null,
+                      "assets/icons/youtube.png",
+                      context.read<AdminAddLinkProvider>().youtubeTexfield,
+                      "Youtube"),
+                  textField(
+                      context,
+                      FontAwesomeIcons.solidEnvelope,
+                      "",
+                      context.read<AdminAddLinkProvider>().emailTextfield,
+                      "Email Address"),
+                  textField(
+                      context,
+                      FontAwesomeIcons.phoneVolume,
+                      "",
+                      context.read<AdminAddLinkProvider>().phoneNumbertextfield,
+                      "Phone Number"),
+                  const SizedBox(
+                    height: 32,
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 25),
+                    child: Text(
+                      "App Download URLs ",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 32,
+                  ),
+                  downloadApp(
+                      "Get it on",
+                      "Google Play",
+                      "assets/images/GooglePlayIcon.png",
+                      context,
+                      context.read<AdminAddLinkProvider>().playStoreTextfield,
+                      "Google Play Link"),
+                  downloadApp(
+                      "Donwload",
+                      "Android APK",
+                      "assets/images/ApkIcon.png",
+                      context,
+                      context.read<AdminAddLinkProvider>().apkTextfield,
+                      "Android APk Link"),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: kIsWeb
+                          ? MainAxisAlignment.end
+                          : MainAxisAlignment.center,
+                      children: [
+                        Consumer<AdminAddLinkProvider>(
+                            builder: (context, provider, _) {
+                          return provider.isLoading
+                              ? const SizedBox(
+                                  height: 60,
+                                  width: 60,
+                                  child: CircularProgressIndicator())
+                              : SizedBox(
+                                  height: 60,
+                                  width: kIsWeb
+                                      ? 100
+                                      : MediaQuery.of(context).size.width / 1.1,
+                                  child: ElevatedButton(
+                                    onPressed: () async {
+                                      await context
+                                          .read<AdminAddLinkProvider>()
+                                          .createOrUpdateAdminLinks(context);
+                                    },
+                                    child: const Text('Save'),
+                                  ));
+                        }),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      }),
     ),
   );
 }
 
 Widget mainPagePictureWidget(
-    String imageLabel, int widget, BuildContext context) {
+  String imageLabel,
+  int widget,
+  BuildContext context,
+) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -261,13 +274,16 @@ Widget mainPagePictureWidget(
                                   child: update.landingImgURL.isNotEmpty
                                       ? CachedNetworkImage(
                                           imageUrl: update.landingImgURL,
-                                          // progressIndicatorBuilder: (context,
-                                          //         url,
-                                          //         downloadProgress) =>
-                                          //     CircularProgressIndicator(
-                                          //         value:
-                                          //             downloadProgress
-                                          //                 .progress),
+                                          progressIndicatorBuilder: (context,
+                                                  url, downloadProgress) =>
+                                              const UnconstrainedBox(
+                                                child: SizedBox(
+                                                  width: 50,
+                                                  child: LoadingIndicatorWidget(
+                                                      color: Themes.green,
+                                                      size: 50),
+                                                ),
+                                              ),
                                           errorWidget: (context, url, error) {
                                             print(error);
                                             return const Icon(Icons.error);
@@ -289,6 +305,16 @@ Widget mainPagePictureWidget(
                                           //         value:
                                           //             downloadProgress
                                           //                 .progress),
+                                          progressIndicatorBuilder: (context,
+                                                  url, downloadProgress) =>
+                                              const UnconstrainedBox(
+                                                child: SizedBox(
+                                                  width: 50,
+                                                  child: LoadingIndicatorWidget(
+                                                      color: Themes.green,
+                                                      size: 50),
+                                                ),
+                                              ),
                                           errorWidget: (context, url, error) {
                                             print(error);
                                             return const Icon(Icons.error);
@@ -312,6 +338,16 @@ Widget mainPagePictureWidget(
                                           //         value:
                                           //             downloadProgress
                                           //                 .progress),
+                                          progressIndicatorBuilder: (context,
+                                                  url, downloadProgress) =>
+                                              const UnconstrainedBox(
+                                                child: SizedBox(
+                                                  width: 30,
+                                                  child: LoadingIndicatorWidget(
+                                                      color: Themes.green,
+                                                      size: 30),
+                                                ),
+                                              ),
                                           errorWidget: (context, url, error) {
                                             print(error);
                                             return const Icon(Icons.error);
@@ -334,6 +370,17 @@ Widget mainPagePictureWidget(
                                           //         value:
                                           //             downloadProgress
                                           //                 .progress),
+                                          progressIndicatorBuilder: (context,
+                                                  url, downloadProgress) =>
+                                              const UnconstrainedBox(
+                                                child: SizedBox(
+                                                  width: 30,
+                                                  child:
+                                                      const LoadingIndicatorWidget(
+                                                          color: Themes.green,
+                                                          size: 30),
+                                                ),
+                                              ),
                                           errorWidget: (context, url, error) {
                                             print(error);
                                             return const Icon(Icons.error);

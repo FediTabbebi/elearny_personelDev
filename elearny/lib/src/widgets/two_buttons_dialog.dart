@@ -1,6 +1,8 @@
 import 'package:elearny/data/globales.dart';
+import 'package:elearny/provider/deviceTypeProvider/device_type_provider.dart';
 import 'package:elearny/src/theme/themes.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class TwoButtonsDialogWidget extends StatelessWidget {
   final String title;
@@ -88,14 +90,8 @@ class TwoButtonsDialogWidget extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    declineBtn(
-                      declinebuttonText,
-                      onDecline,
-                    ),
-                    confirmationBtn(
-                      confirmbuttonText,
-                      onConfirm,
-                    ),
+                    declineBtn(declinebuttonText, onDecline, context),
+                    confirmationBtn(confirmbuttonText, onConfirm, context),
                   ],
                 ),
                 deviceType != 1
@@ -115,7 +111,8 @@ class TwoButtonsDialogWidget extends StatelessWidget {
     );
   }
 
-  Widget confirmationBtn(String text, VoidCallback onPressed) {
+  Widget confirmationBtn(
+      String text, VoidCallback onPressed, BuildContext context) {
     return SizedBox(
       height: deviceType != 1
           ? deviceType == 2
@@ -135,7 +132,7 @@ class TwoButtonsDialogWidget extends StatelessWidget {
     );
   }
 
-  Widget declineBtn(String text, VoidCallback onPressed) {
+  Widget declineBtn(String text, VoidCallback onPressed, BuildContext context) {
     return SizedBox(
       height: deviceType != 1
           ? deviceType == 2

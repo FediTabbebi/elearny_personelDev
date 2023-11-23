@@ -52,6 +52,7 @@ class AdminServices {
               .get();
 
       if (docSnapshot.exists) {
+        print("getting data");
         return AdminLinksModel.fromMap(docSnapshot.data()!);
       } else {
         return null;

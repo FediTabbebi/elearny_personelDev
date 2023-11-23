@@ -82,6 +82,7 @@ class AppNavigation {
       // ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
+          //  print(navigationShell.currentIndex);
           return HomeScreen(navigationShell: navigationShell);
         },
         branches: [
@@ -108,7 +109,7 @@ class AppNavigation {
 
           // The route branch for 2º Tab
           StatefulShellBranch(
-            navigatorKey: b,
+            //  navigatorKey: b,
             routes: <RouteBase>[
               GoRoute(
                 name: 'lessonEditor',
@@ -124,7 +125,7 @@ class AppNavigation {
 
           StatefulShellBranch(
               initialLocation: kIsWeb ? '/Settings/Profile' : '/Settings',
-              navigatorKey: c,
+              //  navigatorKey: c,
               routes: [
                 GoRoute(
                   name: 'Settings',
@@ -136,7 +137,7 @@ class AppNavigation {
                   },
                 ),
                 StatefulShellRoute.indexedStack(
-                    parentNavigatorKey: c,
+                    // parentNavigatorKey: c,
                     builder: (context, state, navigationShell) {
                       return SettingPage(navigationShell: navigationShell);
                     },
@@ -156,7 +157,7 @@ class AppNavigation {
                         ],
                       ),
                       StatefulShellBranch(
-                        navigatorKey: e,
+                        //  navigatorKey: e,
                         routes: <RouteBase>[
                           GoRoute(
                             name: 'accountSecurity',
@@ -170,7 +171,7 @@ class AppNavigation {
                         ],
                       ),
                       StatefulShellBranch(
-                        navigatorKey: f,
+                        // navigatorKey: f,
                         routes: <RouteBase>[
                           GoRoute(
                             name: 'subscriptions',
@@ -184,7 +185,7 @@ class AppNavigation {
                         ],
                       ),
                       StatefulShellBranch(
-                        navigatorKey: g,
+                        //  navigatorKey: g,
                         routes: <RouteBase>[
                           GoRoute(
                             name: 'paymentMethod',
@@ -198,7 +199,7 @@ class AppNavigation {
                         ],
                       ),
                       StatefulShellBranch(
-                        navigatorKey: h,
+                        //  navigatorKey: h,
                         routes: <RouteBase>[
                           GoRoute(
                             name: 'notification',
@@ -212,7 +213,7 @@ class AppNavigation {
                         ],
                       ),
                       StatefulShellBranch(
-                        navigatorKey: i,
+                        // navigatorKey: i,
                         routes: <RouteBase>[
                           GoRoute(
                             name: 'privacy',
@@ -229,7 +230,7 @@ class AppNavigation {
               ]),
 
           StatefulShellBranch(
-            navigatorKey: j,
+            //   navigatorKey: j,
             routes: <RouteBase>[
               GoRoute(
                 name: 'edit-app-Links',
@@ -243,7 +244,7 @@ class AppNavigation {
             ],
           ),
           StatefulShellBranch(
-            navigatorKey: k,
+            //  navigatorKey: k,
             routes: <RouteBase>[
               GoRoute(
                   name: 'editusers',

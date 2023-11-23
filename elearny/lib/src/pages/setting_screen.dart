@@ -4,6 +4,7 @@ import 'package:elearny/provider/navigationProvider/sub_naviagtion_provider.dart
 import 'package:elearny/provider/themeProvider/theme_provider.dart';
 import 'package:elearny/provider/userProvider/user_provider.dart';
 import 'package:elearny/src/theme/themes.dart';
+import 'package:elearny/src/widgets/loading_indicator_widget.dart';
 import 'package:elearny/utils/app_bar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -60,28 +61,59 @@ class SettingPage extends StatelessWidget {
                                 : const SizedBox(
                                     height: 20,
                                   ),
+
+                            CachedNetworkImage(
+                              imageUrl: context
+                                      .read<UserProvider>()
+                                      .currentUser!
+                                      .profilePicture
+                                      .isEmpty
+                                  ? "assets/images/manPlaceHolder.png"
+                                  : context
+                                      .read<UserProvider>()
+                                      .currentUser!
+                                      .profilePicture,
+                              imageBuilder: (context, imageProvider) =>
+                                  Container(
+                                height: 120,
+                                width: 120,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                      image: imageProvider, fit: BoxFit.cover),
+                                ),
+                              ),
+                              placeholder: (context, url) =>
+                                  const LoadingIndicatorWidget(
+                                      color: Themes.green, size: 50),
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.error),
+                            ),
+                            // SizedBox(
+                            //   height: 150,
+                            //   child: CircleAvatar(
+                            //       // radius: deviceType == 1 ? 75 : 50,
+                            //       radius: 70,
+                            //       backgroundColor:
+                            //           context.read<ThemeProvider>().isDarkMode
+                            //               ? Themes.darkMode
+                            //               : Colors.grey.shade200,
+                            //       backgroundImage: context
+                            //               .watch<UserProvider>()
+                            //               .currentUser!
+                            //               .profilePicture
+                            //               .isEmpty
+                            //           ? const AssetImage(
+                            //               "assets/images/manPlaceHolder.png")
+                            //           : CachedNetworkImageProvider(
+                            //               context
+                            //                   .read<UserProvider>()
+                            //                   .currentUser!
+                            //                   .profilePicture,
+                            //             ) as ImageProvider<Object>?),
+                            // ),
                             SizedBox(
-                              height: 150,
-                              child: CircleAvatar(
-                                  // radius: deviceType == 1 ? 75 : 50,
-                                  radius: 70,
-                                  backgroundColor:
-                                      context.read<ThemeProvider>().isDarkMode
-                                          ? Themes.darkMode
-                                          : Colors.grey.shade200,
-                                  backgroundImage: context
-                                          .watch<UserProvider>()
-                                          .currentUser!
-                                          .profilePicture
-                                          .isEmpty
-                                      ? const AssetImage(
-                                          "assets/images/manPlaceHolder.png")
-                                      : CachedNetworkImageProvider(
-                                          context
-                                              .read<UserProvider>()
-                                              .currentUser!
-                                              .profilePicture,
-                                        ) as ImageProvider<Object>?),
+                              height: 20,
                             ),
                             Text(
                               "${context.watch<UserProvider>().currentUser!.firstName}"
@@ -231,10 +263,10 @@ class SettingPage extends StatelessWidget {
         child: ListTile(
           tileColor: Theme.of(context).scaffoldBackgroundColor,
           onTap: () {
-            context
-                .read<SubNavigationProvider>()
-                .goToBranch(index, navigationShell);
-            // navigate(context, index);
+            // context
+            //     .read<SubNavigationProvider>()
+            //     .goToBranch(index, navigationShell);
+            navigate(context, index);
           },
           leading: Icon(
             icon,
@@ -254,28 +286,27 @@ class SettingPage extends StatelessWidget {
   }
 
   void navigate(BuildContext context, int index) {
-    //   switch (index) {
-    //     case 0:
-    //       context.go("/Settings/Profile");
-    //       break;
-    //     case 1:
-    //       context.go("/Settings/AccountSecurity");
-    //       break;
-    //     case 2:
-    //       context.go("/Settings/Subscriptions");
-    //       break;
-    //     case 3:
-    //       context.go("/Settings/PaymentMethod");
-    //       break;
-    //     case 4:
-    //       context.go("/Settings/Notification");
-    //       break;
-    //     case 5:
-    //       context.go("/Settings/Privacy&Security");
-    //       break;
-    //     default:
-    //       break;
-    //   }
-    // }
+    switch (index) {
+      case 0:
+        context.go("/Settings/Profile");
+        break;
+      case 1:
+        context.go("/Settings/AccountSecurity");
+        break;
+      case 2:
+        context.go("/Settings/Subscriptions");
+        break;
+      case 3:
+        context.go("/Settings/PaymentMethod");
+        break;
+      case 4:
+        context.go("/Settings/Notification");
+        break;
+      case 5:
+        context.go("/Settings/Privacy&Security");
+        break;
+      default:
+        break;
+    }
   }
 }

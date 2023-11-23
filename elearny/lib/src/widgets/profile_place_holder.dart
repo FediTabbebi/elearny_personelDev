@@ -1,7 +1,9 @@
 import 'package:elearny/data/globales.dart';
+import 'package:elearny/provider/deviceTypeProvider/device_type_provider.dart';
 import 'package:elearny/src/theme/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 class ProfilePlaceHolder extends StatelessWidget {
   ProfilePlaceHolder({

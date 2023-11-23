@@ -32,6 +32,7 @@ class AdminEditUserService {
         usersList.add(UserModel.fromMap(data));
       }
       controller.add(usersList);
+      print("im streaaaaaaaaaming");
     }, onError: (error) {
       // Handle any errors here
       print('Error getting users: $error');

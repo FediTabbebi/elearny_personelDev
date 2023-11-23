@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 
-class PrograssiveDots extends StatefulWidget {
+class LoadingIndicatorWidget extends StatefulWidget {
   final double size;
   final Color color;
 
-  const PrograssiveDots({
+  const LoadingIndicatorWidget({
     super.key,
     required this.color,
     required this.size,
   });
 
   @override
-  _PrograssiveDotsState createState() => _PrograssiveDotsState();
+  _LoadingIndicatorWidgetState createState() => _LoadingIndicatorWidgetState();
 }
 
-class _PrograssiveDotsState extends State<PrograssiveDots>
+class _LoadingIndicatorWidgetState extends State<LoadingIndicatorWidget>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
 

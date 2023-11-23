@@ -1,4 +1,6 @@
 import 'package:elearny/model/user.dart';
+import 'package:elearny/src/theme/themes.dart';
+import 'package:elearny/src/widgets/loading_indicator_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -76,8 +78,15 @@ class RegisterScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16.0),
               context.watch<RegisterProvider>().isLoading
-                  ? const SizedBox(
-                      height: 50, width: 50, child: CircularProgressIndicator())
+                  ? const Center(
+                      child: SizedBox(
+                        width: 50,
+                        child: LoadingIndicatorWidget(
+                          color: Themes.green,
+                          size: 50,
+                        ),
+                      ),
+                    )
                   : SizedBox(
                       height: 50,
                       child: ElevatedButton(
@@ -105,7 +114,7 @@ class RegisterScreen extends StatelessWidget {
                                 profilePicture: '',
                                 bio: '',
                                 company: '',
-                                role: '',
+                                role: 'Client',
                                 birthDate: DateTime.now(),
                                 trainingList: [],
                                 userId: '',

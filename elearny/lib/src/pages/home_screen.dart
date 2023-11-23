@@ -21,6 +21,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // print("indexxxxxxxxxxx");
     // print(navigationShell.currentIndex);
+    //  context.read<NavigationProvider>().initIndex(navigationShell);
     return SafeArea(
       child: Scaffold(
           resizeToAvoidBottomInset: true,
@@ -210,7 +211,7 @@ class HomeScreen extends StatelessWidget {
       BuildContext context, int branch, String title, IconData? iconData) {
     return SideMenuItemDataTile(
       itemHeight: 60,
-      isSelected: context.read<NavigationProvider>().selectedIndex == branch,
+      isSelected: navigationShell.currentIndex == branch,
       onTap: () {
         context.read<NavigationProvider>().goToBranch(branch, navigationShell);
         if (branch == 4) {}

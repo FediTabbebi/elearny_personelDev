@@ -7,15 +7,21 @@ class ResponsiveHelper {
   static void handleResponsive(
       BuildContext context, DeviceScreenType deviceScreenType) {
     if (deviceScreenType == DeviceScreenType.desktop) {
-      Provider.of<DeviceTypeProvider>(context, listen: false).setDeviceType(1);
+      context.read<DeviceTypeProvider>().setDeviceType(1);
+      // print("ITSSSS DEEEESKTOP");
+      // print("deviceType === 1  (1 is for desktop)");
     }
 
     if (deviceScreenType == DeviceScreenType.tablet) {
-      Provider.of<DeviceTypeProvider>(context, listen: false).setDeviceType(2);
+      context.read<DeviceTypeProvider>().setDeviceType(2);
+      // print("ITSSSS TABLEEEEEEEET");
+      // print("deviceType === 2  (2 is for t tablet )");
     }
 
     if (deviceScreenType == DeviceScreenType.mobile) {
-      Provider.of<DeviceTypeProvider>(context, listen: false).setDeviceType(3);
+      context.read<DeviceTypeProvider>().setDeviceType(3);
+      // print("ITSSSS SMATPHOOOONE");
+      // print("deviceType === 3  (3 is for smartphone)");
     }
   }
 }

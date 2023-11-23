@@ -1,6 +1,9 @@
 import 'package:elearny/data/globales.dart';
 import 'package:elearny/provider/authProviders/login_provider.dart';
+import 'package:elearny/provider/deviceTypeProvider/device_type_provider.dart';
 import 'package:elearny/provider/themeProvider/theme_provider.dart';
+import 'package:elearny/src/theme/themes.dart';
+import 'package:elearny/src/widgets/loading_indicator_widget.dart';
 import 'package:elearny/src/widgets/web_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -13,32 +16,32 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // final loginProvider = Provider.of<LoginProvider>(context);
     return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          // automaticallyImplyLeading: false,
-          // leading: IconButton(
-          //   icon: Icon(Icons.arrow_back, color: Colors.black),
-          //   onPressed: () => Navigator.of(context).pop(),
-          // ),
-          automaticallyImplyLeading: false,
-          title: deviceType != 1
-              ? deviceType == 2
-                  ? const Center(
-                      child: Text(
-                        "Tablet View",
-                        style: TextStyle(fontSize: 30),
-                      ),
-                    )
-                  : const Center(
-                      child: Text(
-                        "Mobile View",
-                        style: TextStyle(fontSize: 30),
-                      ),
-                    )
-              : const WebAppBar(),
-        ),
-        body: SafeArea(
-          child: Form(
+      child: LayoutBuilder(builder: (context, constraint) {
+        return Scaffold(
+          appBar: AppBar(
+            // automaticallyImplyLeading: false,
+            // leading: IconButton(
+            //   icon: Icon(Icons.arrow_back, color: Colors.black),
+            //   onPressed: () => Navigator.of(context).pop(),
+            // ),
+            automaticallyImplyLeading: false,
+            title: deviceType != 1
+                ? deviceType == 2
+                    ? const Center(
+                        child: Text(
+                          "Tablet View",
+                          style: TextStyle(fontSize: 30),
+                        ),
+                      )
+                    : const Center(
+                        child: Text(
+                          "Mobile View",
+                          style: TextStyle(fontSize: 30),
+                        ),
+                      )
+                : const WebAppBar(),
+          ),
+          body: Form(
             key: context.read<LoginProvider>().formKey,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -69,10 +72,15 @@ class LoginScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 16.0),
                   context.watch<LoginProvider>().isLoading
-                      ? const SizedBox(
-                          height: 50,
-                          width: 50,
-                          child: CircularProgressIndicator())
+                      ? const Center(
+                          child: SizedBox(
+                            width: 50,
+                            child: LoadingIndicatorWidget(
+                              color: Themes.green,
+                              size: 50,
+                            ),
+                          ),
+                        )
                       : SizedBox(
                           height: 50,
                           width: MediaQuery.of(context).size.width,
@@ -108,18 +116,18 @@ class LoginScreen extends StatelessWidget {
               ),
             ),
           ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
-          },
-          tooltip: 'switch mode',
-          child: Icon(
-              Provider.of<ThemeProvider>(context, listen: false).isDarkMode
-                  ? Icons.dark_mode
-                  : Icons.light_mode),
-        ),
-      ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+            },
+            tooltip: 'switch mode',
+            child: Icon(
+                Provider.of<ThemeProvider>(context, listen: false).isDarkMode
+                    ? Icons.dark_mode
+                    : Icons.light_mode),
+          ),
+        );
+      }),
     );
   }
 }
