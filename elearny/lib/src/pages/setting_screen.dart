@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:elearny/data/globales.dart';
 import 'package:elearny/provider/navigationProvider/main_navigation_provider.dart';
 import 'package:elearny/provider/navigationProvider/sub_naviagtion_provider.dart';
 import 'package:elearny/provider/themeProvider/theme_provider.dart';
@@ -61,34 +62,51 @@ class SettingPage extends StatelessWidget {
                                 : const SizedBox(
                                     height: 20,
                                   ),
-
-                            CachedNetworkImage(
-                              imageUrl: context
-                                      .read<UserProvider>()
-                                      .currentUser!
-                                      .profilePicture
-                                      .isEmpty
-                                  ? "assets/images/manPlaceHolder.png"
-                                  : context
-                                      .read<UserProvider>()
-                                      .currentUser!
-                                      .profilePicture,
-                              imageBuilder: (context, imageProvider) =>
-                                  Container(
-                                height: 120,
-                                width: 120,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                      image: imageProvider, fit: BoxFit.cover),
-                                ),
-                              ),
-                              placeholder: (context, url) =>
-                                  const LoadingIndicatorWidget(
-                                      color: Themes.green, size: 50),
-                              errorWidget: (context, url, error) =>
-                                  const Icon(Icons.error),
-                            ),
+                            context
+                                    .read<UserProvider>()
+                                    .currentUser!
+                                    .profilePicture
+                                    .isEmpty
+                                ? Container(
+                                    width: 120,
+                                    height: 120,
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      image: DecorationImage(
+                                          image: AssetImage(
+                                            "assets/images/manPlaceHolder.png",
+                                          ),
+                                          fit: BoxFit.cover),
+                                    ),
+                                  )
+                                : CachedNetworkImage(
+                                    imageUrl: context
+                                            .read<UserProvider>()
+                                            .currentUser!
+                                            .profilePicture
+                                            .isEmpty
+                                        ? "assets/images/manPlaceHolder.png"
+                                        : context
+                                            .read<UserProvider>()
+                                            .currentUser!
+                                            .profilePicture,
+                                    imageBuilder: (context, imageProvider) =>
+                                        Container(
+                                      height: 120,
+                                      width: 120,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        image: DecorationImage(
+                                            image: imageProvider,
+                                            fit: BoxFit.cover),
+                                      ),
+                                    ),
+                                    placeholder: (context, url) =>
+                                        const LoadingIndicatorWidget(
+                                            color: Themes.green, size: 50),
+                                    errorWidget: (context, url, error) =>
+                                        const Icon(Icons.error),
+                                  ),
                             // SizedBox(
                             //   height: 150,
                             //   child: CircleAvatar(
@@ -112,7 +130,7 @@ class SettingPage extends StatelessWidget {
                             //                   .profilePicture,
                             //             ) as ImageProvider<Object>?),
                             // ),
-                            SizedBox(
+                            const SizedBox(
                               height: 20,
                             ),
                             Text(
@@ -236,7 +254,7 @@ class SettingPage extends StatelessWidget {
   ) {
     return SideMenuItemDataTile(
       itemHeight: 40,
-      isSelected: context.read<SubNavigationProvider>().selectedIndex == branch,
+      isSelected: navigationShell.currentIndex == branch,
       onTap: () {
         context
             .read<SubNavigationProvider>()
@@ -263,10 +281,10 @@ class SettingPage extends StatelessWidget {
         child: ListTile(
           tileColor: Theme.of(context).scaffoldBackgroundColor,
           onTap: () {
-            // context
-            //     .read<SubNavigationProvider>()
-            //     .goToBranch(index, navigationShell);
-            navigate(context, index);
+            context
+                .read<SubNavigationProvider>()
+                .goToBranch(index, navigationShell);
+            //  navigate(context, index);
           },
           leading: Icon(
             icon,
@@ -288,22 +306,22 @@ class SettingPage extends StatelessWidget {
   void navigate(BuildContext context, int index) {
     switch (index) {
       case 0:
-        context.go("/Settings/Profile");
+        context.push("/Settings/Profile");
         break;
       case 1:
-        context.go("/Settings/AccountSecurity");
+        context.push("/Settings/AccountSecurity");
         break;
       case 2:
-        context.go("/Settings/Subscriptions");
+        context.push("/Settings/Subscriptions");
         break;
       case 3:
-        context.go("/Settings/PaymentMethod");
+        context.push("/Settings/PaymentMethod");
         break;
       case 4:
-        context.go("/Settings/Notification");
+        context.push("/Settings/Notification");
         break;
       case 5:
-        context.go("/Settings/Privacy&Security");
+        context.push("/Settings/Privacy&Security");
         break;
       default:
         break;

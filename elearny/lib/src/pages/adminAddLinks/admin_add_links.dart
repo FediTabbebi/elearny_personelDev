@@ -48,21 +48,21 @@ class AdminAddLinks extends StatelessWidget {
 Widget mainScreen(
   BuildContext context,
 ) {
-  return SafeArea(
-    child: Scaffold(
-      appBar: AppBar(
-          automaticallyImplyLeading: false,
-          toolbarHeight: 100,
-          title: kIsWeb
-              ? Center(
-                  child: Text(
-                  'Social Media Links',
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ))
-              : AppBarUtils.appBarWidget(context, "Social Media Links",
-                  "Here you can modify social media links")),
-      body: LayoutBuilder(builder: (context, constraints) {
-        return SingleChildScrollView(
+  return LayoutBuilder(builder: (context, constraints) {
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+            automaticallyImplyLeading: false,
+            toolbarHeight: 100,
+            title: kIsWeb
+                ? Center(
+                    child: Text(
+                    'Social Media Links',
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ))
+                : AppBarUtils.appBarWidget(context, "Social Media Links",
+                    "Here you can modify social media links")),
+        body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Form(
@@ -214,10 +214,10 @@ Widget mainScreen(
               ),
             ),
           ),
-        );
-      }),
-    ),
-  );
+        ),
+      ),
+    );
+  });
 }
 
 Widget mainPagePictureWidget(
@@ -527,18 +527,14 @@ Widget iconButton(
       decoration: BoxDecoration(
           border: Border.all(
             width: 3,
-            color: context.read<ThemeProvider>().isDarkMode
-                ? Themes.darkMode
-                : Colors.white,
+            color: Theme.of(context).textTheme.titleSmall!.color!,
           ),
           borderRadius: const BorderRadius.all(
             Radius.circular(
               50,
             ),
           ),
-          color: context.read<ThemeProvider>().isDarkMode
-              ? Themes.darkMode2
-              : Colors.white,
+          color: Theme.of(context).textTheme.titleSmall!.color,
           boxShadow: [
             BoxShadow(
               offset: const Offset(2, 4),

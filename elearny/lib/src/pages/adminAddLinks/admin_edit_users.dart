@@ -3,10 +3,12 @@ import 'package:elearny/data/globales.dart';
 import 'package:elearny/model/user.dart';
 import 'package:elearny/services/firebase/fireStore/adminEditUsers/admin_edit_users.dart';
 import 'package:elearny/src/theme/themes.dart';
+import 'package:elearny/src/widgets/admin_editusers_shimmer.dart';
 import 'package:elearny/src/widgets/loading_indicator_widget.dart';
 import 'package:elearny/utils/app_bar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -19,9 +21,6 @@ class AdminEditUserScreen extends StatelessWidget {
     return StreamProvider<List<UserModel>>(
         create: (context) => adminService.getUsersStream(),
         initialData: const [],
-        //  updateShouldNotify: (previous, next) => false,
-        // Provide initial data if needed
-        // Provide initial data if needed
         child: Scaffold(
           appBar: AppBar(
               automaticallyImplyLeading: false,
@@ -43,79 +42,99 @@ class AdminEditUserScreen extends StatelessWidget {
                     ))
                   : AppBarUtils.appBarWidget(context, "Edit users",
                       "Here you can manage and edit all users")),
-          body: // Display the table
-              LayoutBuilder(builder: (context, constraint) {
+          body: LayoutBuilder(builder: (context, constraint) {
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListView(
                 //crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const TextField(
-                    decoration: InputDecoration(label: Text("Search")),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 20, right: 20),
+                    child: TextField(
+                      decoration: InputDecoration(label: Text("Search")),
+                    ),
                   ),
                   const SizedBox(
-                    height: 20,
+                    height: 40,
                   ),
-                  Selector<List<UserModel>, List<TableRow>>(
+                  Selector<List<UserModel>, Map<String, dynamic>>(
                       selector: (context, users) {
+                    // Check if the data is still loading
+                    bool isLoading = users.isEmpty;
+
                     // Convert the list of users to a list of TableRow
+                    List<TableRow> userRows =
+                        List.generate(users.length, (index) {
+                      return TableRow(
+                          children: getTableCells(
+                              users[index], context, index * 100));
+                    });
 
-                    return users.map((user) {
-                      return TableRow(children: getTableCells(user, context));
-                    }).toList();
-                  }, builder: (context, userRows, _) {
-                    return Center(
-                      child: Table(
-                          // border: TableBorder.all(color: Colors.black),
-                          // border:
-                          //     TableBorder.symmetric(inside: BorderSide(width: 0.5)),
-                          border: const TableBorder(
-                            horizontalInside:
-                                BorderSide(width: 0.5, color: Themes.grey),
-                          ),
-                          columnWidths: deviceType == 1
-                              ? {
-                                  0: FixedColumnWidth(
-                                      MediaQuery.of(context).size.width / 8),
-                                  1: FixedColumnWidth(
-                                      MediaQuery.of(context).size.width / 6.5),
-                                  2: FixedColumnWidth(
-                                      MediaQuery.of(context).size.width / 6.5),
-                                  3: FixedColumnWidth(
-                                      MediaQuery.of(context).size.width / 12),
-                                  4: FixedColumnWidth(
-                                      MediaQuery.of(context).size.width / 13.5),
-                                  5: FixedColumnWidth(
-                                      MediaQuery.of(context).size.width / 7.5),
-                                }
-                              : kIsWeb
-                                  ? {
-                                      0: FixedColumnWidth(
-                                          MediaQuery.of(context).size.width /
-                                              2.3),
-                                      1: FixedColumnWidth(
-                                          MediaQuery.of(context).size.width /
-                                              6),
-                                      2: FixedColumnWidth(
-                                          MediaQuery.of(context).size.width /
-                                              6),
-                                    }
-                                  : {
-                                      0: FixedColumnWidth(
-                                          MediaQuery.of(context).size.width /
-                                              2),
-                                      1: FixedColumnWidth(
-                                          MediaQuery.of(context).size.width /
-                                              4),
-                                      2: FixedColumnWidth(
-                                          MediaQuery.of(context).size.width /
-                                              6),
-                                    },
-                          children: getTableRows(userRows)
-                          // Use the userRows directly
+                    // Return a map with the isLoading and the userRows
+                    return {'isLoading': isLoading, 'userRows': userRows};
+                  }, builder: (context, data, _) {
+                    bool isLoading = data['isLoading'];
+                    List<TableRow> userRows = data['userRows'];
 
-                          ),
-                    );
+                    if (isLoading) {
+                      // Data is still loading, display shimmer
+                      return AdminEditUserShimmer();
+                    } else {
+                      // Data has been loaded, display the table
+                      return Center(
+                        child: Table(
+
+                            // border: TableBorder.all(color: Colors.black),
+                            // border:
+                            //     TableBorder.symmetric(inside: BorderSide(width: 0.5)),
+                            border: const TableBorder(
+                              horizontalInside:
+                                  BorderSide(width: 0.5, color: Themes.grey),
+                            ),
+                            columnWidths: deviceType == 1
+                                ? {
+                                    0: FixedColumnWidth(
+                                        MediaQuery.of(context).size.width /
+                                            5.5),
+                                    1: FixedColumnWidth(
+                                        MediaQuery.of(context).size.width / 10),
+                                    2: FixedColumnWidth(
+                                        MediaQuery.of(context).size.width / 10),
+                                    3: FixedColumnWidth(
+                                        MediaQuery.of(context).size.width / 10),
+                                    4: FixedColumnWidth(
+                                        MediaQuery.of(context).size.width / 10),
+                                    5: FixedColumnWidth(
+                                        MediaQuery.of(context).size.width / 8),
+                                  }
+                                : kIsWeb
+                                    ? {
+                                        0: FixedColumnWidth(
+                                            MediaQuery.of(context).size.width /
+                                                1.3),
+                                        // 1: FixedColumnWidth(
+                                        //     MediaQuery.of(context).size.width /
+                                        //         6),
+                                        // 2: FixedColumnWidth(
+                                        //     MediaQuery.of(context).size.width /
+                                        //         6),
+                                      }
+                                    : {
+                                        0: FixedColumnWidth(
+                                            MediaQuery.of(context).size.width),
+                                        // 1: FixedColumnWidth(
+                                        //     MediaQuery.of(context).size.width /
+                                        //         4),
+                                        // 2: FixedColumnWidth(
+                                        //     MediaQuery.of(context).size.width /
+                                        //         6),
+                                      },
+                            children: getTableRows(userRows)
+                            // Use the userRows directly
+
+                            ),
+                      );
+                    }
                   }),
                 ],
               ),
@@ -141,9 +160,9 @@ class AdminEditUserScreen extends StatelessWidget {
       return [
         TableRow(
           children: [
-            tableHeaderRow("Name", false, false),
-            tableHeaderRow("Email Address", false, false),
-            tableHeaderRow("Phone Number", false, false),
+            tableHeaderRow("User", false, false),
+            tableHeaderRow("Member Since", false, false),
+            tableHeaderRow("Phone", false, false),
             tableHeaderRow("Role", false, false),
             tableHeaderRow("Status", true, false),
             tableHeaderRow("Options", true, deviceType != 1 ? true : false),
@@ -156,9 +175,10 @@ class AdminEditUserScreen extends StatelessWidget {
       return [
         TableRow(
           children: [
-            tableHeaderRow("user info", false, false),
-            tableHeaderRow("Role", false, false),
-            tableHeaderRow("Options", true, false),
+            // tableHeaderRow("user info", false, false),
+            // tableHeaderRow("Role", false, false),
+            // tableHeaderRow("Options", true, false),
+            tableHeaderRow("", true, false),
           ],
         ),
         ...userRows,
@@ -166,343 +186,296 @@ class AdminEditUserScreen extends StatelessWidget {
     }
   }
 
-  List<TableCell> getTableCells(UserModel user, BuildContext context) {
+  List<TableCell> getTableCells(
+      UserModel user, BuildContext context, int delayDuration) {
     if (deviceType == 1) {
       return [
         TableCell(
-          verticalAlignment: TableCellVerticalAlignment.middle,
-          child: Wrap(
-            alignment: WrapAlignment.center,
-            children: [
-              Container(
-                height: 30,
-                width: 30,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: Themes.shimmerColorWhite),
-                child: user.profilePicture.isEmpty
-                    ? Image.asset("assets/images/manPlaceHolder.png")
-                    : CachedNetworkImage(
-                        imageUrl: user.profilePicture,
-                        placeholder: (context, url) =>
-                            const LoadingIndicatorWidget(
-                                color: Themes.green, size: 15),
-                        errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
-                      ),
-                //  CachedNetworkImage(
-                //     imageUrl:),
-              ),
-              const SizedBox(
-                width: 20,
-              ),
-              SizedBox(
-                width: 120,
-                child: Tooltip(
-                  showDuration: const Duration(milliseconds: 0),
-                  message: "${user.firstName}" " ${user.lastName}",
-                  child: Center(
-                    child: Text(
-                      "${user.firstName}" " ${user.lastName}",
-                      softWrap: true,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+            verticalAlignment: TableCellVerticalAlignment.middle,
+            child: ListTile(
+              tileColor: Theme.of(context).scaffoldBackgroundColor,
+              contentPadding: EdgeInsets.zero,
+              leading: CachedNetworkImage(
+                imageUrl: user.profilePicture.isEmpty
+                    ? "assets/images/manPlaceHolder.png"
+                    : user.profilePicture,
+                placeholder: (context, url) =>
+                    const LoadingIndicatorWidget(color: Themes.green, size: 15),
+                imageBuilder: (context, imageProvider) => Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                        image: imageProvider, fit: BoxFit.cover),
                   ),
                 ),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
-            ],
-          ),
-        ),
+              title: Tooltip(
+                showDuration: const Duration(milliseconds: 0),
+                message: "${user.firstName}" " ${user.lastName}",
+                child: Text(
+                  "${user.firstName}"
+                  " ${user.lastName}",
+                  softWrap: true,
+                  overflow: TextOverflow.ellipsis,
+                  // textAlign: TextAlign.start,
+                ),
+              ),
+              subtitle: Tooltip(
+                showDuration: const Duration(milliseconds: 0),
+                message: user.email,
+                child: Text(
+                  user.email,
+                  softWrap: true,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(fontSize: 12, color: Themes.grey),
+                ),
+              ),
+            ).animate().flip(
+                duration: const Duration(milliseconds: 250),
+                curve: Curves.easeInOut,
+                delay: Duration(milliseconds: delayDuration))),
         TableCell(
-          verticalAlignment: TableCellVerticalAlignment.middle,
-          child: Tooltip(
-            showDuration: const Duration(milliseconds: 0),
-            message: user.email,
+            verticalAlignment: TableCellVerticalAlignment.middle,
             child: Text(
-              user.email,
+              "${user.createdAt.toLocal()}".split(' ')[0],
               softWrap: true,
               overflow: TextOverflow.ellipsis,
-            ),
-          ),
-        ),
+            ).animate().flip(
+                duration: const Duration(milliseconds: 250),
+                delay: Duration(milliseconds: delayDuration))),
         TableCell(
-          verticalAlignment: TableCellVerticalAlignment.middle,
-          child: Text(
-            user.phoneNumber.isNotEmpty ? user.phoneNumber : "UNKNOWN",
-            softWrap: true,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
+            verticalAlignment: TableCellVerticalAlignment.middle,
+            child: Text(
+              user.phoneNumber.isNotEmpty ? user.phoneNumber : "UNKNOWN",
+              softWrap: true,
+              overflow: TextOverflow.ellipsis,
+            ).animate().flip(
+                duration: const Duration(milliseconds: 250),
+                delay: Duration(milliseconds: delayDuration))),
         TableCell(
-          verticalAlignment: TableCellVerticalAlignment.middle,
-          child: PopupMenuButton<String>(
-            tooltip: "Edit user role",
-            onSelected: (value) {
-              // Handle the selected value.
-              //   print('Selected value: $value');
-            },
-            itemBuilder: (context) => [
-              const PopupMenuItem<String>(
-                value: 'admin',
-                child: Text('Admin'),
-              ),
-              const PopupMenuItem<String>(
-                value: 'contentCreator',
-                child: Text('Content Creator'),
-              ),
-              const PopupMenuItem<String>(
-                value: 'client',
-                child: Text('Client'),
-              ),
-            ],
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    user.role,
-                    softWrap: true,
-                    overflow: TextOverflow.ellipsis,
-                  ), // Display the selected value
+            verticalAlignment: TableCellVerticalAlignment.middle,
+            child: PopupMenuButton<String>(
+              tooltip: "Edit user role",
+              onSelected: (value) {
+                // Handle the selected value.
+                //   print('Selected value: $value');
+              },
+              itemBuilder: (context) => [
+                const PopupMenuItem<String>(
+                  value: 'admin',
+                  child: Text('Admin'),
                 ),
-                const Icon(Icons.arrow_drop_down), // Add dropdown icon
+                const PopupMenuItem<String>(
+                  value: 'contentCreator',
+                  child: Text('Content Creator'),
+                ),
+                const PopupMenuItem<String>(
+                  value: 'client',
+                  child: Text('Client'),
+                ),
               ],
-            ),
-          ),
-        ),
-        TableCell(
-          verticalAlignment: TableCellVerticalAlignment.middle,
-          child: Text(
-            user.isDeleted ? " Deleted" : "Active",
-            softWrap: true,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.end,
-            style: TextStyle(color: user.isDeleted ? Colors.red : Themes.green),
-          ),
-        ),
-        TableCell(
-          verticalAlignment: TableCellVerticalAlignment.middle,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Tooltip(
-                message: "Preview",
-                showDuration: const Duration(milliseconds: 0),
-                child: IconButton(
-                  splashRadius: 15,
-                  icon: const Icon(FontAwesomeIcons.solidEye,
-                      size: 15, color: Color(0xffE3AB0D)),
-                  onPressed: () {
-                    // Handle edit button click
-                    // You can navigate to an edit screen or show a dialog
-                  },
-                ),
-              ),
-              Tooltip(
-                showDuration: const Duration(milliseconds: 0),
-                message: "Edit",
-                child: IconButton(
-                  splashRadius: 15,
-                  icon: const Icon(
-                    FontAwesomeIcons.pen,
-                    size: 15,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      user.role,
+                      softWrap: true,
+                      overflow: TextOverflow.ellipsis,
+                    ), // Display the selected value
                   ),
-                  onPressed: () {
-                    // Handle display button click
-                    // You can navigate to a details screen or show a dialog
-                  },
-                ),
+                  const Icon(Icons.arrow_drop_down), // Add dropdown icon
+                ],
               ),
-              Tooltip(
-                showDuration: const Duration(milliseconds: 0),
-                message: user.isDeleted ? "Restore" : "Delete",
-                child: IconButton(
-                  splashRadius: 15,
-                  icon: Icon(
-                    user.isDeleted
-                        ? FontAwesomeIcons.trashCanArrowUp
-                        : FontAwesomeIcons.trash,
-                    color: Colors.red,
-                    size: 15,
+            ).animate().flip(
+                duration: const Duration(milliseconds: 350),
+                delay: Duration(milliseconds: delayDuration))),
+        TableCell(
+            verticalAlignment: TableCellVerticalAlignment.middle,
+            child: Text(
+              user.isDeleted ? " Deleted" : "Active",
+              softWrap: true,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.end,
+              style: TextStyle(
+                color: user.isDeleted ? Colors.red : Themes.green,
+              ),
+            ).animate().flip(
+                duration: const Duration(milliseconds: 350),
+                delay: Duration(milliseconds: delayDuration))),
+        TableCell(
+            verticalAlignment: TableCellVerticalAlignment.middle,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Tooltip(
+                  message: "Preview",
+                  showDuration: const Duration(milliseconds: 0),
+                  child: IconButton(
+                    splashRadius: 15,
+                    icon: const Icon(FontAwesomeIcons.solidEye,
+                        size: 15, color: Color(0xffE3AB0D)),
+                    onPressed: () {
+                      // Handle edit button click
+                      // You can navigate to an edit screen or show a dialog
+                    },
                   ),
-                  onPressed: () {
-                    // Handle remove button click
-                    // You can show a confirmation dialog and delete the user
-                  },
-                ),
-              ),
-            ],
-          ),
-        )
+                ).animate().flip(
+                    duration: const Duration(milliseconds: 350),
+                    delay: Duration(milliseconds: delayDuration)),
+                Tooltip(
+                  showDuration: const Duration(milliseconds: 0),
+                  message: "Edit",
+                  child: IconButton(
+                    splashRadius: 15,
+                    icon: const Icon(
+                      FontAwesomeIcons.pen,
+                      size: 15,
+                    ),
+                    onPressed: () {
+                      // Handle display button click
+                      // You can navigate to a details screen or show a dialog
+                    },
+                  ),
+                ).animate().flip(
+                    duration: const Duration(milliseconds: 350),
+                    delay: Duration(milliseconds: delayDuration)),
+                Tooltip(
+                  showDuration: const Duration(milliseconds: 0),
+                  message: user.isDeleted ? "Restore" : "Delete",
+                  child: IconButton(
+                    splashRadius: 15,
+                    icon: Icon(
+                      user.isDeleted
+                          ? FontAwesomeIcons.trashCanArrowUp
+                          : FontAwesomeIcons.trash,
+                      color: Colors.red,
+                      size: 15,
+                    ),
+                    onPressed: () {
+                      // Handle remove button click
+                      // You can show a confirmation dialog and delete the user
+                    },
+                  ),
+                ).animate().flip(
+                    duration: const Duration(milliseconds: 350),
+                    delay: Duration(milliseconds: delayDuration)),
+              ],
+            ))
       ];
     } else {
       return [
         TableCell(
-          verticalAlignment: TableCellVerticalAlignment.middle,
-          child: Row(
-            children: [
-              Container(
-                height: 30,
-                width: 30,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: Themes.shimmerColorWhite),
-                child: user.profilePicture.isEmpty
-                    ? Image.asset("assets/images/manPlaceHolder.png")
-                    : CachedNetworkImage(
-                        imageUrl: user.profilePicture,
-                        placeholder: (context, url) =>
-                            const LoadingIndicatorWidget(
-                                color: Themes.green, size: 15),
-                        errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
-                      ),
-              ),
-              const SizedBox(
-                width: 20,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "${user.firstName}" " ${user.lastName}",
-                    softWrap: true,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width / 3.3,
-                    child: Text(
-                      user.email,
-                      softWrap: true,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                  user.phoneNumber.isEmpty
-                      ? const Row(
-                          children: [
-                            Icon(
-                              FontAwesomeIcons.circleXmark,
-                              color: Colors.grey,
-                              size: 15,
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text(
-                              "No Phone Number",
-                              softWrap: true,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ],
+            verticalAlignment: TableCellVerticalAlignment.middle,
+            child: Padding(
+                padding: const EdgeInsets.only(top: 5.0, bottom: 5),
+                child: ListTile(
+                  //  isThreeLine: true,
+                  tileColor:
+                      kIsWeb ? Theme.of(context).scaffoldBackgroundColor : null,
+                  leading: user.profilePicture.isEmpty
+                      ? Image.asset(
+                          "assets/images/manPlaceHolder.png",
+                          width: 40,
+                          height: 40,
                         )
-                      : Text(
-                          user.phoneNumber,
-                          softWrap: true,
-                          overflow: TextOverflow.ellipsis,
+                      : CachedNetworkImage(
+                          imageUrl: user.profilePicture,
+                          placeholder: (context, url) =>
+                              const LoadingIndicatorWidget(
+                                  color: Themes.green, size: 15),
+                          imageBuilder: (context, imageProvider) => Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                  image: imageProvider, fit: BoxFit.cover),
+                            ),
+                          ),
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
                         ),
-                  const SizedBox(height: 10),
-                  Text(
-                    user.isDeleted ? " Deleted" : "Active",
+                  title: Text(
+                    "${user.firstName}"
+                    " ${user.lastName}",
                     softWrap: true,
                     overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.end,
-                    style: TextStyle(
-                        color: user.isDeleted ? Colors.red : Themes.green),
+                    // textAlign: TextAlign.start,
                   ),
-                ],
-              )
-            ],
-          ),
-        ),
-        TableCell(
-          verticalAlignment: TableCellVerticalAlignment.middle,
-          child: PopupMenuButton<String>(
-            tooltip: "Edit user role",
-            onSelected: (value) {
-              // Handle the selected value.
-              //   print('Selected value: $value');
-            },
-            itemBuilder: (context) => [
-              const PopupMenuItem<String>(
-                value: 'admin',
-                child: Text('Admin'),
-              ),
-              const PopupMenuItem<String>(
-                value: 'contentCreator',
-                child: Text('Content Creator'),
-              ),
-              const PopupMenuItem<String>(
-                value: 'client',
-                child: Text('Client'),
-              ),
-            ],
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    user.role,
-                    softWrap: true,
-                    overflow: TextOverflow.ellipsis,
-                  ), // Display the selected value
-                ),
-                const Icon(Icons.arrow_drop_down), // Add dropdown icon
-              ],
-            ),
-          ),
-        ),
-        TableCell(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Tooltip(
-                message: "Preview",
-                child: IconButton(
-                  splashRadius: 15,
-                  icon: const Icon(FontAwesomeIcons.solidEye,
-                      size: 15, color: Color(0xffE3AB0D)),
-                  onPressed: () {
-                    // Handle edit button click
-                    // You can navigate to an edit screen or show a dialog
-                  },
-                ),
-              ),
-              Tooltip(
-                message: "Edit",
-                child: IconButton(
-                  splashRadius: 15,
-                  icon: const Icon(
-                    FontAwesomeIcons.pen,
-                    size: 15,
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        user.email,
+                        softWrap: true,
+                        overflow: TextOverflow.ellipsis,
+                        style:
+                            const TextStyle(fontSize: 12, color: Themes.grey),
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        "Member since ${"${user.createdAt.toLocal()}".split(' ')[0]}",
+                        softWrap: true,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                            color: Color(0xffE3AB0D), fontSize: 10),
+                      ),
+                    ],
                   ),
-                  onPressed: () {
-                    // Handle display button click
-                    // You can navigate to a details screen or show a dialog
-                  },
-                ),
-              ),
-              Tooltip(
-                message: user.isDeleted ? "Restore" : "Delete",
-                child: IconButton(
-                  splashRadius: 15,
-                  icon: Icon(
-                    user.isDeleted
-                        ? FontAwesomeIcons.trashCanArrowUp
-                        : FontAwesomeIcons.trash,
-                    color: Colors.red,
-                    size: 15,
+
+                  trailing: Wrap(
+                    spacing: 15,
+                    children: [
+                      Text(
+                        user.isDeleted ? " Deleted" : "Active",
+                        softWrap: true,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.end,
+                        style: TextStyle(
+                            color: user.isDeleted ? Colors.red : Themes.green,
+                            fontSize: 14),
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      PopupMenuButton<String>(
+                          tooltip: "Options",
+                          onSelected: (value) {
+                            // Handle the selected value.
+                            //   print('Selected value: $value');
+                          },
+                          itemBuilder: (context) => [
+                                const PopupMenuItem<String>(
+                                  value: 'Edit',
+                                  child: Text('Edit'),
+                                ),
+                                const PopupMenuItem<String>(
+                                  value: 'Preview',
+                                  child: Text('Preview'),
+                                ),
+                                const PopupMenuItem<String>(
+                                  value: 'Delete',
+                                  child: Text('Delete'),
+                                ),
+                              ],
+                          child: const Icon(
+                            FontAwesomeIcons.ellipsisVertical,
+                            color: Themes.grey,
+                            size: 20,
+                          )),
+                    ],
                   ),
-                  onPressed: () {
-                    // Handle remove button click
-                    // You can show a confirmation dialog and delete the user
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
+                ).animate().slideX(
+                    duration: const Duration(milliseconds: 550),
+                    begin: -1,
+                    end: 0,
+                    curve: Curves.easeInOut,
+                    delay: Duration(milliseconds: delayDuration))))
       ];
     }
   }

@@ -60,35 +60,52 @@ class ProfileScreen extends StatelessWidget {
                                     null
                                 ? Stack(
                                     children: [
-                                      CachedNetworkImage(
-                                        imageUrl: context
-                                                .read<UserProvider>()
-                                                .currentUser!
-                                                .profilePicture
-                                                .isEmpty
-                                            ? "assets/images/manPlaceHolder.png"
-                                            : context
-                                                .read<UserProvider>()
-                                                .currentUser!
-                                                .profilePicture,
-                                        imageBuilder:
-                                            (context, imageProvider) =>
-                                                Container(
-                                          width: deviceType == 1 ? 200 : 150,
-                                          height: deviceType == 1 ? 200 : 150,
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            image: DecorationImage(
-                                                image: imageProvider,
-                                                fit: BoxFit.cover),
-                                          ),
-                                        ),
-                                        placeholder: (context, url) =>
-                                            const LoadingIndicatorWidget(
-                                                color: Themes.green, size: 50),
-                                        errorWidget: (context, url, error) =>
-                                            const Icon(Icons.error),
-                                      ),
+                                      context
+                                              .read<UserProvider>()
+                                              .currentUser!
+                                              .profilePicture
+                                              .isEmpty
+                                          ? Container(
+                                              width:
+                                                  deviceType == 1 ? 220 : 150,
+                                              height:
+                                                  deviceType == 1 ? 220 : 150,
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                image: DecorationImage(
+                                                    image: AssetImage(
+                                                      "assets/images/manPlaceHolder.png",
+                                                    ),
+                                                    fit: BoxFit.cover),
+                                              ),
+                                            )
+                                          : CachedNetworkImage(
+                                              imageUrl: context
+                                                  .read<UserProvider>()
+                                                  .currentUser!
+                                                  .profilePicture,
+                                              imageBuilder:
+                                                  (context, imageProvider) =>
+                                                      Container(
+                                                width:
+                                                    deviceType == 1 ? 200 : 150,
+                                                height:
+                                                    deviceType == 1 ? 200 : 150,
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  image: DecorationImage(
+                                                      image: imageProvider,
+                                                      fit: BoxFit.cover),
+                                                ),
+                                              ),
+                                              placeholder: (context, url) =>
+                                                  const LoadingIndicatorWidget(
+                                                      color: Themes.green,
+                                                      size: 50),
+                                              errorWidget:
+                                                  (context, url, error) =>
+                                                      const Icon(Icons.error),
+                                            ),
 
                                       // CircleAvatar(
                                       //     radius: deviceType == 1 ? 100 : 75,
@@ -153,26 +170,52 @@ class ProfileScreen extends StatelessWidget {
                                     null
                                 ? Stack(
                                     children: [
-                                      CircleAvatar(
-                                          radius: deviceType == 1 ? 100 : 75,
-                                          backgroundColor: context
-                                                  .read<ThemeProvider>()
-                                                  .isDarkMode
-                                              ? Themes.darkMode
-                                              : Colors.grey.shade200,
-                                          backgroundImage:
-                                              CachedNetworkImageProvider(
-                                            context
-                                                    .read<UserProvider>()
-                                                    .currentUser!
-                                                    .profilePicture
-                                                    .isEmpty
-                                                ? "assets/images/manPlaceHolder.png"
-                                                : context
-                                                    .read<UserProvider>()
-                                                    .currentUser!
-                                                    .profilePicture,
-                                          )),
+                                      context
+                                              .read<UserProvider>()
+                                              .currentUser!
+                                              .profilePicture
+                                              .isEmpty
+                                          ? Container(
+                                              width:
+                                                  deviceType == 1 ? 220 : 150,
+                                              height:
+                                                  deviceType == 1 ? 220 : 150,
+                                              decoration: const BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                image: DecorationImage(
+                                                    image: AssetImage(
+                                                      "assets/images/manPlaceHolder.png",
+                                                    ),
+                                                    fit: BoxFit.cover),
+                                              ),
+                                            )
+                                          : CachedNetworkImage(
+                                              imageUrl: context
+                                                  .read<UserProvider>()
+                                                  .currentUser!
+                                                  .profilePicture,
+                                              imageBuilder:
+                                                  (context, imageProvider) =>
+                                                      Container(
+                                                width:
+                                                    deviceType == 1 ? 220 : 150,
+                                                height:
+                                                    deviceType == 1 ? 220 : 150,
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  image: DecorationImage(
+                                                      image: imageProvider,
+                                                      fit: BoxFit.cover),
+                                                ),
+                                              ),
+                                              placeholder: (context, url) =>
+                                                  const LoadingIndicatorWidget(
+                                                      color: Themes.green,
+                                                      size: 50),
+                                              errorWidget:
+                                                  (context, url, error) =>
+                                                      const Icon(Icons.error),
+                                            ),
                                       Positioned(
                                         bottom: 5,
                                         right: 20,

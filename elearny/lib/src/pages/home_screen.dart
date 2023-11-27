@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:elearny/provider/authProviders/login_provider.dart';
 import 'package:elearny/provider/navigationProvider/main_navigation_provider.dart';
+import 'package:elearny/routes/app_routes.dart';
 import 'package:elearny/src/theme/themes.dart';
 import 'package:elearny/src/widgets/drawer_widget.dart';
 import 'package:elearny/src/widgets/theme_mode_switcher_widget.dart';
@@ -44,7 +45,7 @@ class HomeScreen extends StatelessWidget {
                             ? Scaffold.of(context).openDrawer()
                             : context.canPop()
                                 ? context.pop()
-                                : context.go('/');
+                                : context.goNamed(AppPage.home.toName);
                       },
                       style: ElevatedButton.styleFrom(
                         elevation: 1,
@@ -143,7 +144,7 @@ class HomeScreen extends StatelessWidget {
                                   FontAwesomeIcons.code),
                               sideMenuItemDatatile(context, 2, "Settings",
                                   FontAwesomeIcons.gear),
-                              sideMenuItemDatatile(context, 3, "Add Links",
+                              sideMenuItemDatatile(context, 3, "Edit app Links",
                                   FontAwesomeIcons.link),
                               sideMenuItemDatatile(context, 4, "All users",
                                   FontAwesomeIcons.peopleGroup),
@@ -224,7 +225,10 @@ class HomeScreen extends StatelessWidget {
       // selectedIcon: const Icon(Icons.home),
       titleStyle: const TextStyle(
           color: Colors.white, fontSize: 18, fontWeight: FontWeight.w200),
-      selectedTitleStyle: const TextStyle(color: Themes.green),
+      selectedTitleStyle: const TextStyle(
+        color: Themes.green,
+        fontSize: 18,
+      ),
       highlightSelectedColor: Themes.black2,
     );
   }

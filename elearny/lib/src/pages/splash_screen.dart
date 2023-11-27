@@ -1,23 +1,43 @@
+import 'package:elearny/provider/themeProvider/theme_provider.dart';
+import 'package:elearny/services/app_service/app_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
   @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  late AppService _appService;
+
+  @override
+  void initState() {
+    _appService = Provider.of<AppService>(context, listen: false);
+    onStartUp();
+    super.initState();
+  }
+
+  void onStartUp() async {
+    await _appService.onAppStart();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    Future.delayed(const Duration(milliseconds: 3150), () {
-      return context.go("/login");
-    });
     return Scaffold(
         body: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Center(
           child: Image.asset(
-            "assets/images/theTeam.png",
+            context.read<ThemeProvider>().isDarkMode
+                ? "assets/images/theTeam_DarkMode.png"
+                : "assets/images/theTeam.png",
             scale: 2.h.w,
           )
               .animate()

@@ -1,4 +1,5 @@
 import 'package:elearny/provider/userProvider/user_provider.dart';
+import 'package:elearny/routes/app_routes.dart';
 import 'package:elearny/services/firebase/fireStore/auth/authservice.dart';
 import 'package:elearny/src/widgets/one_button_dialog.dart';
 
@@ -26,7 +27,7 @@ class LoginProvider with ChangeNotifier {
           .signInWithEmailAndPassword(email, password)
           .then((value) {
         context.read<UserProvider>().updateUser(value);
-        context.go("/");
+        context.goNamed(AppPage.login.toName);
         isLoading = false;
         notifyListeners();
       }).onError((error, stackTrace) {

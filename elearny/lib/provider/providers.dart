@@ -12,28 +12,36 @@ import 'package:elearny/provider/themeProvider/theme_provider.dart';
 import 'package:elearny/provider/userProvider/user_provider.dart';
 import 'package:elearny/provider/userProvider/update_user_provider.dart';
 import 'package:elearny/provider/widgetProviders/theme_mode_switcher_provider.dart';
-import 'package:elearny/services/firebase/fireStore/auth/authservice.dart';
+import 'package:elearny/routes/app_pages.dart';
+import 'package:elearny/services/app_service/app_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'widgetProviders/dropdownvalue_provider.dart';
 
 class Providers extends StatelessWidget {
   final Widget child;
-
-  const Providers({super.key, required this.child});
+  final AppService appService;
+  final SharedPreferences sharedPreferences;
+  const Providers(
+      {super.key,
+      required this.child,
+      required this.appService,
+      required this.sharedPreferences});
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => DeviceTypeProvider()),
-        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(
+            create: (_) => ThemeProvider(
+                appService: appService, sharedPreferences: sharedPreferences)),
         ChangeNotifierProvider(create: (_) => SplashProvider()),
+        ChangeNotifierProvider<AppService>(create: (_) => appService),
+        Provider<AppRouter>(create: (_) => AppRouter(appService)),
         ChangeNotifierProvider(create: (_) => UserProvider()),
-        Provider<AuthenticationServices>(
-          create: (_) => AuthenticationServices(),
-        ),
         ChangeNotifierProvider(create: (_) => OnBoardingProvider()),
         ChangeNotifierProvider(create: (_) => RegisterProvider()),
         ChangeNotifierProvider(create: (_) => LoginProvider()),

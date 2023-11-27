@@ -1,13 +1,16 @@
-import 'package:elearny/provider/userProvider/auth_notifier.dart';
 import 'package:elearny/provider/userProvider/user_provider.dart';
+import 'package:elearny/routes/app_routes.dart';
+import 'package:elearny/services/app_service/app_service.dart';
 import 'package:elearny/services/firebase/fireStore/auth/authservice.dart';
 import 'package:elearny/src/pages/adminAddLinks/admin_add_links.dart';
 import 'package:elearny/src/pages/adminAddLinks/admin_edit_users.dart';
+import 'package:elearny/src/pages/error_page.dart';
 import 'package:elearny/src/pages/home_main_page.dart';
 import 'package:elearny/src/pages/home_screen.dart';
 import 'package:elearny/src/pages/lesson_editor.dart.dart';
 import 'package:elearny/src/pages/login_screen.dart';
 import 'package:elearny/src/pages/logout_screen.dart';
+import 'package:elearny/src/pages/onbording_screen.dart';
 import 'package:elearny/src/pages/sideBarPages/profile_screen.dart';
 import 'package:elearny/src/pages/register_screen.dart';
 import 'package:elearny/src/pages/setting_screen.dart';
@@ -23,15 +26,18 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-class AppNavigation {
-  AppNavigation._();
+class AppRouter {
+  late final AppService appService;
+  GoRouter get router => _goRouter;
 
-  static String initRoute = '/';
+  AppRouter(this.appService);
 
   static final _rootNavigatorKey = GlobalKey<NavigatorState>();
   static final AuthenticationServices getUser = AuthenticationServices();
-  static final _sectionNavigatorKeyHome =
+  static final sectionNavigatorKeyHome =
       GlobalKey<NavigatorState>(debugLabel: 'shellHome');
+  static final subSectionNavigatorKeyHome =
+      GlobalKey<NavigatorState>(debugLabel: 'shellSettingHome');
   static final a = GlobalKey<NavigatorState>(debugLabel: 'a');
   static final b = GlobalKey<NavigatorState>(debugLabel: 'b');
   static final c = GlobalKey<NavigatorState>(debugLabel: 'c');
@@ -43,248 +49,290 @@ class AppNavigation {
   static final i = GlobalKey<NavigatorState>(debugLabel: 'i');
   static final j = GlobalKey<NavigatorState>(debugLabel: 'j');
   static final k = GlobalKey<NavigatorState>(debugLabel: 'k');
-  static final AuthNotifier authStateNotifier = AuthNotifier();
 
   // Go router Configuration
-  static final GoRouter router = GoRouter(
-    debugLogDiagnostics: true,
-    navigatorKey: _rootNavigatorKey,
-    initialLocation: initRoute,
-    refreshListenable: authStateNotifier,
-    routes: <RouteBase>[
-      GoRoute(
-        name: 'login',
-        path: '/login',
-        builder: (BuildContext context, GoRouterState state) =>
-            const LoginScreen(),
-      ),
-      GoRoute(
-        name: 'register',
-        path: '/register',
-        builder: (BuildContext context, GoRouterState state) => RegisterScreen(
-          key: state.pageKey,
+  late final GoRouter _goRouter = GoRouter(
+      debugLogDiagnostics: true,
+      navigatorKey: _rootNavigatorKey,
+      initialLocation: AppPage.home.toPath,
+      refreshListenable: appService,
+      routes: <RouteBase>[
+        GoRoute(
+          name: AppPage.login.toName,
+          path: AppPage.login.toPath,
+          builder: (BuildContext context, GoRouterState state) =>
+              const LoginScreen(),
         ),
-      ),
-      GoRoute(
-        name: 'spalsh',
-        path: '/splash',
-        builder: (BuildContext context, GoRouterState state) => SplashScreen(
-          key: state.pageKey,
+        GoRoute(
+          name: AppPage.register.toName,
+          path: AppPage.register.toPath,
+          builder: (BuildContext context, GoRouterState state) =>
+              const RegisterScreen(),
         ),
-      ),
-      // GoRoute(
-      //   name: 'onBoarding',
-      //   path: '/onBoarding',
-      //   builder: (BuildContext context, GoRouterState state) =>
-      //       OnBoardingScreen(
-      //     key: state.pageKey,
-      //   ),
-      // ),
-      StatefulShellRoute.indexedStack(
-        builder: (context, state, navigationShell) {
-          //  print(navigationShell.currentIndex);
-          return HomeScreen(navigationShell: navigationShell);
-        },
-        branches: [
-          StatefulShellBranch(
-            navigatorKey: _sectionNavigatorKeyHome,
-            routes: <RouteBase>[
-              GoRoute(
-                name: 'home',
-                path: '/',
-                builder: (context, state) => const HomeMain(),
-                // redirect: (context, state) {
-                //   print(state.matchedLocation);
-                //   if (state.matchedLocation == '/') {
-                //     print("eeeeeeeeeeeeeeeee");
-                //   }
-                //   return null;
-                // },
-                // onExit: (BuildContext context) async {
-                //   return false;
-                // }
-              ),
-            ],
+        GoRoute(
+          name: AppPage.splash.toName,
+          path: AppPage.splash.toPath,
+          builder: (BuildContext context, GoRouterState state) => SplashScreen(
+            key: state.pageKey,
           ),
-
-          // The route branch for 2º Tab
-          StatefulShellBranch(
-            //  navigatorKey: b,
-            routes: <RouteBase>[
-              GoRoute(
-                name: 'lessonEditor',
-                path: '/edit-lessons',
-                builder: (BuildContext context, GoRouterState state) =>
-                    LessonEditor(
-                  key: state.pageKey,
-                ),
-              ),
-            ],
+        ),
+        GoRoute(
+          name: AppPage.onBoarding.toName,
+          path: AppPage.onBoarding.toPath,
+          builder: (BuildContext context, GoRouterState state) =>
+              OnBoardingScreen(
+            key: state.pageKey,
           ),
-          // The route branch for 3º Tab
-
-          StatefulShellBranch(
-              initialLocation: kIsWeb ? '/Settings/Profile' : '/Settings',
-              //  navigatorKey: c,
-              routes: [
+        ),
+        StatefulShellRoute.indexedStack(
+          builder: (context, state, navigationShell) {
+            return HomeScreen(navigationShell: navigationShell);
+          },
+          branches: [
+            StatefulShellBranch(
+              navigatorKey: sectionNavigatorKeyHome,
+              routes: <RouteBase>[
                 GoRoute(
-                  name: 'Settings',
-                  path: '/Settings',
+                  name: AppPage.home.toName,
+                  path: AppPage.home.toPath,
+                  builder: (context, state) => const HomeMain(),
+                ),
+              ],
+            ),
+
+            // The route branch for 2º Tab
+            StatefulShellBranch(
+              routes: <RouteBase>[
+                GoRoute(
+                  name: AppPage.editLesson.toName,
+                  path: AppPage.editLesson.toPath,
+                  builder: (BuildContext context, GoRouterState state) =>
+                      LessonEditor(
+                    key: state.pageKey,
+                  ),
+                ),
+              ],
+            ),
+            // The route branch for 3º Tab
+
+            StatefulShellBranch(
+                initialLocation:
+                    kIsWeb ? AppPage.profile.toPath : AppPage.settings.toPath,
+                routes: [
+                  GoRoute(
+                    name: AppPage.settings.toName,
+                    path: AppPage.settings.toPath,
+                    builder: (BuildContext context, GoRouterState state) {
+                      return SettingScreen(
+                        key: state.pageKey,
+                      );
+                    },
+                  ),
+                  StatefulShellRoute.indexedStack(
+                      builder: (context, state, navigationShell) {
+                        return SettingPage(navigationShell: navigationShell);
+                      },
+                      branches: [
+                        StatefulShellBranch(
+                          navigatorKey: subSectionNavigatorKeyHome,
+                          routes: <RouteBase>[
+                            GoRoute(
+                              name: AppPage.profile.toName,
+                              path: AppPage.profile.toPath,
+                              builder:
+                                  (BuildContext context, GoRouterState state) =>
+                                      ProfileScreen(
+                                key: state.pageKey,
+                              ),
+                            ),
+                          ],
+                        ),
+                        StatefulShellBranch(
+                          routes: <RouteBase>[
+                            GoRoute(
+                              name: AppPage.accountSecurity.toName,
+                              path: AppPage.accountSecurity.toPath,
+                              builder:
+                                  (BuildContext context, GoRouterState state) =>
+                                      AccountSecurityScreen(
+                                key: state.pageKey,
+                              ),
+                            ),
+                          ],
+                        ),
+                        StatefulShellBranch(
+                          routes: <RouteBase>[
+                            GoRoute(
+                              name: AppPage.subscriptions.toName,
+                              path: AppPage.subscriptions.toPath,
+                              builder:
+                                  (BuildContext context, GoRouterState state) =>
+                                      SubScriptionsScreen(
+                                key: state.pageKey,
+                              ),
+                            ),
+                          ],
+                        ),
+                        StatefulShellBranch(
+                          routes: <RouteBase>[
+                            GoRoute(
+                              name: AppPage.paymentMethod.toName,
+                              path: AppPage.paymentMethod.toPath,
+                              builder:
+                                  (BuildContext context, GoRouterState state) =>
+                                      PaymentMedthodScreen(
+                                key: state.pageKey,
+                              ),
+                            ),
+                          ],
+                        ),
+                        StatefulShellBranch(
+                          routes: <RouteBase>[
+                            GoRoute(
+                              name: AppPage.notifications.toName,
+                              path: AppPage.notifications.toPath,
+                              builder:
+                                  (BuildContext context, GoRouterState state) =>
+                                      NotificationsScreen(
+                                key: state.pageKey,
+                              ),
+                            ),
+                          ],
+                        ),
+                        StatefulShellBranch(
+                          routes: <RouteBase>[
+                            GoRoute(
+                              name: AppPage.privacy.toName,
+                              path: AppPage.privacy.toPath,
+                              builder:
+                                  (BuildContext context, GoRouterState state) =>
+                                      PrivacyScreen(
+                                key: state.pageKey,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ])
+                ]),
+
+            StatefulShellBranch(
+              routes: <RouteBase>[
+                GoRoute(
+                  name: AppPage.editAppLinks.toName,
+                  path: AppPage.editAppLinks.toPath,
                   builder: (BuildContext context, GoRouterState state) {
-                    return SettingScreen(
+                    return AdminAddLinks(
                       key: state.pageKey,
                     );
                   },
                 ),
-                StatefulShellRoute.indexedStack(
-                    // parentNavigatorKey: c,
-                    builder: (context, state, navigationShell) {
-                      return SettingPage(navigationShell: navigationShell);
+              ],
+            ),
+            StatefulShellBranch(
+              routes: <RouteBase>[
+                GoRoute(
+                    name: AppPage.editUsers.toName,
+                    path: AppPage.editUsers.toPath,
+                    builder: (BuildContext context, GoRouterState state) {
+                      return AdminEditUserScreen(
+                        key: state.pageKey,
+                      );
                     },
-                    branches: [
-                      StatefulShellBranch(
-                        navigatorKey: d,
-                        routes: <RouteBase>[
-                          GoRoute(
-                            name: 'profile',
-                            path: '/Settings/Profile',
-                            builder:
-                                (BuildContext context, GoRouterState state) =>
-                                    ProfileScreen(
-                              key: state.pageKey,
-                            ),
-                          ),
-                        ],
-                      ),
-                      StatefulShellBranch(
-                        //  navigatorKey: e,
-                        routes: <RouteBase>[
-                          GoRoute(
-                            name: 'accountSecurity',
-                            path: '/Settings/AccountSecurity',
-                            builder:
-                                (BuildContext context, GoRouterState state) =>
-                                    AccountSecurityScreen(
-                              key: state.pageKey,
-                            ),
-                          ),
-                        ],
-                      ),
-                      StatefulShellBranch(
-                        // navigatorKey: f,
-                        routes: <RouteBase>[
-                          GoRoute(
-                            name: 'subscriptions',
-                            path: '/Settings/Subscriptions',
-                            builder:
-                                (BuildContext context, GoRouterState state) =>
-                                    SubScriptionsScreen(
-                              key: state.pageKey,
-                            ),
-                          ),
-                        ],
-                      ),
-                      StatefulShellBranch(
-                        //  navigatorKey: g,
-                        routes: <RouteBase>[
-                          GoRoute(
-                            name: 'paymentMethod',
-                            path: '/Settings/PaymentMethod',
-                            builder:
-                                (BuildContext context, GoRouterState state) =>
-                                    PaymentMedthodScreen(
-                              key: state.pageKey,
-                            ),
-                          ),
-                        ],
-                      ),
-                      StatefulShellBranch(
-                        //  navigatorKey: h,
-                        routes: <RouteBase>[
-                          GoRoute(
-                            name: 'notification',
-                            path: '/Settings/Notification',
-                            builder:
-                                (BuildContext context, GoRouterState state) =>
-                                    NotificationsScreen(
-                              key: state.pageKey,
-                            ),
-                          ),
-                        ],
-                      ),
-                      StatefulShellBranch(
-                        // navigatorKey: i,
-                        routes: <RouteBase>[
-                          GoRoute(
-                            name: 'privacy',
-                            path: '/Settings/Privacy&Security',
-                            builder:
-                                (BuildContext context, GoRouterState state) =>
-                                    PrivacyScreen(
-                              key: state.pageKey,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ])
-              ]),
+                    onExit: (BuildContext context) async {
+                      print("Exiting edit-users'");
+                      return true;
+                    }),
+              ],
+            ),
+          ],
+        ),
+      ],
+      errorBuilder: (context, state) =>
+          ErrorPage(error: state.error.toString()),
+      redirect: (context, state) async {
+        final User? user = await FirebaseAuth.instance.authStateChanges().first;
 
-          StatefulShellBranch(
-            //   navigatorKey: j,
-            routes: <RouteBase>[
-              GoRoute(
-                name: 'edit-app-Links',
-                path: '/edit-app-Links',
-                builder: (BuildContext context, GoRouterState state) {
-                  return AdminAddLinks(
-                    key: state.pageKey,
-                  );
-                },
-              ),
-            ],
-          ),
-          StatefulShellBranch(
-            //  navigatorKey: k,
-            routes: <RouteBase>[
-              GoRoute(
-                  name: 'editusers',
-                  path: '/edit-users',
-                  builder: (BuildContext context, GoRouterState state) {
-                    return AdminEditUserScreen(
-                      key: state.pageKey,
-                    );
-                  },
-                  onExit: (BuildContext context) async {
-                    print("Exiting edit-users'");
-                    return true;
-                  }),
-            ],
-          ),
-        ],
-      ),
-    ],
-    redirect: (context, state) async {
-      final User? user = await FirebaseAuth.instance.authStateChanges().first;
+        final loginLocation = state.namedLocation(AppPage.login.toName);
+        final homeLocation = state.namedLocation(AppPage.home.toName);
+        final splashLocation = state.namedLocation(AppPage.splash.toName);
+        final onboardLocation = state.namedLocation(AppPage.onBoarding.toName);
+        final registerLocation = state.namedLocation(AppPage.register.toName);
 
-      // Check the authentication state using Firebase and redirect accordingly
+        final isLogedIn = user != null;
+        final isInitialized = appService.initialized;
+        final isOnboarded = appService.onboarding;
 
-      if (user != null) {
-        print("redirecting user != null");
-        await getUser
-            .getCurrentUser(user.uid)
-            .then((value) => context.read<UserProvider>().updateUser(value));
-        if (state.matchedLocation == '/login') {
-          print("redirecting login");
-          return '/';
+        final isGoingToInit = state.matchedLocation == splashLocation;
+        final isGoingToLogin = state.matchedLocation == loginLocation;
+
+        final isGoingToOnboard = state.matchedLocation == onboardLocation;
+        final isGoingToRegister = state.matchedLocation == registerLocation;
+
+        // If not Initialized and not going to Initialized redirect to Splash
+        if (!isInitialized && !isGoingToInit) {
+          return splashLocation;
         }
-        return null;
-      } else if (state.matchedLocation == '/register') {
-        return '/register';
-      }
+        // If not onboard and not going to onboard redirect to OnBoarding
+        else if (isInitialized && !isOnboarded && !isGoingToOnboard) {
+          return onboardLocation;
+        }
+        // If not logedin and not going to login redirect to Login
+        else if (isInitialized &&
+            isOnboarded &&
+            !isLogedIn &&
+            !isGoingToLogin) {
+          if (isGoingToRegister) {
+            return registerLocation;
+            // If not logedin and not going to login redirect to Login
+          }
+          return loginLocation;
+        }
+        // If all the scenarios are cleared but still going to any of that screen redirect to Home
+        else if ((isLogedIn && isGoingToLogin) ||
+            (isInitialized && isGoingToInit) ||
+            (isOnboarded && isGoingToOnboard)) {
+          await getUser
+              .getCurrentUser(user!.uid)
+              .then((value) => context.read<UserProvider>().updateUser(value));
+          return homeLocation;
+        } else {
+          // Else Don't do anything
+          return null;
+        }
+        // else {
+        //   if (!kIsWeb && !appService.onboarding) {
+        //     return AppPage.onBoarding.toPath;
+        //   } else {
+        //     if (user != null) {
+        //       print("User exist redirecting to home page");
+        //       await getUser.getCurrentUser(user.uid).then(
+        //           (value) => context.read<UserProvider>().updateUser(value));
+        //       return null;
+        //       // if (state.matchedLocation == AppPage.login.toPath) {
+        //       //   print("User does not exist redirecting to login page");
+        //       //   return AppPage.home.toPath;
+        //       // }
+        //     } else if (state.matchedLocation == AppPage.register.toPath) {
+        //       return AppPage.register.toPath;
+        //     } else {
+        //       return AppPage.login.toPath;
+        //     }
+        //   }
 
-      return '/login';
-    },
-  );
+        // }
+        // else if (user != null) {
+        //   print("User exist redirecting to home page");
+        //   await getUser
+        //       .getCurrentUser(user.uid)
+        //       .then((value) => context.read<UserProvider>().updateUser(value));
+        //   return null;
+        // if (state.matchedLocation == AppPage.login.toPath) {
+        //   print("User does not exist redirecting to login page");
+        //   return AppPage.home.toPath;
+        // }
+        //   }
+        // return AppPage.login.toPath;
+      });
 }
 
 // Future<void> showingDialog(BuildContext context) async {

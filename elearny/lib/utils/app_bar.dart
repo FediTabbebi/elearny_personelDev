@@ -1,3 +1,4 @@
+import 'package:elearny/routes/app_routes.dart';
 import 'package:elearny/src/widgets/app_bar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -11,7 +12,7 @@ class AppBarUtils {
         if (context.canPop()) {
           context.pop();
         } else {
-          context.go("/");
+          context.goNamed(AppPage.home.toName);
         }
       },
       rightIcon: null,

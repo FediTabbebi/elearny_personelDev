@@ -3,6 +3,7 @@ import 'package:elearny/provider/navigationProvider/main_navigation_provider.dar
 import 'package:elearny/provider/themeProvider/theme_provider.dart';
 import 'package:elearny/routes/app_pages.dart';
 import 'package:elearny/src/widgets/theme_mode_switcher_widget.dart';
+import 'package:elearny/src/widgets/two_buttons_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
@@ -148,8 +149,26 @@ class DrawerWidget extends StatelessWidget {
                 const SizedBox(height: 20),
                 inkwellWidget("Logout", FontAwesomeIcons.arrowRightFromBracket,
                     () async {
-                  await context.read<LoginProvider>().signOutUser(context);
-                  AppNavigation.router.refresh();
+                  await showDialog<void>(
+                      barrierDismissible: true,
+                      context: context,
+                      builder: (BuildContext context) {
+                        return TwoButtonsDialogWidget(
+                          title: 'Logout Confirmation',
+                          contents: "Are you sure you want to logout?",
+                          confirmbuttonText: 'Confirm',
+                          declinebuttonText: 'Back',
+                          onConfirm: () async {
+                            // Navigator.of(context).pop();
+                            await context
+                                .read<LoginProvider>()
+                                .signOutUser(context);
+                          },
+                          onDecline: () {
+                            context.pop();
+                          },
+                        );
+                      });
                 }, 7, context),
                 const SizedBox(height: 20),
               ],

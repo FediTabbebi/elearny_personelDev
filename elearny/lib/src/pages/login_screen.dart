@@ -1,7 +1,8 @@
 import 'package:elearny/data/globales.dart';
 import 'package:elearny/provider/authProviders/login_provider.dart';
-import 'package:elearny/provider/deviceTypeProvider/device_type_provider.dart';
 import 'package:elearny/provider/themeProvider/theme_provider.dart';
+import 'package:elearny/routes/app_routes.dart';
+import 'package:elearny/services/app_service/app_service.dart';
 import 'package:elearny/src/theme/themes.dart';
 import 'package:elearny/src/widgets/loading_indicator_widget.dart';
 import 'package:elearny/src/widgets/web_appbar.dart';
@@ -14,6 +15,7 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appService = Provider.of<AppService>(context);
     // final loginProvider = Provider.of<LoginProvider>(context);
     return SafeArea(
       child: LayoutBuilder(builder: (context, constraint) {
@@ -53,6 +55,7 @@ class LoginScreen extends StatelessWidget {
                     decoration: const InputDecoration(
                       labelText: 'Email',
                     ),
+                    keyboardType: TextInputType.emailAddress,
                     validator: (value) => context
                         .read<LoginProvider>()
                         .validate
@@ -105,8 +108,9 @@ class LoginScreen extends StatelessWidget {
                     children: [
                       TextButton(
                         onPressed: () {
-                          context.push("/register");
-                          print("aaa");
+                          context.pushNamed(
+                            AppPage.register.toName,
+                          );
                         },
                         child: const Text('sing up'),
                       ),
@@ -116,15 +120,31 @@ class LoginScreen extends StatelessWidget {
               ),
             ),
           ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
-            },
-            tooltip: 'switch mode',
-            child: Icon(
-                Provider.of<ThemeProvider>(context, listen: false).isDarkMode
+          floatingActionButton: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              FloatingActionButton(
+                heroTag: null,
+                onPressed: () {
+                  appService.onboarding = false;
+                },
+                tooltip: 'reset onboarding',
+                child: const Icon(Icons.reset_tv),
+              ),
+              const SizedBox(
+                width: 20,
+              ),
+              FloatingActionButton(
+                onPressed: () {
+                  context.read<ThemeProvider>().toggleTheme();
+                },
+                tooltip: 'switch mode',
+                child: Icon(Provider.of<ThemeProvider>(context, listen: false)
+                        .isDarkMode
                     ? Icons.dark_mode
                     : Icons.light_mode),
+              ),
+            ],
           ),
         );
       }),

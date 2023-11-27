@@ -27,7 +27,7 @@ class RegisterProvider with ChangeNotifier {
         isLoading = false;
         notifyListeners();
 
-        context.pushNamed(Routes.login);
+        context.pushNamed(AppPage.login.toName);
       }).onError((error, stackTrace) {
         isLoading = false;
         notifyListeners();

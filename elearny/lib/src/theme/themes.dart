@@ -443,6 +443,7 @@ class Themes {
       todayForegroundColor: MaterialStatePropertyAll(green),
       headerBackgroundColor: green,
     ),
+    popupMenuTheme: PopupMenuThemeData(color: darkMode2),
 
     //radioTheme
     radioTheme: RadioThemeData(

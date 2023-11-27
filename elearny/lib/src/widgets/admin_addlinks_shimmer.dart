@@ -21,12 +21,15 @@ class AdminAddLinksShimmerWidget extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              titleShimmerContainer(context, 24, 200),
+              Padding(
+                  padding: const EdgeInsets.only(left: 20),
+                  child: titleShimmerContainer(context, 20, 200)),
               const SizedBox(
                 height: 16,
               ),
               Center(
                 child: Wrap(
+                  spacing: 20,
                   children: [
                     mainPagePictureWidget(context),
                     mainPagePictureWidget(context),
@@ -36,7 +39,9 @@ class AdminAddLinksShimmerWidget extends StatelessWidget {
               const SizedBox(
                 height: 32,
               ),
-              titleShimmerContainer(context, 24, 200),
+              Padding(
+                  padding: const EdgeInsets.only(left: 20),
+                  child: titleShimmerContainer(context, 20, 200)),
               const SizedBox(
                 height: 32,
               ),
@@ -64,7 +69,10 @@ class AdminAddLinksShimmerWidget extends StatelessWidget {
               const SizedBox(
                 height: 32,
               ),
-              titleShimmerContainer(context, 24, 200),
+              Padding(
+                padding: const EdgeInsets.only(left: 20),
+                child: titleShimmerContainer(context, 20, 200),
+              ),
               const SizedBox(
                 height: 32,
               ),
@@ -101,7 +109,7 @@ class AdminAddLinksShimmerWidget extends StatelessWidget {
             children: [
               Align(
                 alignment: Alignment.topCenter,
-                child: titleShimmerContainer(context, 16, 120),
+                child: titleShimmerContainer(context, 12, 180),
               ),
               SizedBox(
                 height: deviceType != 1

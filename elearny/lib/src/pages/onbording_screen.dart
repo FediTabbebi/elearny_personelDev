@@ -1,15 +1,15 @@
-import 'package:elearny/data/globales.dart';
 import 'package:elearny/provider/onBoardingProvider/onbording_provider.dart';
+import 'package:elearny/services/app_service/app_service.dart';
 import 'package:elearny/src/theme/themes.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class OnBoardingScreen extends StatelessWidget {
-  const OnBoardingScreen({Key? key}) : super(key: key);
+  const OnBoardingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final appService = Provider.of<AppService>(context);
     return SafeArea(
       child: Scaffold(
         body: Consumer<OnBoardingProvider>(
@@ -22,7 +22,8 @@ class OnBoardingScreen extends StatelessWidget {
                   physics: const BouncingScrollPhysics(),
                   controller: onboardingProvider.pageController,
                   onPageChanged: (index) {
-                    onboardingProvider.selectedPageIndex = index;
+                    onboardingProvider.animateToPage(index, 300);
+                    //  onboardingProvider.selectedPageIndex = index;
                   },
                   itemCount: contents.length,
                   itemBuilder: (context, i) {
@@ -46,7 +47,7 @@ class OnBoardingScreen extends StatelessWidget {
                           padding: const EdgeInsets.only(left: 15, right: 15),
                           child: Text(
                             contents[i].desc,
-                            style: Theme.of(context).textTheme.bodySmall,
+                            style: TextStyle(color: Themes.grey, fontSize: 12),
                             textAlign: TextAlign.center,
                           ),
                         )
@@ -66,7 +67,7 @@ class OnBoardingScreen extends StatelessWidget {
                             width: MediaQuery.of(context).size.width,
                             child: ElevatedButton(
                               onPressed: () {
-                                context.pushReplacement('/login');
+                                appService.onboarding = true;
                               },
                               style: ElevatedButton.styleFrom(
                                 shape: RoundedRectangleBorder(
@@ -126,7 +127,7 @@ class OnBoardingScreen extends StatelessWidget {
                                     ),
                                     elevation: 0,
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 30, vertical: 20),
+                                        horizontal: 30, vertical: 25),
                                     textStyle: const TextStyle()),
                                 child: const Text("NEXT"),
                               ),
@@ -152,14 +153,8 @@ class OnBoardingScreen extends StatelessWidget {
             ),
             color: Themes.green),
         margin: const EdgeInsets.only(right: 5),
-        height: deviceType == 2 ? 15 : 10,
+        height: 10,
         curve: Curves.easeIn,
-        width: onBoardingProvider.selectedPageIndex == index
-            ? deviceType == 2
-                ? 25
-                : 20
-            : deviceType == 2
-                ? 15
-                : 10);
+        width: onBoardingProvider.selectedPageIndex == index ? 20 : 10);
   }
 }
