@@ -26,9 +26,13 @@ class Themes {
   //LightMode
   static final ThemeData light = ThemeData(
     textTheme: TextTheme(
-      bodyLarge: const TextStyle(
+      bodyLarge: TextStyle(
         color: black,
-        fontSize: 26,
+        fontSize: deviceType != 1
+            ? deviceType == 2
+                ? 20
+                : 20
+            : 26,
         fontWeight: FontWeight.bold,
         fontFamily: 'Poppins',
       ),
@@ -287,74 +291,78 @@ class Themes {
 //DarkMode
 
   static final ThemeData dark = ThemeData(
-    textTheme: const TextTheme(
+    textTheme: TextTheme(
       bodyLarge: TextStyle(
         color: white,
-        fontSize: 26,
+        fontSize: deviceType != 1
+            ? deviceType == 2
+                ? 20
+                : 20
+            : 26,
         fontWeight: FontWeight.bold,
         fontFamily: 'Poppins',
       ),
-      bodyMedium: TextStyle(
+      bodyMedium: const TextStyle(
         color: white,
         fontSize: 16,
         fontFamily: 'Poppins',
       ),
-      bodySmall: TextStyle(
+      bodySmall: const TextStyle(
         color: black,
         fontSize: 14,
         fontFamily: 'Poppins',
       ),
-      displayLarge: TextStyle(
+      displayLarge: const TextStyle(
         color: white,
         fontSize: 16,
         fontFamily: 'Poppins',
       ),
-      displayMedium: TextStyle(
+      displayMedium: const TextStyle(
         color: grey,
         fontSize: 16,
         fontFamily: 'Poppins',
       ),
-      displaySmall: TextStyle(
+      displaySmall: const TextStyle(
         color: white,
         fontSize: 16,
         fontFamily: 'Poppins',
       ),
-      titleSmall: TextStyle(
+      titleSmall: const TextStyle(
         color: darkMode,
         fontSize: 16,
         fontFamily: 'Poppins',
       ),
-      titleMedium: TextStyle(
+      titleMedium: const TextStyle(
         color: white,
         fontSize: 16,
         fontFamily: 'Poppins',
       ),
-      titleLarge: TextStyle(
+      titleLarge: const TextStyle(
         color: green,
         fontSize: 16,
         fontFamily: 'Poppins',
       ),
-      labelLarge: TextStyle(
+      labelLarge: const TextStyle(
         color: Color(0xff0F0F0F),
         fontFamily: 'Poppins',
         fontSize: 16,
       ),
-      labelMedium: TextStyle(
+      labelMedium: const TextStyle(
         color: black,
         fontFamily: 'Poppins',
         fontSize: 16,
       ),
-      labelSmall: TextStyle(
+      labelSmall: const TextStyle(
         color: darkMode,
         fontFamily: 'Poppins',
         fontSize: 16,
       ),
-      headlineLarge: TextStyle(
+      headlineLarge: const TextStyle(
         color: inActiveYellowColor,
         fontSize: 16,
         fontFamily: 'Poppins',
       ),
-      headlineMedium: TextStyle(
+      headlineMedium: const TextStyle(
         color: darkMode,
         fontSize: 16,
         fontFamily: 'Poppins',
@@ -443,7 +451,7 @@ class Themes {
       todayForegroundColor: MaterialStatePropertyAll(green),
       headerBackgroundColor: green,
     ),
-    popupMenuTheme: PopupMenuThemeData(color: darkMode2),
+    popupMenuTheme: const PopupMenuThemeData(color: darkMode2),
 
     //radioTheme
     radioTheme: RadioThemeData(

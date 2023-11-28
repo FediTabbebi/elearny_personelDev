@@ -139,6 +139,7 @@ class DrawerWidget extends StatelessWidget {
                             3, context),
                         inkwellWidget("All users", FontAwesomeIcons.peopleGroup,
                             () {}, 4, context),
+                        customInkwellWidget("Quiz", () {}, 5, context),
                       ],
                     ),
                   ),
@@ -198,6 +199,45 @@ class DrawerWidget extends StatelessWidget {
               Icon(
                 icon,
                 size: 20,
+                color: Theme.of(context).textTheme.bodyLarge!.color,
+              ),
+              const SizedBox(
+                width: 40,
+              ),
+              Text(
+                text,
+                style: const TextStyle(fontWeight: FontWeight.w500),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget customInkwellWidget(
+      String text, VoidCallback onPressed, indexRouting, BuildContext context) {
+    return InkWell(
+      onTap: () {
+        context.pop();
+        indexRouting < 6
+            ? context
+                .read<NavigationProvider>()
+                .goToBranch(indexRouting, navigationShell)
+            : null;
+        onPressed();
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(left: 40),
+        child: SizedBox(
+          height: 60,
+          child: Row(
+            children: [
+              ImageIcon(
+                AssetImage(context.read<ThemeProvider>().isDarkMode
+                    ? "assets/icons/quizIconDarkMode.png"
+                    : "assets/icons/quizIconLightMode.png"),
+                size: 25,
                 color: Theme.of(context).textTheme.bodyLarge!.color,
               ),
               const SizedBox(

@@ -8,11 +8,14 @@ import 'package:elearny/src/pages/error_page.dart';
 import 'package:elearny/src/pages/home_main_page.dart';
 import 'package:elearny/src/pages/home_screen.dart';
 import 'package:elearny/src/pages/lesson_editor.dart.dart';
-import 'package:elearny/src/pages/login_screen.dart';
-import 'package:elearny/src/pages/logout_screen.dart';
+import 'package:elearny/src/pages/auth_pages/login_screen.dart';
+import 'package:elearny/src/pages/quiz/create_quiz.dart';
+import 'package:elearny/src/pages/quiz/play_quiz.dart';
+import 'package:elearny/src/pages/quiz/quiz_screen.dart';
+import 'package:elearny/src/pages/sideBarPages/setting_main_screen.dart';
 import 'package:elearny/src/pages/onbording_screen.dart';
 import 'package:elearny/src/pages/sideBarPages/profile_screen.dart';
-import 'package:elearny/src/pages/register_screen.dart';
+import 'package:elearny/src/pages/auth_pages/register_screen.dart';
 import 'package:elearny/src/pages/setting_screen.dart';
 import 'package:elearny/src/pages/sideBarPages/account_security.dart';
 import 'package:elearny/src/pages/sideBarPages/notifications.dart';
@@ -38,17 +41,6 @@ class AppRouter {
       GlobalKey<NavigatorState>(debugLabel: 'shellHome');
   static final subSectionNavigatorKeyHome =
       GlobalKey<NavigatorState>(debugLabel: 'shellSettingHome');
-  static final a = GlobalKey<NavigatorState>(debugLabel: 'a');
-  static final b = GlobalKey<NavigatorState>(debugLabel: 'b');
-  static final c = GlobalKey<NavigatorState>(debugLabel: 'c');
-  static final d = GlobalKey<NavigatorState>(debugLabel: 'd');
-  static final e = GlobalKey<NavigatorState>(debugLabel: 'e');
-  static final f = GlobalKey<NavigatorState>(debugLabel: 'f');
-  static final g = GlobalKey<NavigatorState>(debugLabel: 'g');
-  static final h = GlobalKey<NavigatorState>(debugLabel: 'h');
-  static final i = GlobalKey<NavigatorState>(debugLabel: 'i');
-  static final j = GlobalKey<NavigatorState>(debugLabel: 'j');
-  static final k = GlobalKey<NavigatorState>(debugLabel: 'k');
 
   // Go router Configuration
   late final GoRouter _goRouter = GoRouter(
@@ -244,6 +236,38 @@ class AppRouter {
                     }),
               ],
             ),
+            StatefulShellBranch(
+              routes: <RouteBase>[
+                GoRoute(
+                    name: AppPage.quiz.toName,
+                    path: AppPage.quiz.toPath,
+                    builder: (BuildContext context, GoRouterState state) {
+                      return QuizScreen(
+                        key: state.pageKey,
+                      );
+                    },
+                    routes: [
+                      GoRoute(
+                        name: AppPage.createQuiz.toName,
+                        path: AppPage.createQuiz.toPath,
+                        builder: (BuildContext context, GoRouterState state) {
+                          return CreateQuizScreen(
+                            key: state.pageKey,
+                          );
+                        },
+                      ),
+                      GoRoute(
+                        name: AppPage.playQuiz.toName,
+                        path: AppPage.playQuiz.toPath,
+                        builder: (BuildContext context, GoRouterState state) {
+                          return PlayQuizScreen(
+                            key: state.pageKey,
+                          );
+                        },
+                      ),
+                    ]),
+              ],
+            ),
           ],
         ),
       ],
@@ -268,70 +292,50 @@ class AppRouter {
         final isGoingToOnboard = state.matchedLocation == onboardLocation;
         final isGoingToRegister = state.matchedLocation == registerLocation;
 
-        // If not Initialized and not going to Initialized redirect to Splash
-        if (!isInitialized && !isGoingToInit) {
-          return splashLocation;
-        }
-        // If not onboard and not going to onboard redirect to OnBoarding
-        else if (isInitialized && !isOnboarded && !isGoingToOnboard) {
-          return onboardLocation;
-        }
-        // If not logedin and not going to login redirect to Login
-        else if (isInitialized &&
-            isOnboarded &&
-            !isLogedIn &&
-            !isGoingToLogin) {
-          if (isGoingToRegister) {
+        if (!kIsWeb) {
+          // If not Initialized and not going to Initialized redirect to Splash
+          if (!isInitialized && !isGoingToInit) {
+            return splashLocation;
+          }
+          // If not onboard and not going to onboard redirect to OnBoarding
+          else if (isInitialized && !isOnboarded && !isGoingToOnboard) {
+            return onboardLocation;
+          }
+          // If not logedin and not going to login redirect to Login
+          else if (isInitialized &&
+              isOnboarded &&
+              !isLogedIn &&
+              !isGoingToLogin) {
+            if (isGoingToRegister) {
+              return registerLocation;
+            }
+            return loginLocation;
+          }
+          // If all the scenarios are cleared but still going to any of that screen redirect to Home
+          else if ((isLogedIn && isGoingToLogin) ||
+              (isInitialized && isGoingToInit) ||
+              (isOnboarded && isGoingToOnboard)) {
+            await getUser.getCurrentUser(user!.uid).then(
+                (value) => context.read<UserProvider>().updateUser(value));
+            return homeLocation;
+          } else {
+            // Else Don't do anything
+            return null;
+          }
+        } else {
+          if (isLogedIn) {
+            await getUser.getCurrentUser(user.uid).then(
+                (value) => context.read<UserProvider>().updateUser(value));
+
+            if (isGoingToLogin) {
+              return homeLocation;
+            }
+            return null;
+          } else if (isGoingToRegister) {
             return registerLocation;
-            // If not logedin and not going to login redirect to Login
           }
           return loginLocation;
         }
-        // If all the scenarios are cleared but still going to any of that screen redirect to Home
-        else if ((isLogedIn && isGoingToLogin) ||
-            (isInitialized && isGoingToInit) ||
-            (isOnboarded && isGoingToOnboard)) {
-          await getUser
-              .getCurrentUser(user!.uid)
-              .then((value) => context.read<UserProvider>().updateUser(value));
-          return homeLocation;
-        } else {
-          // Else Don't do anything
-          return null;
-        }
-        // else {
-        //   if (!kIsWeb && !appService.onboarding) {
-        //     return AppPage.onBoarding.toPath;
-        //   } else {
-        //     if (user != null) {
-        //       print("User exist redirecting to home page");
-        //       await getUser.getCurrentUser(user.uid).then(
-        //           (value) => context.read<UserProvider>().updateUser(value));
-        //       return null;
-        //       // if (state.matchedLocation == AppPage.login.toPath) {
-        //       //   print("User does not exist redirecting to login page");
-        //       //   return AppPage.home.toPath;
-        //       // }
-        //     } else if (state.matchedLocation == AppPage.register.toPath) {
-        //       return AppPage.register.toPath;
-        //     } else {
-        //       return AppPage.login.toPath;
-        //     }
-        //   }
-
-        // }
-        // else if (user != null) {
-        //   print("User exist redirecting to home page");
-        //   await getUser
-        //       .getCurrentUser(user.uid)
-        //       .then((value) => context.read<UserProvider>().updateUser(value));
-        //   return null;
-        // if (state.matchedLocation == AppPage.login.toPath) {
-        //   print("User does not exist redirecting to login page");
-        //   return AppPage.home.toPath;
-        // }
-        //   }
-        // return AppPage.login.toPath;
       });
 }
 

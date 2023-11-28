@@ -1,11 +1,13 @@
 import 'package:elearny/model/user.dart';
+import 'package:elearny/routes/app_routes.dart';
 import 'package:elearny/src/theme/themes.dart';
 import 'package:elearny/src/widgets/loading_indicator_widget.dart';
+import 'package:elearny/utils/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../../provider/authProviders/register_provider.dart';
+import '../../../provider/authProviders/register_provider.dart';
 
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});
@@ -13,6 +15,7 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // final registrationProvider = Provider.of<RegisterProvider>(context);
+    final ValidateFields validate = ValidateFields();
 
     return SafeArea(
       child: Scaffold(
@@ -39,20 +42,14 @@ class RegisterScreen extends StatelessWidget {
                   decoration: const InputDecoration(
                     labelText: 'First Name',
                   ),
-                  validator: (value) => context
-                      .read<RegisterProvider>()
-                      .validate
-                      .validateFirstName(value!)),
+                  validator: (value) => validate.validateFirstName(value!)),
               const SizedBox(height: 16.0),
               TextFormField(
                 controller: context.read<RegisterProvider>().lastNameController,
                 decoration: const InputDecoration(
                   labelText: 'Last Name',
                 ),
-                validator: (value) => context
-                    .read<RegisterProvider>()
-                    .validate
-                    .validateLastName(value!),
+                validator: (value) => validate.validateLastName(value!),
               ),
               const SizedBox(height: 16.0),
               TextFormField(
@@ -60,10 +57,7 @@ class RegisterScreen extends StatelessWidget {
                 decoration: const InputDecoration(
                   labelText: 'Email',
                 ),
-                validator: (value) => context
-                    .read<RegisterProvider>()
-                    .validate
-                    .validateEmail(value!),
+                validator: (value) => validate.validateEmail(value!),
               ),
               const SizedBox(height: 16.0),
               TextFormField(
@@ -71,10 +65,7 @@ class RegisterScreen extends StatelessWidget {
                 decoration: const InputDecoration(
                   labelText: 'Password',
                 ),
-                validator: (value) => context
-                    .read<RegisterProvider>()
-                    .validate
-                    .validatePassword(value!),
+                validator: (value) => validate.validatePassword(value!),
               ),
               const SizedBox(height: 16.0),
               context.watch<RegisterProvider>().isLoading

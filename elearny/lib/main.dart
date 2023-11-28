@@ -20,6 +20,7 @@ import 'services/app_service/app_service.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  GoRouter.optionURLReflectsImperativeAPIs = true;
   final SharedPreferences sharedPreferences =
       await SharedPreferences.getInstance();
   runApp(MyApp(sharedPreferences: sharedPreferences));

@@ -22,6 +22,7 @@ class HomeMain extends StatelessWidget {
           ),
           child: Container(
               width: deviceType == 1 ? 190 : 100,
+              height: 50,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(
                     60.0), // Adjust the border radius as needed
@@ -57,8 +58,8 @@ class HomeMain extends StatelessWidget {
                               .profilePicture
                               .isEmpty
                           ? Container(
-                              height: 50,
-                              width: 50,
+                              height: 45,
+                              width: 45,
                               decoration: const BoxDecoration(
                                 shape: BoxShape.circle,
                                 image: DecorationImage(
@@ -75,8 +76,8 @@ class HomeMain extends StatelessWidget {
                                   .profilePicture,
                               imageBuilder: (context, imageProvider) =>
                                   Container(
-                                height: 50,
-                                width: 50,
+                                height: 45,
+                                width: 45,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   image: DecorationImage(
@@ -86,7 +87,7 @@ class HomeMain extends StatelessWidget {
                               placeholder: (context, url) =>
                                   const UnconstrainedBox(
                                 child: SizedBox(
-                                  width: 50,
+                                  width: 45,
                                   child: Center(
                                     child: LoadingIndicatorWidget(
                                         color: Themes.green, size: 12.5),

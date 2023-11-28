@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import '../theme/themes.dart';
+import '../../theme/themes.dart';
 
 class SettingScreen extends StatelessWidget {
   const SettingScreen({super.key});

@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:elearny/data/globales.dart';
 import 'package:elearny/model/user.dart';
-import 'package:elearny/services/firebase/fireStore/adminEditUsers/admin_edit_users.dart';
+import 'package:elearny/services/firebase/fireStore/admin_edit_users/admin_edit_users.dart';
 import 'package:elearny/src/theme/themes.dart';
 import 'package:elearny/src/widgets/admin_editusers_shimmer.dart';
 import 'package:elearny/src/widgets/loading_indicator_widget.dart';
@@ -195,23 +195,30 @@ class AdminEditUserScreen extends StatelessWidget {
             child: ListTile(
               tileColor: Theme.of(context).scaffoldBackgroundColor,
               contentPadding: EdgeInsets.zero,
-              leading: CachedNetworkImage(
-                imageUrl: user.profilePicture.isEmpty
-                    ? "assets/images/manPlaceHolder.png"
-                    : user.profilePicture,
-                placeholder: (context, url) =>
-                    const LoadingIndicatorWidget(color: Themes.green, size: 15),
-                imageBuilder: (context, imageProvider) => Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                        image: imageProvider, fit: BoxFit.cover),
-                  ),
-                ),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
-              ),
+              leading: user.profilePicture.isEmpty
+                  ? Image.asset("assets/images/manPlaceHolder.png")
+                  : CachedNetworkImage(
+                      imageUrl: user.profilePicture,
+                      placeholder: (context, url) => Container(
+                          width: 20,
+                          height: 20,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                          ),
+                          child: const LoadingIndicatorWidget(
+                              color: Themes.green, size: 15)),
+                      imageBuilder: (context, imageProvider) => Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                              image: imageProvider, fit: BoxFit.cover),
+                        ),
+                      ),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
+                    ),
               title: Tooltip(
                 showDuration: const Duration(milliseconds: 0),
                 message: "${user.firstName}" " ${user.lastName}",
@@ -383,9 +390,15 @@ class AdminEditUserScreen extends StatelessWidget {
                         )
                       : CachedNetworkImage(
                           imageUrl: user.profilePicture,
-                          placeholder: (context, url) =>
-                              const LoadingIndicatorWidget(
-                                  color: Themes.green, size: 15),
+                          placeholder: (context, url) => Container(
+                            width: 20,
+                            height: 20,
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                            ),
+                            child: const LoadingIndicatorWidget(
+                                color: Themes.green, size: 15),
+                          ),
                           imageBuilder: (context, imageProvider) => Container(
                             width: 40,
                             height: 40,

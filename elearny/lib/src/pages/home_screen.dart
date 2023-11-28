@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:elearny/provider/authProviders/login_provider.dart';
 import 'package:elearny/provider/navigationProvider/main_navigation_provider.dart';
+import 'package:elearny/provider/themeProvider/theme_provider.dart';
 import 'package:elearny/routes/app_routes.dart';
 import 'package:elearny/src/theme/themes.dart';
 import 'package:elearny/src/widgets/drawer_widget.dart';
@@ -148,6 +149,11 @@ class HomeScreen extends StatelessWidget {
                                   FontAwesomeIcons.link),
                               sideMenuItemDatatile(context, 4, "All users",
                                   FontAwesomeIcons.peopleGroup),
+                              customSideMenuItemDatatile(
+                                context,
+                                5,
+                                "Quiz",
+                              ),
                             ],
                             footer: Column(
                               children: [
@@ -221,6 +227,36 @@ class HomeScreen extends StatelessWidget {
       icon: Icon(
         iconData,
         size: 20,
+      ),
+      // selectedIcon: const Icon(Icons.home),
+      titleStyle: const TextStyle(
+          color: Colors.white, fontSize: 18, fontWeight: FontWeight.w200),
+      selectedTitleStyle: const TextStyle(
+        color: Themes.green,
+        fontSize: 18,
+      ),
+      highlightSelectedColor: Themes.black2,
+    );
+  }
+
+  SideMenuItemDataTile customSideMenuItemDatatile(
+    BuildContext context,
+    int branch,
+    String title,
+  ) {
+    return SideMenuItemDataTile(
+      itemHeight: 60,
+      isSelected: navigationShell.currentIndex == branch,
+      onTap: () {
+        context.read<NavigationProvider>().goToBranch(branch, navigationShell);
+        if (branch == 5) {}
+      },
+      title: title,
+      icon: const UnconstrainedBox(
+        child: ImageIcon(
+          AssetImage("assets/icons/quizIconDarkMode.png"),
+          size: 30,
+        ),
       ),
       // selectedIcon: const Icon(Icons.home),
       titleStyle: const TextStyle(

@@ -38,4 +38,17 @@ class ValidateFields {
     }
     return null;
   }
+
+  String? validateUrl(String url) {
+    RegExp urlRegex = RegExp(
+      r'^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$',
+      caseSensitive: false,
+    );
+
+    if (urlRegex.hasMatch(url)) {
+      return null; // Valid URL
+    } else {
+      return 'Invalid URL'; // Error message
+    }
+  }
 }

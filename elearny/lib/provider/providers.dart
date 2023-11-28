@@ -8,6 +8,7 @@ import 'package:elearny/provider/navigationProvider/main_navigation_provider.dar
 import 'package:elearny/provider/navigationProvider/sub_naviagtion_provider.dart';
 import 'package:elearny/provider/onBoardingProvider/onbording_provider.dart';
 import 'package:elearny/provider/SplashScreenProvider/splash_provider.dart';
+import 'package:elearny/provider/quiz_provider/quiz_provider.dart';
 import 'package:elearny/provider/themeProvider/theme_provider.dart';
 import 'package:elearny/provider/userProvider/user_provider.dart';
 import 'package:elearny/provider/userProvider/update_user_provider.dart';
@@ -47,6 +48,7 @@ class Providers extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => LoginProvider()),
         ChangeNotifierProvider(create: (_) => ThemeModeSwitcherProvider()),
         ChangeNotifierProvider(create: (_) => HomeProvider()),
+        ChangeNotifierProvider(create: (_) => QuizProvider()),
         ChangeNotifierProvider(create: (_) => AdminEditUsersProvider()),
         ChangeNotifierProvider(create: (_) => DropdownValue()),
         ChangeNotifierProvider(create: (_) => NavigationProvider()),

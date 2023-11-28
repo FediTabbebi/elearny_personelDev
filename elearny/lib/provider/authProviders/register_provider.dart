@@ -14,7 +14,6 @@ class RegisterProvider with ChangeNotifier {
   final TextEditingController lastNameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final ValidateFields validate = ValidateFields();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   Future<void> registerUser(UserModel user, BuildContext context) async {

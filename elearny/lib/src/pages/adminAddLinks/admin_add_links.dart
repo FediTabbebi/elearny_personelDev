@@ -4,7 +4,7 @@ import 'package:elearny/model/admin_links.dart';
 import 'package:elearny/provider/adminProviders/add_links_provider.dart';
 
 import 'package:elearny/provider/themeProvider/theme_provider.dart';
-import 'package:elearny/services/firebase/fireStore/adminAddLinks/add_links.dart';
+import 'package:elearny/services/firebase/fireStore/admin_edit_social_links/add_links.dart';
 
 import 'package:elearny/src/theme/themes.dart';
 import 'package:elearny/src/widgets/admin_addlinks_shimmer.dart';
@@ -375,10 +375,9 @@ Widget mainPagePictureWidget(
                                               const UnconstrainedBox(
                                                 child: SizedBox(
                                                   width: 30,
-                                                  child:
-                                                      const LoadingIndicatorWidget(
-                                                          color: Themes.green,
-                                                          size: 30),
+                                                  child: LoadingIndicatorWidget(
+                                                      color: Themes.green,
+                                                      size: 30),
                                                 ),
                                               ),
                                           errorWidget: (context, url, error) {
@@ -416,13 +415,14 @@ Widget textField(BuildContext context, IconData? icon, String imageIconPath,
         Padding(
           padding: const EdgeInsets.only(right: 20.0, left: 10),
           child: SizedBox(
-            height: 60,
-            width: 60,
+            height: deviceType == 1 ? 60 : 30,
+            width: deviceType == 1 ? 60 : 30,
             // decoration: BoxDecoration(
             //     border: Border.all(color: Colors.grey), shape: BoxShape.circle),
             child: icon == null
                 ? Image.asset(imageIconPath)
-                : Icon(icon, size: 45, color: Themes.green),
+                : Icon(icon,
+                    size: deviceType == 1 ? 45 : 25, color: Themes.green),
           ),
         ),
         Expanded(

@@ -16,7 +16,6 @@ class LoginProvider with ChangeNotifier {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final ValidateFields validate = ValidateFields();
 
   Future<void> loginUser(
       String email, String password, BuildContext context) async {

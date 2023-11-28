@@ -1,5 +1,5 @@
 import 'package:elearny/data/globales.dart';
-import 'package:elearny/services/firebase/fireStore/adminEditUsers/admin_edit_users.dart';
+import 'package:elearny/services/firebase/fireStore/admin_edit_users/admin_edit_users.dart';
 import 'package:elearny/src/theme/themes.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

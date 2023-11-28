@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:elearny/model/admin_links.dart';
-import 'package:elearny/services/firebase/fireStore/adminAddLinks/add_links.dart';
+import 'package:elearny/services/firebase/fireStore/admin_edit_social_links/add_links.dart';
 import 'package:elearny/services/firebase/storage/upload_files.dart';
 import 'package:elearny/src/widgets/one_button_dialog.dart';
 import 'package:flutter/foundation.dart';

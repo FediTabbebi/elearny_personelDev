@@ -1,31 +1,42 @@
 import 'package:elearny/data/globales.dart';
-import 'package:elearny/provider/deviceTypeProvider/device_type_provider.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class AppBarWidget extends StatelessWidget {
   final IconData? leftIcon;
+
+  final Widget? leftWidget;
   final VoidCallback? onPressedLeftIcon;
   final String? title;
+  final bool? centerTitle;
   final String? subtitle;
   final IconData? rightIcon;
+  final Widget? rightWidget;
   final VoidCallback? onPressedRightIcon;
 
   const AppBarWidget(
       {super.key,
       required this.leftIcon,
+      this.leftWidget,
       this.onPressedLeftIcon,
       required this.title,
+      this.centerTitle,
       required this.subtitle,
       required this.rightIcon,
+      this.rightWidget,
       this.onPressedRightIcon});
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: title != null
+      mainAxisAlignment: centerTitle == null
           ? MainAxisAlignment.start
-          : MainAxisAlignment.spaceBetween,
+          : (rightWidget == null &&
+                  rightIcon == null &&
+                  leftIcon == null &&
+                  leftWidget == null)
+              ? MainAxisAlignment.center
+              : MainAxisAlignment.spaceEvenly,
       children: <Widget>[
         leftIcon != null
             ? Container(
@@ -57,30 +68,41 @@ class AppBarWidget extends StatelessWidget {
             //     ),
             //   )
             : const SizedBox(
-                width: 60,
+                width: 1,
               ),
-        Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(
-            title!,
-            style: const TextStyle(fontSize: 18),
-          ),
-          const SizedBox(
-            height: 3,
-          ),
-          SizedBox(
-            width: MediaQuery.of(context).size.width / 1.4,
-            child: Text(
-              subtitle!,
-              overflow: TextOverflow.visible,
-              softWrap: true,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: Color(0xff8E8EA9),
+        Column(
+            crossAxisAlignment: centerTitle == null
+                ? CrossAxisAlignment.start
+                : CrossAxisAlignment.center,
+            children: [
+              Text(
+                title!,
+                style: Theme.of(context).textTheme.bodyLarge,
+                textAlign: centerTitle == null ? null : TextAlign.center,
               ),
-            ),
-          )
-        ]),
+              const SizedBox(
+                height: 3,
+              ),
+              subtitle != null
+                  ? SizedBox(
+                      width: kIsWeb
+                          ? MediaQuery.of(context).size.width / 2.1
+                          : (rightWidget == null && rightIcon == null)
+                              ? MediaQuery.of(context).size.width / 1.4
+                              : MediaQuery.of(context).size.width / 1.6,
+                      child: Text(
+                        subtitle!,
+                        overflow: TextOverflow.visible,
+                        softWrap: true,
+                        style: Theme.of(context).textTheme.displayMedium,
+                        textAlign:
+                            centerTitle == null ? null : TextAlign.center,
+                      ),
+                    )
+                  : const SizedBox(
+                      height: 0,
+                    ),
+            ]),
         rightIcon != null
             ? ElevatedButton(
                 onPressed: () {
@@ -105,8 +127,12 @@ class AppBarWidget extends StatelessWidget {
                 ),
               )
             : const SizedBox(
-                width: 1,
-              )
+                width: 0,
+              ),
+        rightWidget ??
+            const SizedBox(
+              width: 0,
+            )
       ],
     );
   }

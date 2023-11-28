@@ -6,6 +6,7 @@ import 'package:elearny/services/app_service/app_service.dart';
 import 'package:elearny/src/theme/themes.dart';
 import 'package:elearny/src/widgets/loading_indicator_widget.dart';
 import 'package:elearny/src/widgets/web_appbar.dart';
+import 'package:elearny/utils/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +17,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appService = Provider.of<AppService>(context);
+    final ValidateFields validate = ValidateFields();
     // final loginProvider = Provider.of<LoginProvider>(context);
     return SafeArea(
       child: LayoutBuilder(builder: (context, constraint) {
@@ -56,10 +58,7 @@ class LoginScreen extends StatelessWidget {
                       labelText: 'Email',
                     ),
                     keyboardType: TextInputType.emailAddress,
-                    validator: (value) => context
-                        .read<LoginProvider>()
-                        .validate
-                        .validateEmail(value!),
+                    validator: (value) => validate.validateEmail(value!),
                   ),
                   const SizedBox(height: 16.0),
                   TextFormField(
@@ -68,10 +67,7 @@ class LoginScreen extends StatelessWidget {
                     decoration: const InputDecoration(
                       labelText: 'Password',
                     ),
-                    validator: (value) => context
-                        .read<LoginProvider>()
-                        .validate
-                        .validatePassword(value!),
+                    validator: (value) => validate.validatePassword(value!),
                   ),
                   const SizedBox(height: 16.0),
                   context.watch<LoginProvider>().isLoading
