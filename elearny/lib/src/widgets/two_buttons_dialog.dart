@@ -1,11 +1,11 @@
 import 'package:elearny/data/globales.dart';
-import 'package:elearny/provider/deviceTypeProvider/device_type_provider.dart';
+
 import 'package:elearny/src/theme/themes.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class TwoButtonsDialogWidget extends StatelessWidget {
   final String title;
+  final Color? titleColor;
   final String contents;
   final String confirmbuttonText;
   final VoidCallback onConfirm;
@@ -15,6 +15,7 @@ class TwoButtonsDialogWidget extends StatelessWidget {
   const TwoButtonsDialogWidget({
     Key? key,
     required this.title,
+    this.titleColor,
     required this.contents,
     required this.confirmbuttonText,
     required this.onConfirm,
@@ -54,7 +55,7 @@ class TwoButtonsDialogWidget extends StatelessWidget {
                             : 20
                         : 28,
                     fontWeight: FontWeight.bold,
-                    color: Themes.green,
+                    color: titleColor ?? Themes.green,
                   ),
                   textAlign: TextAlign.center,
                 ),

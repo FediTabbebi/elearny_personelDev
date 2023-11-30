@@ -3,8 +3,6 @@ import 'package:elearny/routes/app_routes.dart';
 import 'package:elearny/services/firebase/fireStore/auth/authservice.dart';
 import 'package:elearny/src/widgets/one_button_dialog.dart';
 
-import 'package:elearny/utils/helper.dart';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -70,13 +68,13 @@ class LoginProvider with ChangeNotifier {
         context: context,
         builder: (BuildContext context) {
           return OneButtonDialogWidget(
-              title: "An Error Occured",
-              contents: message,
-              confirmbuttonText: "Back",
-              onConfirm: () {
-                context.pop();
-              },
-              onWillPopScopeValue: true);
+            title: "An Error Occured",
+            contents: message,
+            confirmbuttonText: "Back",
+            onConfirm: () {
+              context.pop();
+            },
+          );
         });
   }
 }

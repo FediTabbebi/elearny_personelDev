@@ -1,15 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:elearny/data/globales.dart';
 import 'package:elearny/model/admin_links.dart';
-import 'package:elearny/provider/adminProviders/add_links_provider.dart';
+import 'package:elearny/provider/adminProviders/admin_edit_social_links_provider.dart';
 
 import 'package:elearny/provider/themeProvider/theme_provider.dart';
 import 'package:elearny/services/firebase/fireStore/admin_edit_social_links/add_links.dart';
 
 import 'package:elearny/src/theme/themes.dart';
 import 'package:elearny/src/widgets/admin_addlinks_shimmer.dart';
+import 'package:elearny/src/widgets/app_bar_widget.dart';
 import 'package:elearny/src/widgets/loading_indicator_widget.dart';
-import 'package:elearny/utils/app_bar.dart';
 import 'package:elearny/utils/helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -21,27 +21,30 @@ class AdminAddLinks extends StatelessWidget {
   final AdminServices adminSocialMediaServices = AdminServices();
   @override
   Widget build(BuildContext context) {
-    return FutureProvider<AdminLinksModel?>(
-      create: (context) => adminSocialMediaServices.getData(),
-      initialData: null, // Set an initial value while the future is resolving
-      child: Selector<AdminLinksModel?, AdminLinksModel?>(
-        selector: (context, adminLinks) {
-          return adminLinks;
-        },
-        builder: (context, yourData, _) {
-          print("AdminLinksModel");
+    return FutureProvider<List<AdminLinksModel?>?>(
+        create: (context) =>
+            context.read<AdminAddLinkProvider>().getLinks(context),
+        initialData: null, // Set an initial value while the future is resolving
+        child: Consumer<List<AdminLinksModel?>?>(
+          builder: (context, adminLinksData, _) {
+            if (adminLinksData == null) {
+              print("Loading");
+              return const AdminAddLinksShimmerWidget();
+            } else if (adminLinksData.isEmpty) {
+              // An error occurred while fetching data
 
-          if (yourData == null) {
-            return const AdminAddLinksShimmerWidget(); // Display a progress indicator
-          } else {
-            // Data is available, call settingControllers
-            context.read<AdminAddLinkProvider>().settingControllers(yourData);
+              return mainScreen(context); // Replace with your error widget
+            } else {
+              // Data is available, call settingControllers
 
-            return mainScreen(context);
-          }
-        },
-      ),
-    );
+              context
+                  .read<AdminAddLinkProvider>()
+                  .settingControllers(adminLinksData.first);
+
+              return mainScreen(context);
+            }
+          },
+        ));
   }
 }
 
@@ -51,17 +54,10 @@ Widget mainScreen(
   return LayoutBuilder(builder: (context, constraints) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-            automaticallyImplyLeading: false,
-            toolbarHeight: 100,
-            title: kIsWeb
-                ? Center(
-                    child: Text(
-                    'Social Media Links',
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ))
-                : AppBarUtils.appBarWidget(context, "Social Media Links",
-                    "Here you can modify social media links")),
+        appBar: const CustomAppBarWidget(
+          title: 'Social Media Links',
+          subtitle: 'Here you can modify social media links',
+        ),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(8.0),

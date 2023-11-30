@@ -1,7 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:elearny/provider/themeProvider/theme_provider.dart';
 import 'package:elearny/provider/userProvider/user_provider.dart';
-import 'package:elearny/utils/app_bar.dart';
+import 'package:elearny/src/widgets/app_bar_widget.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
@@ -14,11 +15,10 @@ class SettingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          automaticallyImplyLeading: false,
-          toolbarHeight: 100,
-          title: AppBarUtils.appBarWidget(context, "Settings",
-              "here your can edit and adjust your settings")),
+      appBar: const CustomAppBarWidget(
+        title: "Settings",
+        subtitle: "here your can edit and adjust your settings",
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [

@@ -1,35 +1,44 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elearny/model/quiz_model.dart';
 
 class QuizService {
-  final DocumentReference docReference =
-      FirebaseFirestore.instance.collection('quiz').doc();
-
   Future<void> createQuiz(
     QuizModel data,
   ) async {
+    final DocumentReference docReference =
+        FirebaseFirestore.instance.collection('quiz').doc();
     await docReference.set({
-      'quizLink': data.quizLink,
       'quizId': docReference.id,
+      'quizTitle': data.quizTitle,
+      'quizLink': data.quizLink,
       'createdAt': DateTime.now(),
       'updatedAt': DateTime.now(),
     });
   }
 
-  Future<QuizModel?> getData() async {
-    try {
-      DocumentSnapshot<Map<String, dynamic>> docSnapshot =
-          await FirebaseFirestore.instance.collection('quiz').doc("quiz").get();
+  Stream<List<QuizModel>> getAllData() {
+    StreamController<List<QuizModel>> controller =
+        StreamController<List<QuizModel>>();
 
-      if (docSnapshot.exists) {
-        print("getting data");
-        return QuizModel.fromMap(docSnapshot.data()!);
-      } else {
-        return null;
+    FirebaseFirestore.instance.collection('quiz').snapshots().listen(
+        (querySnapshot) {
+      List<QuizModel> quizlist = [];
+      for (var doc in querySnapshot.docs) {
+        Map<String, dynamic> data = doc.data();
+        quizlist.add(QuizModel.fromMap(data));
       }
-    } catch (e) {
-      print("Error fetching data: $e");
-      return null;
-    }
+      controller.add(quizlist);
+    }, onError: (error) {
+      // Handle any errors here
+      print('Error getting quiz list: $error');
+    });
+
+    return controller.stream;
+  }
+
+  Future<void> deleteQuizDocument(String quizId) async {
+    await FirebaseFirestore.instance.collection('quiz').doc(quizId).delete();
   }
 }

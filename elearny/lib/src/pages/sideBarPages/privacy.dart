@@ -1,4 +1,4 @@
-import 'package:elearny/utils/app_bar.dart';
+import 'package:elearny/src/widgets/app_bar_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -7,27 +7,11 @@ class PrivacyScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          automaticallyImplyLeading: false,
-          toolbarHeight: 100,
-          title: kIsWeb
-              ? Center(
-                  child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Privacy',
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                    Text(
-                      'Edit your privacy',
-                      style: Theme.of(context).textTheme.displayMedium,
-                    ),
-                  ],
-                ))
-              : AppBarUtils.appBarWidget(
-                  context, "Privacy", "Edit your privacy")),
+    return const Scaffold(
+      appBar: CustomAppBarWidget(
+        title: 'Edit your privacy',
+        subtitle: 'turn promotional email notifications from elearny on or off',
+      ),
     );
   }
 }

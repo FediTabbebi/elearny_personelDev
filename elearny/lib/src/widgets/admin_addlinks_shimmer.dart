@@ -1,7 +1,7 @@
 import 'package:elearny/data/globales.dart';
-import 'package:elearny/provider/deviceTypeProvider/device_type_provider.dart';
+import 'package:elearny/src/widgets/app_bar_widget_shimmer.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class AdminAddLinksShimmerWidget extends StatelessWidget {
   const AdminAddLinksShimmerWidget({super.key});
@@ -9,12 +9,7 @@ class AdminAddLinksShimmerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        toolbarHeight: 100,
-        centerTitle: true,
-        title: titleShimmerContainer(context, 30, 300),
-      ),
+      appBar: CustomAppBarShimmerWidget(),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -107,8 +102,8 @@ class AdminAddLinksShimmerWidget extends StatelessWidget {
           child: Stack(
             alignment: Alignment.center,
             children: [
-              Align(
-                alignment: Alignment.topCenter,
+              Positioned(
+                top: 10,
                 child: titleShimmerContainer(context, 12, 180),
               ),
               SizedBox(
@@ -217,12 +212,21 @@ class AdminAddLinksShimmerWidget extends StatelessWidget {
 
   Widget titleShimmerContainer(
       BuildContext context, double height, double width) {
-    return Container(
-      height: height,
-      width: width,
-      decoration: BoxDecoration(
-          color: Theme.of(context).textTheme.headlineMedium!.color,
-          borderRadius: BorderRadius.circular(10)),
+    return Row(
+      children: [
+        kIsWeb
+            ? const SizedBox()
+            : const SizedBox(
+                width: 40,
+              ),
+        Container(
+          height: height,
+          width: width,
+          decoration: BoxDecoration(
+              color: Theme.of(context).textTheme.headlineMedium!.color,
+              borderRadius: BorderRadius.circular(10)),
+        ),
+      ],
     );
   }
 }

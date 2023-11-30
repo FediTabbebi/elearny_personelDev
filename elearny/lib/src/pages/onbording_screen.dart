@@ -23,6 +23,7 @@ class OnBoardingScreen extends StatelessWidget {
                   controller: onboardingProvider.pageController,
                   onPageChanged: (index) {
                     onboardingProvider.animateToPage(index, 300);
+                    print(onboardingProvider.selectedPageIndex);
                     //  onboardingProvider.selectedPageIndex = index;
                   },
                   itemCount: contents.length,
@@ -40,14 +41,19 @@ class OnBoardingScreen extends StatelessWidget {
                         Text(
                           contents[i].title,
                           textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.bodyLarge,
+                          style: TextStyle(
+                              color:
+                                  Theme.of(context).textTheme.bodyLarge!.color!,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 24),
                         ),
                         const SizedBox(height: 15),
                         Padding(
                           padding: const EdgeInsets.only(left: 15, right: 15),
                           child: Text(
                             contents[i].desc,
-                            style: TextStyle(color: Themes.grey, fontSize: 12),
+                            style: const TextStyle(
+                                color: Themes.grey, fontSize: 14),
                             textAlign: TextAlign.center,
                           ),
                         )
@@ -86,6 +92,7 @@ class OnBoardingScreen extends StatelessWidget {
                               TextButton(
                                 onPressed: () {
                                   onboardingProvider.skipAction();
+                                  print(onboardingProvider.selectedPageIndex);
                                 },
                                 style: TextButton.styleFrom(
                                   elevation: 0,

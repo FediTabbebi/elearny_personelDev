@@ -1,12 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:elearny/data/globales.dart';
 import 'package:elearny/provider/navigationProvider/main_navigation_provider.dart';
 import 'package:elearny/provider/navigationProvider/sub_naviagtion_provider.dart';
 import 'package:elearny/provider/themeProvider/theme_provider.dart';
 import 'package:elearny/provider/userProvider/user_provider.dart';
 import 'package:elearny/src/theme/themes.dart';
 import 'package:elearny/src/widgets/loading_indicator_widget.dart';
-import 'package:elearny/utils/app_bar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_side_menu/flutter_side_menu.dart';
@@ -20,230 +18,212 @@ class SettingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        if (!kIsWeb) {
-          print("can pop = " + context.canPop().toString());
-          return false;
-        } else {
-          print("can pop = " + context.canPop().toString());
-          return true;
-        }
-      },
-      child: Scaffold(
-        appBar: !kIsWeb
-            ? AppBar(
-                toolbarHeight: 100,
-                title: AppBarUtils.appBarWidget(context, "Settings",
-                    "here your can edit and adjust your settings"))
-            : null,
-        body: kIsWeb
-            ? Row(
-                children: [
-                  SideMenu(
-                    backgroundColor: context.read<ThemeProvider>().isDarkMode
-                        ? const Color(0xff040404)
-                        : const Color(0xffF7F7F7),
-                    minWidth: 200,
-                    maxWidth: 300,
-                    controller:
-                        context.read<NavigationProvider>().sideMenucontroller,
-                    mode: SideMenuMode.auto,
-                    hasResizer: false,
-                    hasResizerToggle: false,
-                    builder: (data) {
-                      return SideMenuData(
-                        header: Column(
-                          children: [
-                            context.read<NavigationProvider>().isClosedSideMenu
-                                ? const SizedBox(
-                                    height: 0,
-                                  )
-                                : const SizedBox(
-                                    height: 20,
+    return Scaffold(
+      body: kIsWeb
+          ? Row(
+              children: [
+                SideMenu(
+                  backgroundColor: context.read<ThemeProvider>().isDarkMode
+                      ? const Color(0xff040404)
+                      : const Color(0xffF7F7F7),
+                  minWidth: 200,
+                  maxWidth: 300,
+                  controller:
+                      context.read<NavigationProvider>().sideMenucontroller,
+                  mode: SideMenuMode.auto,
+                  hasResizer: false,
+                  hasResizerToggle: false,
+                  builder: (data) {
+                    return SideMenuData(
+                      header: Column(
+                        children: [
+                          context.read<NavigationProvider>().isClosedSideMenu
+                              ? const SizedBox(
+                                  height: 0,
+                                )
+                              : const SizedBox(
+                                  height: 20,
+                                ),
+                          context
+                                  .read<UserProvider>()
+                                  .currentUser!
+                                  .profilePicture
+                                  .isEmpty
+                              ? Container(
+                                  width: 120,
+                                  height: 120,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                        image: AssetImage(
+                                          "assets/images/manPlaceHolder.png",
+                                        ),
+                                        fit: BoxFit.cover),
                                   ),
-                            context
-                                    .read<UserProvider>()
-                                    .currentUser!
-                                    .profilePicture
-                                    .isEmpty
-                                ? Container(
-                                    width: 120,
+                                )
+                              : CachedNetworkImage(
+                                  imageUrl: context
+                                          .read<UserProvider>()
+                                          .currentUser!
+                                          .profilePicture
+                                          .isEmpty
+                                      ? "assets/images/manPlaceHolder.png"
+                                      : context
+                                          .read<UserProvider>()
+                                          .currentUser!
+                                          .profilePicture,
+                                  imageBuilder: (context, imageProvider) =>
+                                      Container(
                                     height: 120,
-                                    decoration: const BoxDecoration(
+                                    width: 120,
+                                    decoration: BoxDecoration(
                                       shape: BoxShape.circle,
                                       image: DecorationImage(
-                                          image: AssetImage(
-                                            "assets/images/manPlaceHolder.png",
-                                          ),
+                                          image: imageProvider,
                                           fit: BoxFit.cover),
                                     ),
-                                  )
-                                : CachedNetworkImage(
-                                    imageUrl: context
-                                            .read<UserProvider>()
-                                            .currentUser!
-                                            .profilePicture
-                                            .isEmpty
-                                        ? "assets/images/manPlaceHolder.png"
-                                        : context
-                                            .read<UserProvider>()
-                                            .currentUser!
-                                            .profilePicture,
-                                    imageBuilder: (context, imageProvider) =>
-                                        Container(
-                                      height: 120,
-                                      width: 120,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        image: DecorationImage(
-                                            image: imageProvider,
-                                            fit: BoxFit.cover),
-                                      ),
-                                    ),
-                                    placeholder: (context, url) =>
-                                        const LoadingIndicatorWidget(
-                                            color: Themes.green, size: 50),
-                                    errorWidget: (context, url, error) =>
-                                        const Icon(Icons.error),
                                   ),
-                            // SizedBox(
-                            //   height: 150,
-                            //   child: CircleAvatar(
-                            //       // radius: deviceType == 1 ? 75 : 50,
-                            //       radius: 70,
-                            //       backgroundColor:
-                            //           context.read<ThemeProvider>().isDarkMode
-                            //               ? Themes.darkMode
-                            //               : Colors.grey.shade200,
-                            //       backgroundImage: context
-                            //               .watch<UserProvider>()
-                            //               .currentUser!
-                            //               .profilePicture
-                            //               .isEmpty
-                            //           ? const AssetImage(
-                            //               "assets/images/manPlaceHolder.png")
-                            //           : CachedNetworkImageProvider(
-                            //               context
-                            //                   .read<UserProvider>()
-                            //                   .currentUser!
-                            //                   .profilePicture,
-                            //             ) as ImageProvider<Object>?),
-                            // ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Text(
-                              "${context.watch<UserProvider>().currentUser!.firstName}"
-                              " "
-                              "${context.watch<UserProvider>().currentUser!.lastName}",
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.w500),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                          ],
-                        ),
-                        items: [
-                          sideMenuItemDatatile(
-                            context,
-                            0,
-                            "Profile",
+                                  placeholder: (context, url) =>
+                                      const LoadingIndicatorWidget(
+                                          color: Themes.green, size: 50),
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(Icons.error),
+                                ),
+                          // SizedBox(
+                          //   height: 150,
+                          //   child: CircleAvatar(
+                          //       // radius: deviceType == 1 ? 75 : 50,
+                          //       radius: 70,
+                          //       backgroundColor:
+                          //           context.read<ThemeProvider>().isDarkMode
+                          //               ? Themes.darkMode
+                          //               : Colors.grey.shade200,
+                          //       backgroundImage: context
+                          //               .watch<UserProvider>()
+                          //               .currentUser!
+                          //               .profilePicture
+                          //               .isEmpty
+                          //           ? const AssetImage(
+                          //               "assets/images/manPlaceHolder.png")
+                          //           : CachedNetworkImageProvider(
+                          //               context
+                          //                   .read<UserProvider>()
+                          //                   .currentUser!
+                          //                   .profilePicture,
+                          //             ) as ImageProvider<Object>?),
+                          // ),
+                          const SizedBox(
+                            height: 20,
                           ),
-                          sideMenuItemDatatile(
-                            context,
-                            1,
-                            "Account security",
+                          Text(
+                            "${context.watch<UserProvider>().currentUser!.firstName}"
+                            " "
+                            "${context.watch<UserProvider>().currentUser!.lastName}",
+                            style: const TextStyle(fontWeight: FontWeight.w500),
                           ),
-                          sideMenuItemDatatile(
-                            context,
-                            2,
-                            "Subscription",
-                          ),
-                          sideMenuItemDatatile(
-                            context,
-                            3,
-                            "Payment methods",
-                          ),
-                          sideMenuItemDatatile(
-                            context,
-                            4,
-                            "Notifications",
-                          ),
-                          sideMenuItemDatatile(
-                            context,
-                            5,
-                            "Privacy",
+                          const SizedBox(
+                            height: 20,
                           ),
                         ],
-                      );
-                    },
-                  ),
-                  Expanded(child: navigationShell)
-                ],
-              )
-            : SingleChildScrollView(
-                child: Column(
-                  children: [
-                    const SizedBox(
-                      height: 50,
-                    ),
-                    SizedBox(
-                      height: 150,
-                      child: context
-                              .read<UserProvider>()
-                              .currentUser!
-                              .profilePicture
-                              .isEmpty
-                          ? CircleAvatar(
-                              // radius: deviceType == 1 ? 75 : 50,
-                              radius: 100,
-                              backgroundColor:
-                                  context.read<ThemeProvider>().isDarkMode
-                                      ? Themes.darkMode
-                                      : Colors.grey.shade200,
-                              backgroundImage: const AssetImage(
-                                  "assets/images/manPlaceHolder.png"))
-                          : CircleAvatar(
-                              // radius: deviceType == 1 ? 75 : 50,
-                              radius: 70,
-                              backgroundColor:
-                                  context.read<ThemeProvider>().isDarkMode
-                                      ? Themes.darkMode
-                                      : Colors.grey.shade200,
-                              backgroundImage: CachedNetworkImageProvider(
-                                context
-                                    .read<UserProvider>()
-                                    .currentUser!
-                                    .profilePicture,
-                              )),
-                    ),
-                    Center(
-                      child: Text(
-                          "${context.watch<UserProvider>().currentUser!.firstName}"
-                          " "
-                          "${context.watch<UserProvider>().currentUser!.lastName}"),
-                    ),
-                    const SizedBox(
-                      height: 80,
-                    ),
-                    listitleItems(
-                        context, 0, "Profile", FontAwesomeIcons.userLarge),
-                    listitleItems(
-                        context, 1, "Account security", FontAwesomeIcons.lock),
-                    listitleItems(
-                        context, 2, "Subscription", FontAwesomeIcons.wallet),
-                    listitleItems(context, 3, "Payment methods",
-                        FontAwesomeIcons.creditCard),
-                    listitleItems(context, 4, "Notifications",
-                        FontAwesomeIcons.solidBell),
-                    listitleItems(
-                        context, 5, "Privacy", FontAwesomeIcons.userLock)
-                  ],
+                      ),
+                      items: [
+                        sideMenuItemDatatile(
+                          context,
+                          0,
+                          "Profile",
+                        ),
+                        sideMenuItemDatatile(
+                          context,
+                          1,
+                          "Account security",
+                        ),
+                        sideMenuItemDatatile(
+                          context,
+                          2,
+                          "Subscription",
+                        ),
+                        sideMenuItemDatatile(
+                          context,
+                          3,
+                          "Payment methods",
+                        ),
+                        sideMenuItemDatatile(
+                          context,
+                          4,
+                          "Notifications",
+                        ),
+                        sideMenuItemDatatile(
+                          context,
+                          5,
+                          "Privacy",
+                        ),
+                      ],
+                    );
+                  },
                 ),
+                Expanded(child: navigationShell)
+              ],
+            )
+          : SingleChildScrollView(
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  SizedBox(
+                    height: 150,
+                    child: context
+                            .read<UserProvider>()
+                            .currentUser!
+                            .profilePicture
+                            .isEmpty
+                        ? CircleAvatar(
+                            // radius: deviceType == 1 ? 75 : 50,
+                            radius: 100,
+                            backgroundColor:
+                                context.read<ThemeProvider>().isDarkMode
+                                    ? Themes.darkMode
+                                    : Colors.grey.shade200,
+                            backgroundImage: const AssetImage(
+                                "assets/images/manPlaceHolder.png"))
+                        : CircleAvatar(
+                            // radius: deviceType == 1 ? 75 : 50,
+                            radius: 70,
+                            backgroundColor:
+                                context.read<ThemeProvider>().isDarkMode
+                                    ? Themes.darkMode
+                                    : Colors.grey.shade200,
+                            backgroundImage: CachedNetworkImageProvider(
+                              context
+                                  .read<UserProvider>()
+                                  .currentUser!
+                                  .profilePicture,
+                            )),
+                  ),
+                  Center(
+                    child: Text(
+                        "${context.watch<UserProvider>().currentUser!.firstName}"
+                        " "
+                        "${context.watch<UserProvider>().currentUser!.lastName}"),
+                  ),
+                  const SizedBox(
+                    height: 80,
+                  ),
+                  listitleItems(
+                      context, 0, "Profile", FontAwesomeIcons.userLarge),
+                  listitleItems(
+                      context, 1, "Account security", FontAwesomeIcons.lock),
+                  listitleItems(
+                      context, 2, "Subscription", FontAwesomeIcons.wallet),
+                  listitleItems(context, 3, "Payment methods",
+                      FontAwesomeIcons.creditCard),
+                  listitleItems(
+                      context, 4, "Notifications", FontAwesomeIcons.solidBell),
+                  listitleItems(
+                      context, 5, "Privacy", FontAwesomeIcons.userLock)
+                ],
               ),
-      ),
+            ),
     );
   }
 

@@ -1,31 +1,31 @@
 import 'package:elearny/data/globales.dart';
 import 'package:elearny/model/quiz_model.dart';
 import 'package:elearny/services/firebase/fireStore/quiz/quiz_service.dart';
+import 'package:elearny/src/widgets/loading_progress_dialog.dart';
 import 'package:elearny/src/widgets/one_button_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class QuizProvider with ChangeNotifier {
-  final TextEditingController quizTextField = TextEditingController();
+  final TextEditingController quizTitleTextField = TextEditingController();
+  final TextEditingController quizUrlTextField = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   QuizService quizService = QuizService();
   bool isLoading = false;
+  bool? isDeleting;
   bool gettingData = true;
-  QuizModel? quizModel;
+  List<QuizModel>? quizModel;
 
   Future<void> submitQuiz(BuildContext context, QuizModel quizModel) async {
     if (formKey.currentState!.validate()) {
       isLoading = true;
       notifyListeners();
       await quizService.createQuiz(quizModel).then((value) async {
-        await getQuiz(context).then((value) {
-          showSnackBar(
-            "quiz has been added successfully",
-            context,
-          );
-          isLoading = false;
-          notifyListeners();
-        });
+        clearControllers();
+        isLoading = false;
+        notifyListeners();
+        //   showSnackBar("quiz has been added successfully", context);
+        showingDialog(context, "Success", "quiz has been added successfully");
       }).onError((error, stackTrace) {
         isLoading = false;
         notifyListeners();
@@ -34,29 +34,46 @@ class QuizProvider with ChangeNotifier {
     }
   }
 
-  Future<QuizModel?> getQuiz(
-    BuildContext context,
-  ) async {
-    gettingData = true;
+  Future<void> deleteQuiz(BuildContext context, String quizId) async {
+    BuildContext? context1;
+    showDialog<void>(
+        context: context,
+        builder: (BuildContext context) {
+          context1 = context;
+          return const LoadingProgressDialog(
+            title: "Please Wait...",
+            content: "Deleting quiz ...",
+          );
+        });
 
-    notifyListeners();
-    await quizService.getData().then((value) async {
-      quizModel = value;
-
-      gettingData = false;
-
-      notifyListeners();
-    }).onError((error, stackTrace) {
-      gettingData = false;
-
-      notifyListeners();
-      showSnackBar('$error', context);
-      gettingData = false;
-
-      notifyListeners();
-    });
-    return quizModel;
+    await quizService
+        .deleteQuizDocument(quizId)
+        .then((value) => context1!.pop())
+        .onError((error, stackTrace) => print("$error"));
   }
+  // Future<List<QuizModel>?> getAllQuiz(
+  //   BuildContext context,
+  // ) async {
+  //   gettingData = true;
+
+  //   notifyListeners();
+  //   await quizService.getAllData().then((value) async {
+  //     quizModel = value;
+
+  //     gettingData = false;
+
+  //     notifyListeners();
+  //   }).onError((error, stackTrace) {
+  //     gettingData = false;
+
+  //     notifyListeners();
+  //     showSnackBar('$error', context);
+  //     gettingData = false;
+
+  //     notifyListeners();
+  //   });
+  //   return quizModel;
+  // }
 
   void showSnackBar(String message, BuildContext context) {
     final snackBar = SnackBar(
@@ -77,17 +94,26 @@ class QuizProvider with ChangeNotifier {
         context: context,
         builder: (BuildContext context) {
           return OneButtonDialogWidget(
-              title: title,
-              contents: contents,
-              confirmbuttonText: 'Back',
-              onConfirm: () {
-                context.pop();
-              },
-              onWillPopScopeValue: true);
+            title: title,
+            contents: contents,
+            confirmbuttonText: 'Back',
+            onConfirm: () {
+              context.pop();
+            },
+          );
         });
   }
 
+  // Future<void> showingdDeleteDialog(
+  //   BuildContext context,
+  //   String title,
+  //   String contents,
+  // ) async {
+  //   await
+  // }
+
   void clearControllers() {
-    quizTextField.clear();
+    quizTitleTextField.clear();
+    quizUrlTextField.clear();
   }
 }

@@ -5,7 +5,7 @@ import 'package:elearny/services/firebase/fireStore/admin_edit_users/admin_edit_
 import 'package:elearny/src/theme/themes.dart';
 import 'package:elearny/src/widgets/admin_editusers_shimmer.dart';
 import 'package:elearny/src/widgets/loading_indicator_widget.dart';
-import 'package:elearny/utils/app_bar.dart';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -23,25 +23,29 @@ class AdminEditUserScreen extends StatelessWidget {
         initialData: const [],
         child: Scaffold(
           appBar: AppBar(
+              leadingWidth: kIsWeb ? 0 : 75,
+              leading: kIsWeb ? null : const SizedBox(),
               automaticallyImplyLeading: false,
               toolbarHeight: 100,
-              title: kIsWeb
-                  ? Center(
-                      child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Edit users',
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                        Text(
-                          "Here you can manage and edit all users",
-                          style: Theme.of(context).textTheme.displayMedium,
-                        ),
-                      ],
-                    ))
-                  : AppBarUtils.appBarWidget(context, "Edit users",
-                      "Here you can manage and edit all users")),
+              centerTitle: kIsWeb ? true : false,
+              title: Column(
+                crossAxisAlignment: kIsWeb
+                    ? CrossAxisAlignment.center
+                    : CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Edit users',
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Text(
+                    "Here you can manage and edit all users",
+                    style: Theme.of(context).textTheme.displayMedium,
+                  ),
+                ],
+              )),
           body: LayoutBuilder(builder: (context, constraint) {
             return Padding(
               padding: const EdgeInsets.all(8.0),
@@ -199,13 +203,10 @@ class AdminEditUserScreen extends StatelessWidget {
                   ? Image.asset("assets/images/manPlaceHolder.png")
                   : CachedNetworkImage(
                       imageUrl: user.profilePicture,
-                      placeholder: (context, url) => Container(
+                      placeholder: (context, url) => const SizedBox(
                           width: 20,
                           height: 20,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                          ),
-                          child: const LoadingIndicatorWidget(
+                          child: LoadingIndicatorWidget(
                               color: Themes.green, size: 15)),
                       imageBuilder: (context, imageProvider) => Container(
                         width: 40,
@@ -358,7 +359,8 @@ class AdminEditUserScreen extends StatelessWidget {
                       user.isDeleted
                           ? FontAwesomeIcons.trashCanArrowUp
                           : FontAwesomeIcons.trash,
-                      color: Colors.red,
+                      color:
+                          user.isDeleted ? const Color(0xff0A2342) : Colors.red,
                       size: 15,
                     ),
                     onPressed: () {

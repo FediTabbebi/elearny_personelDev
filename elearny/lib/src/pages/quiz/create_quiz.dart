@@ -17,26 +17,39 @@ class CreateQuizScreen extends StatelessWidget {
     final ValidateFields validate = ValidateFields();
     return LayoutBuilder(builder: (context, constraint) {
       return Scaffold(
-        appBar: AppBar(
-            automaticallyImplyLeading: false,
-            toolbarHeight: 100,
-            title: AppBarWidget(
-              rightIcon: null,
-              leftIcon: kIsWeb ? null : Icons.arrow_back,
-              onPressedLeftIcon: () {
+        appBar: CustomAppBarWidget(
+          title: "Create quiz",
+          subtitle: "",
+          leading: IconButton(
+              splashRadius: 20,
+              onPressed: () {
                 context.pop();
               },
-              centerTitle: kIsWeb ? true : null,
-              title: " Create Quiz",
-              subtitle: null,
-            )),
+              icon: const Icon(
+                Icons.chevron_left,
+                size: 40,
+              )),
+        ),
         body: Form(
           key: context.read<QuizProvider>().formKey,
-          child: Column(children: [
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Padding(
-              padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+              padding:
+                  const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
               child: TextFormField(
-                controller: context.read<QuizProvider>().quizTextField,
+                  controller: context.read<QuizProvider>().quizTitleTextField,
+                  decoration: const InputDecoration(hintText: "Quiz title"),
+                  validator: (value) => validate.validateEmptyField(value)),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding:
+                  const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
+              child: TextFormField(
+                controller: context.read<QuizProvider>().quizUrlTextField,
                 decoration: const InputDecoration(
                     hintText: "Put the quiz url here and submit"),
                 validator: (value) => validate.validateUrl(value!),
@@ -51,8 +64,7 @@ class CreateQuizScreen extends StatelessWidget {
                       ? const SizedBox(
                           height: 40,
                           width: 40,
-                          child: LoadingIndicatorWidget(
-                              color: Themes.green, size: 40),
+                          child: CircularProgressIndicator(),
                         )
                       : SizedBox(
                           height: 40,
@@ -61,9 +73,13 @@ class CreateQuizScreen extends StatelessWidget {
                                 await context.read<QuizProvider>().submitQuiz(
                                     context,
                                     QuizModel(
+                                        quizTitle: context
+                                            .read<QuizProvider>()
+                                            .quizTitleTextField
+                                            .text,
                                         quizLink: context
                                             .read<QuizProvider>()
-                                            .quizTextField
+                                            .quizUrlTextField
                                             .text,
                                         quizId: ''));
                               },

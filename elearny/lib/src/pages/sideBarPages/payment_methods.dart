@@ -7,38 +7,11 @@ class PaymentMedthodScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          automaticallyImplyLeading: false,
-          toolbarHeight: 100,
-          title: kIsWeb
-              ? Center(
-                  child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Payment Method',
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                    Text(
-                      'choose or add your payment method',
-                      style: Theme.of(context).textTheme.displayMedium,
-                    ),
-                  ],
-                ))
-              : appBarWidget(context)),
-    );
-  }
-
-  Widget appBarWidget(BuildContext context) {
-    return AppBarWidget(
-      leftIcon: Icons.arrow_back,
-      onPressedLeftIcon: () {
-        Navigator.pop(context);
-      },
-      rightIcon: null,
-      title: 'Payment Method',
-      subtitle: 'choose or add your payment method',
+    return const Scaffold(
+      appBar: CustomAppBarWidget(
+        title: 'Payment Method',
+        subtitle: "Here you can add and edit your lessons",
+      ),
     );
   }
 }

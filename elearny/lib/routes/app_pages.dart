@@ -2,8 +2,8 @@ import 'package:elearny/provider/userProvider/user_provider.dart';
 import 'package:elearny/routes/app_routes.dart';
 import 'package:elearny/services/app_service/app_service.dart';
 import 'package:elearny/services/firebase/fireStore/auth/authservice.dart';
-import 'package:elearny/src/pages/adminAddLinks/admin_add_links.dart';
-import 'package:elearny/src/pages/adminAddLinks/admin_edit_users.dart';
+import 'package:elearny/src/pages/admin_pages/admin_edit_social_links.dart';
+import 'package:elearny/src/pages/admin_pages/admin_edit_users.dart';
 import 'package:elearny/src/pages/error_page.dart';
 import 'package:elearny/src/pages/home_main_page.dart';
 import 'package:elearny/src/pages/home_screen.dart';
@@ -109,7 +109,7 @@ class AppRouter {
 
             StatefulShellBranch(
                 initialLocation:
-                    kIsWeb ? AppPage.profile.toPath : AppPage.settings.toPath,
+                    kIsWeb ? AppPage.profile.toPath : AppPage.profile.toPath,
                 routes: [
                   GoRoute(
                     name: AppPage.settings.toName,

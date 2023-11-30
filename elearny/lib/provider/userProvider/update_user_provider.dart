@@ -284,13 +284,13 @@ class UpdateUserProvider extends ChangeNotifier {
         context: context,
         builder: (BuildContext context) {
           return OneButtonDialogWidget(
-              title: title,
-              contents: contents,
-              confirmbuttonText: 'Back',
-              onConfirm: () {
-                Navigator.pop(context);
-              },
-              onWillPopScopeValue: true);
+            title: title,
+            contents: contents,
+            confirmbuttonText: 'Back',
+            onConfirm: () {
+              Navigator.pop(context);
+            },
+          );
         });
   }
 }

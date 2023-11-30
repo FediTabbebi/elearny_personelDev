@@ -1,4 +1,4 @@
-import 'package:elearny/provider/adminProviders/add_links_provider.dart';
+import 'package:elearny/provider/adminProviders/admin_edit_social_links_provider.dart';
 import 'package:elearny/provider/adminProviders/admin_edit_users_provider.dart';
 import 'package:elearny/provider/authProviders/login_provider.dart';
 import 'package:elearny/provider/authProviders/register_provider.dart';
@@ -48,6 +48,7 @@ class Providers extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => LoginProvider()),
         ChangeNotifierProvider(create: (_) => ThemeModeSwitcherProvider()),
         ChangeNotifierProvider(create: (_) => HomeProvider()),
+        ChangeNotifierProvider(create: (context) => AdminAddLinkProvider()),
         ChangeNotifierProvider(create: (_) => QuizProvider()),
         ChangeNotifierProvider(create: (_) => AdminEditUsersProvider()),
         ChangeNotifierProvider(create: (_) => DropdownValue()),

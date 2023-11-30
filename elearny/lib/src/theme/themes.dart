@@ -12,8 +12,8 @@ class Themes {
   static const greyWhite = Color(0xffF7F7F7);
   static const black = Color(0xff000000);
   static const black2 = Color(0xff0F0F0F);
-  static const darkMode = Color(0xff1F222A);
   static const shimmerColorWhite = Color(0xffE9E8E3);
+  static const darkMode = Color(0xff1F222A);
   static const darkMode2 = Color(0xff1D1D1D);
   static const darkMode3 = Color(0xff1D1627);
   static const darkMode4 = Color(0xff32324D);

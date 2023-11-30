@@ -29,24 +29,26 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Center(
-          child: Image.asset(
-            context.read<ThemeProvider>().isDarkMode
-                ? "assets/images/theTeam_DarkMode.png"
-                : "assets/images/theTeam.png",
-            scale: 2.h.w,
+    return SafeArea(
+      child: Scaffold(
+          body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(
+            child: Image.asset(
+              context.read<ThemeProvider>().isDarkMode
+                  ? "assets/images/theTeam_DarkMode.png"
+                  : "assets/images/theTeam.png",
+              scale: 2.h.w,
+            )
+                .animate()
+                .fadeIn(duration: const Duration(milliseconds: 1500))
+                .fadeOut(
+                    delay: const Duration(milliseconds: 1750),
+                    duration: const Duration(milliseconds: 1000)),
           )
-              .animate()
-              .fadeIn(duration: const Duration(milliseconds: 1500))
-              .fadeOut(
-                  delay: const Duration(milliseconds: 1750),
-                  duration: const Duration(milliseconds: 1000)),
-        )
-      ],
-    ));
+        ],
+      )),
+    );
   }
 }

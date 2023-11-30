@@ -99,14 +99,16 @@ class AdminAddLinkProvider with ChangeNotifier {
     }
   }
 
-  Future<AdminLinksModel?> getLinks(
+  Future<List<AdminLinksModel?>> getLinks(
     BuildContext context,
   ) async {
+    List<AdminLinksModel?> listOfLinks = [];
     gettingData = true;
 
     notifyListeners();
     await adminServices.getData().then((value) async {
       adminLinks = value;
+      listOfLinks.add(adminLinks);
       settingControllers(adminLinks);
       gettingData = false;
 
@@ -120,7 +122,7 @@ class AdminAddLinkProvider with ChangeNotifier {
 
       notifyListeners();
     });
-    return adminLinks;
+    return listOfLinks;
   }
 
   Future<void> uploadOneImageThenSubmit(BuildContext context, Uint8List image,
@@ -354,13 +356,13 @@ class AdminAddLinkProvider with ChangeNotifier {
         context: context,
         builder: (BuildContext context) {
           return OneButtonDialogWidget(
-              title: title,
-              contents: contents,
-              confirmbuttonText: 'Back',
-              onConfirm: () {
-                context.pop();
-              },
-              onWillPopScopeValue: true);
+            title: title,
+            contents: contents,
+            confirmbuttonText: 'Back',
+            onConfirm: () {
+              context.pop();
+            },
+          );
         });
   }
 

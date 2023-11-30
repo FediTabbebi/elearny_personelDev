@@ -1,5 +1,4 @@
 import 'package:elearny/src/widgets/app_bar_widget.dart';
-import 'package:elearny/utils/app_bar.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -30,25 +29,10 @@ class _LessonEditorState extends State<LessonEditor> {
         }
       },
       child: Scaffold(
-        appBar: AppBar(
-            automaticallyImplyLeading: false,
-            toolbarHeight: 100,
-            title: kIsWeb
-                ? Center(
-                    child: Column(
-                    children: [
-                      Text(
-                        'Lesson editor',
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                      Text(
-                        'Edit Your lesson',
-                        style: Theme.of(context).textTheme.displayMedium,
-                      ),
-                    ],
-                  ))
-                : AppBarUtils.appBarWidget(
-                    context, "Lesson editor", "Edit Your lesson")),
+        appBar: const CustomAppBarWidget(
+          title: 'Lesson editor',
+          subtitle: "Here you can add and edit your lessons",
+        ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             controller.toggleCodeView();
@@ -446,16 +430,4 @@ class _LessonEditorState extends State<LessonEditor> {
       ),
     );
   }
-}
-
-Widget appBarWidget(BuildContext context) {
-  return AppBarWidget(
-    leftIcon: Icons.arrow_back,
-    onPressedLeftIcon: () {
-      Navigator.pop(context);
-    },
-    rightIcon: null,
-    title: "Html Editor",
-    subtitle: "Here you can add and edit your lessons",
-  );
 }

@@ -3,13 +3,12 @@ import 'package:elearny/data/globales.dart';
 import 'package:elearny/provider/themeProvider/theme_provider.dart';
 import 'package:elearny/provider/userProvider/update_user_provider.dart';
 import 'package:elearny/src/widgets/app_bar_widget.dart';
+
 import 'package:elearny/src/widgets/loading_indicator_widget.dart';
-import 'package:elearny/utils/app_bar.dart';
 import 'package:elearny/utils/helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../../provider/userProvider/user_provider.dart';
 import '../../theme/themes.dart';
@@ -22,25 +21,10 @@ class ProfileScreen extends StatelessWidget {
     context.read<UpdateUserProvider>().settingControllers(context);
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-            toolbarHeight: 100,
-            automaticallyImplyLeading: false,
-            title: kIsWeb
-                ? Center(
-                    child: Column(
-                    children: [
-                      Text(
-                        'Profile',
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                      Text(
-                        'Add informations about yourself',
-                        style: Theme.of(context).textTheme.displayMedium,
-                      ),
-                    ],
-                  ))
-                : AppBarUtils.appBarWidget(
-                    context, "Profile", "Add informations about yourself")),
+        appBar: const CustomAppBarWidget(
+          title: 'Profile',
+          subtitle: 'Add informations about yourself',
+        ),
         body: LayoutBuilder(builder: (context, condtraint) {
           return GestureDetector(
             onTap: () {
@@ -480,18 +464,6 @@ class ProfileScreen extends StatelessWidget {
           )),
         ),
       ),
-    );
-  }
-
-  Widget appBarWidget(BuildContext context) {
-    return AppBarWidget(
-      leftIcon: Icons.arrow_back,
-      onPressedLeftIcon: () {
-        context.pop();
-      },
-      rightIcon: null,
-      title: "Profile",
-      subtitle: "Here you can edit your profile informations",
     );
   }
 }
