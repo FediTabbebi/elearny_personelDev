@@ -5,7 +5,7 @@ import 'package:elearny/provider/userProvider/update_user_provider.dart';
 import 'package:elearny/src/widgets/app_bar_widget.dart';
 
 import 'package:elearny/src/widgets/loading_indicator_widget.dart';
-import 'package:elearny/utils/helper.dart';
+import 'package:elearny/src/utils/helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';

@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:elearny/provider/themeProvider/theme_provider.dart';
 import 'package:elearny/provider/userProvider/user_provider.dart';
 import 'package:elearny/src/widgets/app_bar_widget.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';

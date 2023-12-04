@@ -1,3 +1,4 @@
+import 'package:elearny/model/quiz_model.dart';
 import 'package:elearny/provider/userProvider/user_provider.dart';
 import 'package:elearny/routes/app_routes.dart';
 import 'package:elearny/services/app_service/app_service.dart';
@@ -9,19 +10,19 @@ import 'package:elearny/src/pages/home_main_page.dart';
 import 'package:elearny/src/pages/home_screen.dart';
 import 'package:elearny/src/pages/lesson_editor.dart.dart';
 import 'package:elearny/src/pages/auth_pages/login_screen.dart';
-import 'package:elearny/src/pages/quiz/create_quiz.dart';
+import 'package:elearny/src/pages/quiz/create_update_quiz.dart';
 import 'package:elearny/src/pages/quiz/play_quiz.dart';
 import 'package:elearny/src/pages/quiz/quiz_screen.dart';
-import 'package:elearny/src/pages/sideBarPages/setting_main_screen.dart';
+import 'package:elearny/src/pages/sidebar_pages/setting_main_screen.dart';
 import 'package:elearny/src/pages/onbording_screen.dart';
-import 'package:elearny/src/pages/sideBarPages/profile_screen.dart';
+import 'package:elearny/src/pages/sidebar_pages/profile_screen.dart';
 import 'package:elearny/src/pages/auth_pages/register_screen.dart';
 import 'package:elearny/src/pages/setting_screen.dart';
-import 'package:elearny/src/pages/sideBarPages/account_security.dart';
-import 'package:elearny/src/pages/sideBarPages/notifications.dart';
-import 'package:elearny/src/pages/sideBarPages/payment_methods.dart';
-import 'package:elearny/src/pages/sideBarPages/privacy.dart';
-import 'package:elearny/src/pages/sideBarPages/subscriptions.dart';
+import 'package:elearny/src/pages/sidebar_pages/account_security.dart';
+import 'package:elearny/src/pages/sidebar_pages/notifications.dart';
+import 'package:elearny/src/pages/sidebar_pages/payment_methods.dart';
+import 'package:elearny/src/pages/sidebar_pages/privacy.dart';
+import 'package:elearny/src/pages/sidebar_pages/subscriptions.dart';
 import 'package:elearny/src/pages/splash_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -248,11 +249,14 @@ class AppRouter {
                     },
                     routes: [
                       GoRoute(
-                        name: AppPage.createQuiz.toName,
-                        path: AppPage.createQuiz.toPath,
+                        name: AppPage.createOrUpdateQuiz.toName,
+                        path: AppPage.createOrUpdateQuiz.toPath,
                         builder: (BuildContext context, GoRouterState state) {
-                          return CreateQuizScreen(
+                          final QuizModel? quizModel =
+                              state.extra as QuizModel?;
+                          return CreateOrUpdateQuizScreen(
                             key: state.pageKey,
+                            quizModel: quizModel,
                           );
                         },
                       ),
@@ -260,8 +264,10 @@ class AppRouter {
                         name: AppPage.playQuiz.toName,
                         path: AppPage.playQuiz.toPath,
                         builder: (BuildContext context, GoRouterState state) {
+                          final String quizUrl = state.extra as String;
                           return PlayQuizScreen(
                             key: state.pageKey,
+                            quizUrl: quizUrl,
                           );
                         },
                       ),

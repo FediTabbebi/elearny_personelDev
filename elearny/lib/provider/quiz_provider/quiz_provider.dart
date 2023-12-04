@@ -7,8 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class QuizProvider with ChangeNotifier {
-  final TextEditingController quizTitleTextField = TextEditingController();
-  final TextEditingController quizUrlTextField = TextEditingController();
+  String quizId = '';
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   QuizService quizService = QuizService();
   bool isLoading = false;
@@ -21,7 +20,7 @@ class QuizProvider with ChangeNotifier {
       isLoading = true;
       notifyListeners();
       await quizService.createQuiz(quizModel).then((value) async {
-        clearControllers();
+        //  clearControllers();
         isLoading = false;
         notifyListeners();
         //   showSnackBar("quiz has been added successfully", context);
@@ -51,6 +50,13 @@ class QuizProvider with ChangeNotifier {
         .then((value) => context1!.pop())
         .onError((error, stackTrace) => print("$error"));
   }
+
+//   void initControlers(String? quizTitle,String? quizUrl,String? quizId) {
+//    quizTitleTextField.text = quizTitle ?? '';
+//   quizUrlTextField.text = quizUrl??'';
+//  quizId=quizId?? '' ;
+//   }
+
   // Future<List<QuizModel>?> getAllQuiz(
   //   BuildContext context,
   // ) async {
@@ -112,8 +118,8 @@ class QuizProvider with ChangeNotifier {
   //   await
   // }
 
-  void clearControllers() {
-    quizTitleTextField.clear();
-    quizUrlTextField.clear();
-  }
+  // void clearControllers(TextEditingController quizTitleTextField ,TextEditingController quizUrlTextField ) {
+  //   quizTitleTextField.clear();
+  //   quizUrlTextField.clear();
+  // }
 }

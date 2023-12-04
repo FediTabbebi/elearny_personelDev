@@ -3,12 +3,11 @@ import 'package:elearny/model/quiz_model.dart';
 import 'package:elearny/provider/quiz_provider/quiz_provider.dart';
 import 'package:elearny/routes/app_routes.dart';
 import 'package:elearny/services/firebase/fireStore/quiz/quiz_service.dart';
+import 'package:elearny/src/assets.dart';
 import 'package:elearny/src/theme/themes.dart';
 import 'package:elearny/src/widgets/app_bar_widget.dart';
 import 'package:elearny/src/widgets/two_buttons_dialog.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -26,18 +25,21 @@ class QuizScreen extends StatelessWidget {
             actions: [
               deviceType == 1
                   ? UnconstrainedBox(
-                      child: SizedBox(
+                      child: Container(
+                        padding: const EdgeInsets.only(right: 8),
                         height: 50,
                         child: ElevatedButton(
                             onPressed: () {
-                              context.goNamed(AppPage.createQuiz.toName);
+                              context.goNamed(
+                                AppPage.createOrUpdateQuiz.toName,
+                              );
                             },
                             child: const Text("Add Quiz")),
                       ),
                     )
                   : IconButton(
                       onPressed: () {
-                        context.goNamed(AppPage.createQuiz.toName);
+                        context.goNamed(AppPage.createOrUpdateQuiz.toName);
                       },
                       icon: const Icon(
                         FontAwesomeIcons.folderPlus,
@@ -66,6 +68,7 @@ class QuizScreen extends StatelessWidget {
                     );
                   } else {
                     // Data is loaded, and the list is not empty
+
                     return mainScreen(context, data);
                   }
                 },
@@ -93,7 +96,7 @@ class QuizScreen extends StatelessWidget {
                     ),
                     subtitle: SizedBox(
                       width: MediaQuery.of(context).size.width / 1.5,
-                      child: Text(data[index].quizLink,
+                      child: Text(data[index].quizUrl,
                           style:
                               const TextStyle(fontSize: 12, color: Themes.grey),
                           softWrap: true,
@@ -102,7 +105,7 @@ class QuizScreen extends StatelessWidget {
                     leading: SizedBox(
                         height: 50,
                         width: 50,
-                        child: Image.asset("assets/images/QuizImage.png")),
+                        child: Image.asset(Assets.quizImage)),
                     trailing: deviceType == 1
                         ? SizedBox(
                             width: 120,
@@ -117,9 +120,8 @@ class QuizScreen extends StatelessWidget {
                                     icon: const Icon(FontAwesomeIcons.solidEye,
                                         size: 15, color: Color(0xffE3AB0D)),
                                     onPressed: () {
-                                      context.goNamed(AppPage.playQuiz.toName);
-                                      // Handle edit button click
-                                      // You can navigate to an edit screen or show a dialog
+                                      context.goNamed(AppPage.playQuiz.toName,
+                                          extra: data[index].quizUrl);
                                     },
                                   ),
                                 ),
@@ -134,8 +136,9 @@ class QuizScreen extends StatelessWidget {
                                       size: 15,
                                     ),
                                     onPressed: () {
-                                      // Handle display button click
-                                      // You can navigate to a details screen or show a dialog
+                                      context.goNamed(
+                                          AppPage.createOrUpdateQuiz.toName,
+                                          extra: data[index]);
                                     },
                                   ),
                                 ),
@@ -169,21 +172,24 @@ class QuizScreen extends StatelessWidget {
                           )
                         : PopupMenuButton<String>(
                             tooltip: "Options",
-                            onSelected: (value) {
-                              // Handle the selected value.
-                              //   print('Selected value: $value');
-                            },
+                            onSelected: (value) {},
                             itemBuilder: (context) => [
                                   PopupMenuItem<String>(
                                     value: 'Preview',
                                     child: const Text('Preview'),
                                     onTap: () {
-                                      context.goNamed(AppPage.playQuiz.toName);
+                                      context.goNamed(AppPage.playQuiz.toName,
+                                          extra: data[index].quizUrl);
                                     },
                                   ),
-                                  const PopupMenuItem<String>(
+                                  PopupMenuItem<String>(
                                     value: 'Edit',
-                                    child: Text('Edit'),
+                                    child: const Text('Edit'),
+                                    onTap: () {
+                                      context.goNamed(
+                                          AppPage.createOrUpdateQuiz.toName,
+                                          extra: data[index]);
+                                    },
                                   ),
                                   PopupMenuItem<String>(
                                     value: 'Delete',

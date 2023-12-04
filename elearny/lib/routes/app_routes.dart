@@ -25,7 +25,7 @@ enum AppPage {
   editLesson,
   settings,
   quiz,
-  createQuiz,
+  createOrUpdateQuiz,
   playQuiz,
   profile,
   accountSecurity,
@@ -57,7 +57,7 @@ extension AppPageExtension on AppPage {
         return "/edit-lesson";
       case AppPage.quiz:
         return "/quiz";
-      case AppPage.createQuiz:
+      case AppPage.createOrUpdateQuiz:
         return "createQuiz";
       case AppPage.playQuiz:
         return "playQuiz";
@@ -102,7 +102,7 @@ extension AppPageExtension on AppPage {
         return "edit-lesson";
       case AppPage.quiz:
         return "quiz";
-      case AppPage.createQuiz:
+      case AppPage.createOrUpdateQuiz:
         return "createQuiz";
       case AppPage.playQuiz:
         return "playQuiz";

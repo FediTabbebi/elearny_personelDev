@@ -43,7 +43,8 @@ class AdminServices {
     }
   }
 
-  Future<AdminLinksModel?> getData() async {
+  Future<List<AdminLinksModel?>?> getData() async {
+    List<AdminLinksModel?> listOfData = [];
     try {
       DocumentSnapshot<Map<String, dynamic>> docSnapshot =
           await FirebaseFirestore.instance
@@ -53,13 +54,15 @@ class AdminServices {
 
       if (docSnapshot.exists) {
         print("getting data");
-        return AdminLinksModel.fromMap(docSnapshot.data()!);
+
+        listOfData.add(AdminLinksModel.fromMap(docSnapshot.data()!));
+        return listOfData;
       } else {
-        return null;
+        return listOfData;
       }
     } catch (e) {
       print("Error fetching data: $e");
-      return null;
+      return listOfData;
     }
   }
 }

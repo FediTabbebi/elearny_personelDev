@@ -6,12 +6,14 @@ class CustomAppBarWidget extends StatelessWidget
   final String title;
   final String subtitle;
   final Widget? leading;
+  final bool? centerTitle;
   final List<Widget>? actions;
 
   const CustomAppBarWidget({
     super.key,
     required this.title,
     required this.subtitle,
+    this.centerTitle,
     this.leading,
     this.actions,
   });
@@ -26,7 +28,7 @@ class CustomAppBarWidget extends StatelessWidget
           : 75,
       leading: kIsWeb ? leading : const SizedBox(),
       automaticallyImplyLeading: false,
-      centerTitle: kIsWeb ? true : false,
+      centerTitle: kIsWeb ? true : centerTitle ?? false,
       toolbarHeight: 150,
       title: Column(
         crossAxisAlignment:

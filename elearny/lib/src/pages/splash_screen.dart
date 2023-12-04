@@ -1,9 +1,9 @@
 import 'package:elearny/provider/themeProvider/theme_provider.dart';
 import 'package:elearny/services/app_service/app_service.dart';
+import 'package:elearny/src/assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -37,8 +37,8 @@ class _SplashScreenState extends State<SplashScreen> {
           Center(
             child: Image.asset(
               context.read<ThemeProvider>().isDarkMode
-                  ? "assets/images/theTeam_DarkMode.png"
-                  : "assets/images/theTeam.png",
+                  ? Assets.splashImageDarkMode
+                  : Assets.splashImageDarkMode,
               scale: 2.h.w,
             )
                 .animate()

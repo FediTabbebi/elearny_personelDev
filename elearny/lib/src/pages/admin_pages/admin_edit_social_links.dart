@@ -4,13 +4,14 @@ import 'package:elearny/model/admin_links.dart';
 import 'package:elearny/provider/adminProviders/admin_edit_social_links_provider.dart';
 
 import 'package:elearny/provider/themeProvider/theme_provider.dart';
-import 'package:elearny/services/firebase/fireStore/admin_edit_social_links/add_links.dart';
+import 'package:elearny/services/firebase/fireStore/admin_edit_social_links/add_social_link_services.dart';
+import 'package:elearny/src/assets.dart';
 
 import 'package:elearny/src/theme/themes.dart';
-import 'package:elearny/src/widgets/admin_addlinks_shimmer.dart';
+import 'package:elearny/src/widgets/admin_widget/admin_edit_social_links_shimmer.dart';
 import 'package:elearny/src/widgets/app_bar_widget.dart';
 import 'package:elearny/src/widgets/loading_indicator_widget.dart';
-import 'package:elearny/utils/helper.dart';
+import 'package:elearny/src/utils/helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -22,8 +23,7 @@ class AdminAddLinks extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureProvider<List<AdminLinksModel?>?>(
-        create: (context) =>
-            context.read<AdminAddLinkProvider>().getLinks(context),
+        create: (context) => adminSocialMediaServices.getData(),
         initialData: null, // Set an initial value while the future is resolving
         child: Consumer<List<AdminLinksModel?>?>(
           builder: (context, adminLinksData, _) {
@@ -31,9 +31,9 @@ class AdminAddLinks extends StatelessWidget {
               print("Loading");
               return const AdminAddLinksShimmerWidget();
             } else if (adminLinksData.isEmpty) {
-              // An error occurred while fetching data
+              // Data is is not available so don't set the cotrollers ,display the screen with empty fields,
 
-              return mainScreen(context); // Replace with your error widget
+              return mainScreen(context);
             } else {
               // Data is available, call settingControllers
 
@@ -113,7 +113,7 @@ Widget mainScreen(
                   textField(
                       context,
                       null,
-                      "assets/icons/linkedIn2.png",
+                      "assets/icons/linkedIn.png",
                       context.read<AdminAddLinkProvider>().linkedInTextfield,
                       "LinkedIn"),
                   textField(
@@ -164,14 +164,14 @@ Widget mainScreen(
                   downloadApp(
                       "Get it on",
                       "Google Play",
-                      "assets/images/GooglePlayIcon.png",
+                      "assets/icons/GooglePlayIcon.png",
                       context,
                       context.read<AdminAddLinkProvider>().playStoreTextfield,
                       "Google Play Link"),
                   downloadApp(
                       "Donwload",
                       "Android APK",
-                      "assets/images/ApkIcon.png",
+                      "assets/icons/ApkIcon.png",
                       context,
                       context.read<AdminAddLinkProvider>().apkTextfield,
                       "Android APk Link"),
@@ -284,8 +284,7 @@ Widget mainPagePictureWidget(
                                             print(error);
                                             return const Icon(Icons.error);
                                           })
-                                      : Image.asset(
-                                          "assets/images/PlaceholderImg.png"),
+                                      : Image.asset(Assets.noImagePlaceHolder),
                                 )
                               : Image.memory(update.landingImg!)
                           : update.logoImg == null
@@ -294,13 +293,6 @@ Widget mainPagePictureWidget(
                                   child: update.logoImgURL.isNotEmpty
                                       ? CachedNetworkImage(
                                           imageUrl: update.logoImgURL,
-                                          // progressIndicatorBuilder: (context,
-                                          //         url,
-                                          //         downloadProgress) =>
-                                          //     CircularProgressIndicator(
-                                          //         value:
-                                          //             downloadProgress
-                                          //                 .progress),
                                           progressIndicatorBuilder: (context,
                                                   url, downloadProgress) =>
                                               const UnconstrainedBox(
@@ -315,8 +307,7 @@ Widget mainPagePictureWidget(
                                             print(error);
                                             return const Icon(Icons.error);
                                           })
-                                      : Image.asset(
-                                          "assets/images/PlaceholderImg.png"),
+                                      : Image.asset(Assets.noImagePlaceHolder),
                                 )
                               : Image.memory(update.logoImg!)
                       : widget == 1
@@ -326,14 +317,6 @@ Widget mainPagePictureWidget(
                                   child: update.landingImgURL.isNotEmpty
                                       ? CachedNetworkImage(
                                           imageUrl: update.landingImgURL,
-
-                                          // progressIndicatorBuilder: (context,
-                                          //         url,
-                                          //         downloadProgress) =>
-                                          //     CircularProgressIndicator(
-                                          //         value:
-                                          //             downloadProgress
-                                          //                 .progress),
                                           progressIndicatorBuilder: (context,
                                                   url, downloadProgress) =>
                                               const UnconstrainedBox(
@@ -349,7 +332,7 @@ Widget mainPagePictureWidget(
                                             return const Icon(Icons.error);
                                           })
                                       : Image.asset(
-                                          "assets/images/PlaceholderImg.png",
+                                          Assets.noImagePlaceHolder,
                                         ),
                                 )
                               : Image.file(update.landingImgMobile!)
@@ -359,13 +342,6 @@ Widget mainPagePictureWidget(
                                   child: update.logoImgURL.isNotEmpty
                                       ? CachedNetworkImage(
                                           imageUrl: update.logoImgURL,
-                                          // progressIndicatorBuilder: (context,
-                                          //         url,
-                                          //         downloadProgress) =>
-                                          //     CircularProgressIndicator(
-                                          //         value:
-                                          //             downloadProgress
-                                          //                 .progress),
                                           progressIndicatorBuilder: (context,
                                                   url, downloadProgress) =>
                                               const UnconstrainedBox(
@@ -380,8 +356,7 @@ Widget mainPagePictureWidget(
                                             print(error);
                                             return const Icon(Icons.error);
                                           })
-                                      : Image.asset(
-                                          "assets/images/PlaceholderImg.png"),
+                                      : Image.asset(Assets.noImagePlaceHolder),
                                 )
                               : Image.file(update.logoImgMobile!),
                 ),

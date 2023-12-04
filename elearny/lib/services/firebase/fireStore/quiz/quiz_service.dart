@@ -8,11 +8,13 @@ class QuizService {
     QuizModel data,
   ) async {
     final DocumentReference docReference =
-        FirebaseFirestore.instance.collection('quiz').doc();
+        FirebaseFirestore.instance.collection('quiz').doc(
+              data.quizId == '' ? null : data.quizId,
+            );
     await docReference.set({
-      'quizId': docReference.id,
+      'quizId': data.quizId == '' ? docReference.id : data.quizId,
       'quizTitle': data.quizTitle,
-      'quizLink': data.quizLink,
+      'quizUrl': data.quizUrl,
       'createdAt': DateTime.now(),
       'updatedAt': DateTime.now(),
     });

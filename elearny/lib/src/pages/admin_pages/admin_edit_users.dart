@@ -2,8 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:elearny/data/globales.dart';
 import 'package:elearny/model/user.dart';
 import 'package:elearny/services/firebase/fireStore/admin_edit_users/admin_edit_users.dart';
+import 'package:elearny/src/assets.dart';
 import 'package:elearny/src/theme/themes.dart';
-import 'package:elearny/src/widgets/admin_editusers_shimmer.dart';
+import 'package:elearny/src/widgets/admin_widget/admin_edit_users_shimmer.dart';
 import 'package:elearny/src/widgets/loading_indicator_widget.dart';
 
 import 'package:flutter/foundation.dart';
@@ -179,9 +180,6 @@ class AdminEditUserScreen extends StatelessWidget {
       return [
         TableRow(
           children: [
-            // tableHeaderRow("user info", false, false),
-            // tableHeaderRow("Role", false, false),
-            // tableHeaderRow("Options", true, false),
             tableHeaderRow("", true, false),
           ],
         ),
@@ -200,7 +198,7 @@ class AdminEditUserScreen extends StatelessWidget {
               tileColor: Theme.of(context).scaffoldBackgroundColor,
               contentPadding: EdgeInsets.zero,
               leading: user.profilePicture.isEmpty
-                  ? Image.asset("assets/images/manPlaceHolder.png")
+                  ? Image.asset(Assets.profilePlaceHolder)
                   : CachedNetworkImage(
                       imageUrl: user.profilePicture,
                       placeholder: (context, url) => const SizedBox(
@@ -382,11 +380,10 @@ class AdminEditUserScreen extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 5.0, bottom: 5),
                 child: ListTile(
                   //  isThreeLine: true,
-                  tileColor:
-                      kIsWeb ? Theme.of(context).scaffoldBackgroundColor : null,
+                  tileColor: Theme.of(context).scaffoldBackgroundColor,
                   leading: user.profilePicture.isEmpty
                       ? Image.asset(
-                          "assets/images/manPlaceHolder.png",
+                          Assets.noImagePlaceHolder,
                           width: 40,
                           height: 40,
                         )

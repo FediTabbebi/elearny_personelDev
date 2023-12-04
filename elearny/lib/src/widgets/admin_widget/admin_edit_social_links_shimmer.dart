@@ -8,80 +8,81 @@ class AdminAddLinksShimmerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBarShimmerWidget(),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                  padding: const EdgeInsets.only(left: 20),
-                  child: titleShimmerContainer(context, 20, 200)),
-              const SizedBox(
-                height: 16,
-              ),
-              Center(
-                child: Wrap(
-                  spacing: 20,
-                  children: [
-                    mainPagePictureWidget(context),
-                    mainPagePictureWidget(context),
-                  ],
+    return LayoutBuilder(builder: (context, constraints) {
+      return Scaffold(
+        appBar: const CustomAppBarShimmerWidget(),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                    padding: EdgeInsets.only(left: deviceType == 1 ? 20 : 0),
+                    child: titleShimmerContainer(context, 15, 200)),
+                const SizedBox(
+                  height: 16,
                 ),
-              ),
-              const SizedBox(
-                height: 32,
-              ),
-              Padding(
-                  padding: const EdgeInsets.only(left: 20),
-                  child: titleShimmerContainer(context, 20, 200)),
-              const SizedBox(
-                height: 32,
-              ),
-              textField(
-                context,
-              ),
-              textField(
-                context,
-              ),
-              textField(
-                context,
-              ),
-              textField(
-                context,
-              ),
-              textField(
-                context,
-              ),
-              textField(
-                context,
-              ),
-              textField(
-                context,
-              ),
-              const SizedBox(
-                height: 32,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20),
-                child: titleShimmerContainer(context, 20, 200),
-              ),
-              const SizedBox(
-                height: 32,
-              ),
-              downloadApp(
-                context,
-              ),
-              downloadApp(
-                context,
-              ),
-            ],
+                Center(
+                  child: Wrap(
+                    spacing: 20,
+                    children: [
+                      mainPagePictureWidget(context),
+                      mainPagePictureWidget(context),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 32,
+                ),
+                Padding(
+                    padding: EdgeInsets.only(left: deviceType == 1 ? 20 : 0),
+                    child: titleShimmerContainer(context, 15, 200)),
+                const SizedBox(
+                  height: 32,
+                ),
+                textField(
+                  context,
+                ),
+                textField(
+                  context,
+                ),
+                textField(
+                  context,
+                ),
+                textField(
+                  context,
+                ),
+                textField(
+                  context,
+                ),
+                textField(
+                  context,
+                ),
+                textField(
+                  context,
+                ),
+                const SizedBox(
+                  height: 32,
+                ),
+                Padding(
+                    padding: EdgeInsets.only(left: deviceType == 1 ? 20 : 0),
+                    child: titleShimmerContainer(context, 15, 200)),
+                const SizedBox(
+                  height: 32,
+                ),
+                downloadApp(
+                  context,
+                ),
+                downloadApp(
+                  context,
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   Widget mainPagePictureWidget(BuildContext context) {
@@ -104,7 +105,12 @@ class AdminAddLinksShimmerWidget extends StatelessWidget {
             children: [
               Positioned(
                 top: 10,
-                child: titleShimmerContainer(context, 12, 180),
+                left: kIsWeb
+                    ? deviceType == 1
+                        ? 120
+                        : 60
+                    : 20,
+                child: titleShimmerContainer(context, 12, 160),
               ),
               SizedBox(
                 height: deviceType != 1
@@ -189,6 +195,7 @@ class AdminAddLinksShimmerWidget extends StatelessWidget {
                 height: 65,
                 child: Card(
                   color: Theme.of(context).textTheme.headlineMedium!.color,
+                  elevation: 0,
                 ),
               )),
           Expanded(

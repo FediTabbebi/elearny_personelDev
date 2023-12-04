@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class QuizModel {
   String quizId;
   String quizTitle;
-  String quizLink;
+  String quizUrl;
 
   DateTime? createdAt;
   DateTime? updatedAt;
@@ -11,7 +11,7 @@ class QuizModel {
   QuizModel({
     required this.quizId,
     required this.quizTitle,
-    required this.quizLink,
+    required this.quizUrl,
     this.createdAt,
     this.updatedAt,
   });
@@ -20,7 +20,7 @@ class QuizModel {
     return QuizModel(
       quizId: map['quizId'] ?? '',
       quizTitle: map['quizTitle'] ?? '',
-      quizLink: map['quizLink'] ?? '',
+      quizUrl: map['quizUrl'] ?? '',
       createdAt: (map['createdAt'] as Timestamp).toDate(),
       updatedAt: (map['updatedAt'] as Timestamp).toDate(),
     );
@@ -29,7 +29,7 @@ class QuizModel {
     return {
       'quizId': quizId,
       'quizTitle': quizTitle,
-      'quizLink': quizLink,
+      'quizUrl': quizUrl,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
     };

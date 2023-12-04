@@ -2,7 +2,7 @@ import 'package:elearny/firebase_options.dart';
 import 'package:elearny/provider/providers.dart';
 import 'package:elearny/provider/themeProvider/theme_provider.dart';
 
-import 'package:elearny/utils/responsive_helper.dart';
+import 'package:elearny/src/utils/responsive_helper.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 

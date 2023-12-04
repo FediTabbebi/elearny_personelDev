@@ -6,7 +6,7 @@ import 'package:elearny/services/app_service/app_service.dart';
 import 'package:elearny/src/theme/themes.dart';
 import 'package:elearny/src/widgets/loading_indicator_widget.dart';
 import 'package:elearny/src/widgets/web_appbar.dart';
-import 'package:elearny/utils/helper.dart';
+import 'package:elearny/src/utils/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';

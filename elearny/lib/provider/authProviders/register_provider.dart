@@ -1,7 +1,7 @@
 import 'package:elearny/model/user.dart';
 import 'package:elearny/routes/app_routes.dart';
 import 'package:elearny/services/firebase/fireStore/auth/authservice.dart';
-import 'package:elearny/utils/helper.dart';
+import 'package:elearny/src/utils/helper.dart';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
