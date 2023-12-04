@@ -1,14 +1,13 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:elearny/data/globales.dart';
 import 'package:elearny/provider/authProviders/login_provider.dart';
 import 'package:elearny/provider/navigationProvider/main_navigation_provider.dart';
 import 'package:elearny/routes/app_routes.dart';
 import 'package:elearny/src/assets.dart';
 import 'package:elearny/src/theme/themes.dart';
-import 'package:elearny/src/widgets/drawer_widget.dart';
-import 'package:elearny/src/widgets/theme_mode_switcher_widget.dart';
-import 'package:elearny/src/widgets/two_buttons_dialog.dart';
+import 'package:elearny/src/widgets/shared_widget/drawer_widget.dart';
+import 'package:elearny/src/widgets/shared_widget/theme_mode_switcher_widget.dart';
+import 'package:elearny/src/widgets/shared_widget/two_buttons_dialog_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

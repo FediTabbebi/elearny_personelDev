@@ -2,9 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:elearny/data/globales.dart';
 import 'package:elearny/provider/themeProvider/theme_provider.dart';
 import 'package:elearny/provider/userProvider/update_user_provider.dart';
-import 'package:elearny/src/widgets/app_bar_widget.dart';
+import 'package:elearny/src/widgets/shared_widget/app_bar_widget.dart';
 
-import 'package:elearny/src/widgets/loading_indicator_widget.dart';
+import 'package:elearny/src/widgets/shared_widget/loading_indicator_widget.dart';
 import 'package:elearny/src/utils/helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +54,7 @@ class ProfileScreen extends StatelessWidget {
                                                   deviceType == 1 ? 220 : 150,
                                               height:
                                                   deviceType == 1 ? 220 : 150,
-                                              decoration: BoxDecoration(
+                                              decoration: const BoxDecoration(
                                                 shape: BoxShape.circle,
                                                 image: DecorationImage(
                                                     image: AssetImage(

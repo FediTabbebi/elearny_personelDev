@@ -1,7 +1,7 @@
-import 'package:elearny/model/user.dart';
+import 'package:elearny/model/user_model.dart';
 import 'package:elearny/src/theme/themes.dart';
-import 'package:elearny/src/widgets/app_bar_widget.dart';
-import 'package:elearny/src/widgets/loading_indicator_widget.dart';
+import 'package:elearny/src/widgets/shared_widget/app_bar_widget.dart';
+import 'package:elearny/src/widgets/shared_widget/loading_indicator_widget.dart';
 import 'package:elearny/src/utils/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';

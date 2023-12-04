@@ -1,7 +1,6 @@
 import 'dart:async';
-
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppService extends ChangeNotifier {
@@ -36,19 +35,27 @@ class AppService extends ChangeNotifier {
 
     await Future.delayed(const Duration(milliseconds: 2250));
     _initialized = true;
-    print("isInitiailiiized");
+    if (kDebugMode) {
+      print("isInitiailized");
+    }
     notifyListeners();
   }
 
   authNotifier() {
     subscription =
         FirebaseAuth.instance.authStateChanges().listen((User? user) {
-      print("Streaming User Auth Changes");
+      if (kDebugMode) {
+        print("Streaming User Auth Changes");
+      }
 
       if (user != null) {
-        print("User is already logged in");
+        if (kDebugMode) {
+          print("User is already logged in");
+        }
       } else {
-        print("User has signed out");
+        if (kDebugMode) {
+          print("User has signed out");
+        }
       }
       notifyListeners();
     });

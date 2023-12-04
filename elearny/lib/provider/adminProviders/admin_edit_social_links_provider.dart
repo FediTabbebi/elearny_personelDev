@@ -1,9 +1,9 @@
 import 'dart:io';
 
-import 'package:elearny/model/admin_links.dart';
+import 'package:elearny/model/admin_social_links_model.dart';
 import 'package:elearny/services/firebase/fireStore/admin_edit_social_links/add_social_link_services.dart';
 import 'package:elearny/services/firebase/storage/upload_files.dart';
-import 'package:elearny/src/widgets/one_button_dialog.dart';
+import 'package:elearny/src/widgets/shared_widget/one_button_dialog_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -263,16 +263,22 @@ class AdminAddLinkProvider with ChangeNotifier {
 
       // If user cancels the picker, do nothing
       if (file == null) {
-        print('No image selected.');
+        if (kDebugMode) {
+          print('No image selected.');
+        }
       }
 
       if (!kIsWeb) {
         final imageFile = file;
-        print(' image selected.');
+        if (kDebugMode) {
+          print(' image selected.');
+        }
         whichImg == 1
             ? landingImgMobile = File(imageFile!.path)
             : logoImgMobile = File(imageFile!.path);
-        print(imageFile.path);
+        if (kDebugMode) {
+          print(imageFile.path);
+        }
         notifyListeners();
       } else {
         Uint8List? imageFileWeb = await file?.readAsBytes();
@@ -283,27 +289,6 @@ class AdminAddLinkProvider with ChangeNotifier {
       // If there is an error, show a snackBar with the error message
     }
   }
-  // Future<void> pickImage(int whichImg) async {
-  //   try {
-  //     Uint8List? bytesFromPicker;
-  //     //= await ImagePickerWeb.getImageAsBytes();
-
-  //     if (bytesFromPicker != null) {
-  //       whichImg == 1
-  //           ? landingImg = bytesFromPicker
-  //           : logoImg = bytesFromPicker;
-  //       notifyListeners();
-  //     } else {
-  //       if (kDebugMode) {
-  //         print('No image selected.');
-  //       }
-  //     }
-  //   } catch (e) {
-  //     if (kDebugMode) {
-  //       print('Error occurred while picking an image: $e');
-  //     }
-  //   }
-  // }
 
   bool verifyChangedFields() {
     return facebookTextField.text == adminLinks?.facebookLink &&

@@ -1,4 +1,4 @@
-import 'package:elearny/model/user.dart';
+import 'package:elearny/model/user_model.dart';
 import 'package:elearny/services/firebase/fireStore/admin_edit_users/admin_edit_users.dart';
 import 'package:flutter/material.dart';
 

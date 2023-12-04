@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:elearny/model/admin_links.dart';
+import 'package:elearny/model/admin_social_links_model.dart';
+import 'package:flutter/foundation.dart';
 
 class AdminServices {
   final DocumentReference docReference =
@@ -53,7 +54,9 @@ class AdminServices {
               .get();
 
       if (docSnapshot.exists) {
-        print("getting data");
+        if (kDebugMode) {
+          print("getting data");
+        }
 
         listOfData.add(AdminLinksModel.fromMap(docSnapshot.data()!));
         return listOfData;
@@ -61,7 +64,9 @@ class AdminServices {
         return listOfData;
       }
     } catch (e) {
-      print("Error fetching data: $e");
+      if (kDebugMode) {
+        print("Error fetching data: $e");
+      }
       return listOfData;
     }
   }

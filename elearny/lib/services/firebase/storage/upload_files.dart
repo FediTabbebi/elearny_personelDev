@@ -83,7 +83,9 @@ class Storage {
 
     // Retrieve the download URL
     final String downloadURL = await ref.getDownloadURL();
-    print('File uploaded to Firestore. Download URL: $downloadURL');
+    if (kDebugMode) {
+      print('File uploaded to Firestore. Download URL: $downloadURL');
+    }
     return downloadURL;
   }
 }

@@ -1,7 +1,8 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:elearny/model/user.dart';
+import 'package:elearny/model/user_model.dart';
+import 'package:flutter/foundation.dart';
 
 class AdminEditUserService {
   Future<List<UserModel>> getUsers() async {
@@ -14,8 +15,9 @@ class AdminEditUserService {
         usersList.add(UserModel.fromMap(data));
       }
     } catch (e) {
-      // Handle any errors here
-      print('Error getting users: $e');
+      if (kDebugMode) {
+        print('Error getting users: $e');
+      }
     }
     return usersList;
   }
@@ -32,10 +34,11 @@ class AdminEditUserService {
         usersList.add(UserModel.fromMap(data));
       }
       controller.add(usersList);
-      print("im streaaaaaaaaaming");
     }, onError: (error) {
       // Handle any errors here
-      print('Error getting users: $error');
+      if (kDebugMode) {
+        print('Error getting users: $error');
+      }
     });
 
     return controller.stream;
@@ -51,7 +54,9 @@ class AdminEditUserService {
       usersList.add(UserModel.fromMap(data));
     }
 
-    print(usersList[0].email);
+    if (kDebugMode) {
+      print(usersList[0].email);
+    }
     return usersList;
   }
 }

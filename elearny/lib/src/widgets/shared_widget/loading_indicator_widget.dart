@@ -3,15 +3,11 @@ import 'package:flutter/material.dart';
 class LoadingIndicatorWidget extends StatefulWidget {
   final double size;
   final Color color;
-
-  const LoadingIndicatorWidget({
-    super.key,
-    required this.color,
-    required this.size,
-  });
+  const LoadingIndicatorWidget(
+      {required this.color, required this.size, super.key});
 
   @override
-  _LoadingIndicatorWidgetState createState() => _LoadingIndicatorWidgetState();
+  State<LoadingIndicatorWidget> createState() => _LoadingIndicatorWidgetState();
 }
 
 class _LoadingIndicatorWidgetState extends State<LoadingIndicatorWidget>

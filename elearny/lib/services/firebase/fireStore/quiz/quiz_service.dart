@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elearny/model/quiz_model.dart';
+import 'package:flutter/foundation.dart';
 
 class QuizService {
   Future<void> createQuiz(
@@ -34,7 +35,9 @@ class QuizService {
       controller.add(quizlist);
     }, onError: (error) {
       // Handle any errors here
-      print('Error getting quiz list: $error');
+      if (kDebugMode) {
+        print('Error getting quiz list: $error');
+      }
     });
 
     return controller.stream;

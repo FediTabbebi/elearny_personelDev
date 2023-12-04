@@ -1,4 +1,4 @@
-import 'package:elearny/src/widgets/app_bar_widget.dart';
+import 'package:elearny/src/widgets/shared_widget/app_bar_widget.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

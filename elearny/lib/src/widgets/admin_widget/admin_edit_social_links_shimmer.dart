@@ -1,5 +1,5 @@
 import 'package:elearny/data/globales.dart';
-import 'package:elearny/src/widgets/app_bar_widget_shimmer.dart';
+import 'package:elearny/src/widgets/shared_widget/app_bar_widget_shimmer.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 

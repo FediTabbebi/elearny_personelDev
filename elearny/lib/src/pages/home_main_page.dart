@@ -3,7 +3,7 @@ import 'package:elearny/data/globales.dart';
 import 'package:elearny/provider/themeProvider/theme_provider.dart';
 import 'package:elearny/provider/userProvider/user_provider.dart';
 import 'package:elearny/src/theme/themes.dart';
-import 'package:elearny/src/widgets/loading_indicator_widget.dart';
+import 'package:elearny/src/widgets/shared_widget/loading_indicator_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

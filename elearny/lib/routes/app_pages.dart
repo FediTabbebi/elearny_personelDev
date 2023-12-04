@@ -2,7 +2,7 @@ import 'package:elearny/model/quiz_model.dart';
 import 'package:elearny/provider/userProvider/user_provider.dart';
 import 'package:elearny/routes/app_routes.dart';
 import 'package:elearny/services/app_service/app_service.dart';
-import 'package:elearny/services/firebase/fireStore/auth/authservice.dart';
+import 'package:elearny/services/firebase/fireStore/auth/auth_service.dart';
 import 'package:elearny/src/pages/admin_pages/admin_edit_social_links.dart';
 import 'package:elearny/src/pages/admin_pages/admin_edit_users.dart';
 import 'package:elearny/src/pages/error_page.dart';
@@ -232,7 +232,9 @@ class AppRouter {
                       );
                     },
                     onExit: (BuildContext context) async {
-                      print("Exiting edit-users'");
+                      if (kDebugMode) {
+                        print("Exiting edit-users'");
+                      }
                       return true;
                     }),
               ],

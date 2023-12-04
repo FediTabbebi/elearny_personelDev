@@ -1,8 +1,9 @@
 import 'package:elearny/data/globales.dart';
 import 'package:elearny/model/quiz_model.dart';
 import 'package:elearny/services/firebase/fireStore/quiz/quiz_service.dart';
-import 'package:elearny/src/widgets/loading_progress_dialog.dart';
-import 'package:elearny/src/widgets/one_button_dialog.dart';
+import 'package:elearny/src/widgets/shared_widget/loading_progress_dialog_widget.dart';
+import 'package:elearny/src/widgets/shared_widget/one_button_dialog_widget.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -48,45 +49,17 @@ class QuizProvider with ChangeNotifier {
     await quizService
         .deleteQuizDocument(quizId)
         .then((value) => context1!.pop())
-        .onError((error, stackTrace) => print("$error"));
+        .onError((error, stackTrace) {
+      if (kDebugMode) {
+        print("$error");
+      }
+    });
   }
-
-//   void initControlers(String? quizTitle,String? quizUrl,String? quizId) {
-//    quizTitleTextField.text = quizTitle ?? '';
-//   quizUrlTextField.text = quizUrl??'';
-//  quizId=quizId?? '' ;
-//   }
-
-  // Future<List<QuizModel>?> getAllQuiz(
-  //   BuildContext context,
-  // ) async {
-  //   gettingData = true;
-
-  //   notifyListeners();
-  //   await quizService.getAllData().then((value) async {
-  //     quizModel = value;
-
-  //     gettingData = false;
-
-  //     notifyListeners();
-  //   }).onError((error, stackTrace) {
-  //     gettingData = false;
-
-  //     notifyListeners();
-  //     showSnackBar('$error', context);
-  //     gettingData = false;
-
-  //     notifyListeners();
-  //   });
-  //   return quizModel;
-  // }
 
   void showSnackBar(String message, BuildContext context) {
     final snackBar = SnackBar(
         margin: EdgeInsets.only(
-            // bottom: MediaQuery.of(context).size.height - 100,
-            right: deviceType == 1 ? 10 : 5,
-            left: deviceType == 1 ? 260 : 90),
+            right: deviceType == 1 ? 10 : 5, left: deviceType == 1 ? 260 : 90),
         content: Text(message));
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
@@ -109,17 +82,4 @@ class QuizProvider with ChangeNotifier {
           );
         });
   }
-
-  // Future<void> showingdDeleteDialog(
-  //   BuildContext context,
-  //   String title,
-  //   String contents,
-  // ) async {
-  //   await
-  // }
-
-  // void clearControllers(TextEditingController quizTitleTextField ,TextEditingController quizUrlTextField ) {
-  //   quizTitleTextField.clear();
-  //   quizUrlTextField.clear();
-  // }
 }

@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:elearny/provider/themeProvider/theme_provider.dart';
 import 'package:elearny/provider/userProvider/user_provider.dart';
-import 'package:elearny/src/widgets/app_bar_widget.dart';
+import 'package:elearny/src/widgets/shared_widget/app_bar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
@@ -50,7 +50,7 @@ class SettingScreen extends StatelessWidget {
                 "${context.read<UserProvider>().currentUser!.firstName}"
                 " "
                 "${context.read<UserProvider>().currentUser!.lastName}",
-                style: TextStyle(fontWeight: FontWeight.w500),
+                style: const TextStyle(fontWeight: FontWeight.w500),
               ),
             ),
             const SizedBox(

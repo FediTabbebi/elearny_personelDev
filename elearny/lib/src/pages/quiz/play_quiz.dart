@@ -1,6 +1,6 @@
-import 'package:elearny/src/widgets/app_bar_widget.dart';
-import 'package:elearny/src/widgets/web_view_for_mobile.dart';
-import 'package:elearny/src/widgets/web_view_for_web.dart';
+import 'package:elearny/src/widgets/shared_widget/app_bar_widget.dart';
+import 'package:elearny/src/widgets/shared_widget/web_view_for_mobile_widget.dart';
+import 'package:elearny/src/widgets/shared_widget/web_view_for_web_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';

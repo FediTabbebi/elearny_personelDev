@@ -1,5 +1,5 @@
-import 'package:elearny/model/user.dart';
-import 'package:elearny/services/firebase/fireStore/auth/authservice.dart';
+import 'package:elearny/model/user_model.dart';
+import 'package:elearny/services/firebase/fireStore/auth/auth_service.dart';
 import 'package:flutter/foundation.dart';
 
 class UserProvider with ChangeNotifier {

@@ -23,7 +23,7 @@ class OnBoardingScreen extends StatelessWidget {
                   controller: onboardingProvider.pageController,
                   onPageChanged: (index) {
                     onboardingProvider.animateToPage(index, 300);
-                    print(onboardingProvider.selectedPageIndex);
+
                     //  onboardingProvider.selectedPageIndex = index;
                   },
                   itemCount: contents.length,
@@ -92,7 +92,6 @@ class OnBoardingScreen extends StatelessWidget {
                               TextButton(
                                 onPressed: () {
                                   onboardingProvider.skipAction();
-                                  print(onboardingProvider.selectedPageIndex);
                                 },
                                 style: TextButton.styleFrom(
                                   elevation: 0,

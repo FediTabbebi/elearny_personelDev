@@ -1,5 +1,5 @@
 import 'package:elearny/provider/userProvider/user_provider.dart';
-import 'package:elearny/services/firebase/fireStore/auth/authservice.dart';
+import 'package:elearny/services/firebase/fireStore/auth/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

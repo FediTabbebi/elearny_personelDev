@@ -1,8 +1,8 @@
 import 'dart:io';
-import 'package:elearny/model/user.dart';
+import 'package:elearny/model/user_model.dart';
 import 'package:elearny/provider/userProvider/user_provider.dart';
-import 'package:elearny/services/firebase/fireStore/auth/authservice.dart';
-import 'package:elearny/src/widgets/one_button_dialog.dart';
+import 'package:elearny/services/firebase/fireStore/auth/auth_service.dart';
+import 'package:elearny/src/widgets/shared_widget/one_button_dialog_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -168,45 +168,28 @@ class UpdateUserProvider extends ChangeNotifier {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-  // Future<void> pickImage() async {
-  //   try {
-  //     Uint8List? bytesFromPicker;
-  //     // = await ImagePickerWeb.getImageAsBytes();
-
-  //     if (bytesFromPicker != null) {
-  //       imageData = bytesFromPicker;
-  //       notifyListeners();
-  //     } else {
-  //       if (kDebugMode) {
-  //         print('No image selected.');
-  //       }
-  //     }
-  //   } catch (e) {
-  //     if (kDebugMode) {
-  //       print('Error occurred while picking an image: $e');
-  //     }
-  //   }
-  // }
   Future<void> pickImage() async {
     try {
       ImagePicker imagePicker = ImagePicker();
       final file = await imagePicker.pickImage(source: ImageSource.gallery);
-      // Pick an image file using file_picker package
-      /*    FilePickerResult? result = await FilePicker.platform.pickFiles(
-        type: FileType.image,
-      );*/
 
       // If user cancels the picker, do nothing
       if (file == null) {
-        print('No image selected.');
+        if (kDebugMode) {
+          print('No image selected.');
+        }
       }
 
       if (!kIsWeb) {
         final imageFile = file;
-        print(' image selected.');
+        if (kDebugMode) {
+          print(' image selected.');
+        }
         imageDataMobile = File(imageFile!.path);
 
-        print(imageFile.path);
+        if (kDebugMode) {
+          print(imageFile.path);
+        }
         notifyListeners();
       } else {
         imageData = await file?.readAsBytes();

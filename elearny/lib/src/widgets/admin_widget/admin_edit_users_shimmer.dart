@@ -195,7 +195,7 @@ class AdminEditUserShimmer extends StatelessWidget {
                   color: Theme.of(context).textTheme.headlineMedium!.color,
                 ),
               ),
-              SizedBox(width: 20),
+              const SizedBox(width: 20),
               Container(
                 width: 15,
                 height: 15,
@@ -204,7 +204,7 @@ class AdminEditUserShimmer extends StatelessWidget {
                   color: Theme.of(context).textTheme.headlineMedium!.color,
                 ),
               ),
-              SizedBox(width: 20),
+              const SizedBox(width: 20),
               Container(
                 width: 15,
                 height: 15,
@@ -213,7 +213,7 @@ class AdminEditUserShimmer extends StatelessWidget {
                   color: Theme.of(context).textTheme.headlineMedium!.color,
                 ),
               ),
-              SizedBox(width: 20),
+              const SizedBox(width: 20),
             ],
           ),
         )
@@ -247,7 +247,7 @@ class AdminEditUserShimmer extends StatelessWidget {
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     UnconstrainedBox(

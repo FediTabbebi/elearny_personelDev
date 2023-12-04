@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:elearny/data/globales.dart';
-import 'package:elearny/model/admin_links.dart';
+import 'package:elearny/model/admin_social_links_model.dart';
 import 'package:elearny/provider/adminProviders/admin_edit_social_links_provider.dart';
 
 import 'package:elearny/provider/themeProvider/theme_provider.dart';
@@ -9,8 +9,8 @@ import 'package:elearny/src/assets.dart';
 
 import 'package:elearny/src/theme/themes.dart';
 import 'package:elearny/src/widgets/admin_widget/admin_edit_social_links_shimmer.dart';
-import 'package:elearny/src/widgets/app_bar_widget.dart';
-import 'package:elearny/src/widgets/loading_indicator_widget.dart';
+import 'package:elearny/src/widgets/shared_widget/app_bar_widget.dart';
+import 'package:elearny/src/widgets/shared_widget/loading_indicator_widget.dart';
 import 'package:elearny/src/utils/helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +28,6 @@ class AdminAddLinks extends StatelessWidget {
         child: Consumer<List<AdminLinksModel?>?>(
           builder: (context, adminLinksData, _) {
             if (adminLinksData == null) {
-              print("Loading");
               return const AdminAddLinksShimmerWidget();
             } else if (adminLinksData.isEmpty) {
               // Data is is not available so don't set the cotrollers ,display the screen with empty fields,
@@ -281,7 +280,9 @@ Widget mainPagePictureWidget(
                                                 ),
                                               ),
                                           errorWidget: (context, url, error) {
-                                            print(error);
+                                            if (kDebugMode) {
+                                              print(error);
+                                            }
                                             return const Icon(Icons.error);
                                           })
                                       : Image.asset(Assets.noImagePlaceHolder),
@@ -304,7 +305,9 @@ Widget mainPagePictureWidget(
                                                 ),
                                               ),
                                           errorWidget: (context, url, error) {
-                                            print(error);
+                                            if (kDebugMode) {
+                                              print(error);
+                                            }
                                             return const Icon(Icons.error);
                                           })
                                       : Image.asset(Assets.noImagePlaceHolder),
@@ -328,7 +331,9 @@ Widget mainPagePictureWidget(
                                                 ),
                                               ),
                                           errorWidget: (context, url, error) {
-                                            print(error);
+                                            if (kDebugMode) {
+                                              print(error);
+                                            }
                                             return const Icon(Icons.error);
                                           })
                                       : Image.asset(
@@ -353,7 +358,9 @@ Widget mainPagePictureWidget(
                                                 ),
                                               ),
                                           errorWidget: (context, url, error) {
-                                            print(error);
+                                            if (kDebugMode) {
+                                              print(error);
+                                            }
                                             return const Icon(Icons.error);
                                           })
                                       : Image.asset(Assets.noImagePlaceHolder),

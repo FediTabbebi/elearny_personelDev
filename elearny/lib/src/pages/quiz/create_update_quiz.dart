@@ -1,6 +1,6 @@
 import 'package:elearny/model/quiz_model.dart';
 import 'package:elearny/provider/quiz_provider/quiz_provider.dart';
-import 'package:elearny/src/widgets/app_bar_widget.dart';
+import 'package:elearny/src/widgets/shared_widget/app_bar_widget.dart';
 import 'package:elearny/src/utils/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -17,7 +17,6 @@ class CreateOrUpdateQuizScreen extends StatelessWidget {
         TextEditingController(text: quizModel?.quizTitle ?? '');
     final TextEditingController quizUrlTextField =
         TextEditingController(text: quizModel?.quizUrl ?? '');
-    print("rebuilding");
     return LayoutBuilder(builder: (context, constraint) {
       return Scaffold(
           appBar: CustomAppBarWidget(
@@ -42,15 +41,8 @@ class CreateOrUpdateQuizScreen extends StatelessWidget {
                     const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
                 child: TextFormField(
                     controller: quizTitleTextField,
-                    onFieldSubmitted: (value) {
-                      print("onFieldSubmitted");
-                      print(quizTitleTextField.text);
-                    },
-                    onSaved: (newValue) {
-                      print("onSaved");
-                      print(quizTitleTextField.text);
-                      print(newValue);
-                    },
+                    onFieldSubmitted: (value) {},
+                    onSaved: (newValue) {},
                     decoration: const InputDecoration(hintText: "Quiz title"),
                     validator: (value) => validate.validateEmptyField(value)),
               ),
@@ -91,14 +83,7 @@ class CreateOrUpdateQuizScreen extends StatelessWidget {
                                                   quizTitleTextField.text,
                                               quizUrl: quizUrlTextField.text,
                                               quizId: quizModel?.quizId ?? ''))
-                                      .then((value) {
-                                    print(
-                                      quizTitleTextField.text,
-                                    );
-                                    print(
-                                      quizUrlTextField.text,
-                                    );
-                                  });
+                                      .then((value) {});
                                 },
                                 child: const Text("Submit"))),
                   ],

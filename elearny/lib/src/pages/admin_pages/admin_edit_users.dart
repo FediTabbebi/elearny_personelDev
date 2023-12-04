@@ -1,11 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:elearny/data/globales.dart';
-import 'package:elearny/model/user.dart';
+import 'package:elearny/model/user_model.dart';
 import 'package:elearny/services/firebase/fireStore/admin_edit_users/admin_edit_users.dart';
 import 'package:elearny/src/assets.dart';
 import 'package:elearny/src/theme/themes.dart';
 import 'package:elearny/src/widgets/admin_widget/admin_edit_users_shimmer.dart';
-import 'package:elearny/src/widgets/loading_indicator_widget.dart';
+import 'package:elearny/src/widgets/shared_widget/loading_indicator_widget.dart';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
