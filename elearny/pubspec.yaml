@@ -64,6 +64,7 @@ dependencies:
   webview_flutter: ^4.4.1
   webview_flutter_wkwebview: ^3.9.4
   webview_flutter_platform_interface: ^2.8.0
+  get_it: ^7.6.4
 
   # flutter_widget_from_html_core: any
   # fwfh_webview: ^0.14.8
